@@ -302,6 +302,11 @@
   ],
   "logs": [
     {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "12:51:35 pm",
+      "type": "info"
+    },
+    {
       "text": "User Siddharth Sharma logged in successfully as recruiter.",
       "time": "12:01:17 pm",
       "type": "info"

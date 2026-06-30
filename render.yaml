@@ -3,8 +3,11 @@ services:
     name: stellarhire
     env: node
     plan: free
+    region: oregon
+    branch: main
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/jobs
     envVars:
       - key: NODE_ENV
         value: production
