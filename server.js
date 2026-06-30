@@ -127,6 +127,35 @@ apiApp.post('/api/auth/register', (req, res) => {
   res.json({ success: true, email: newUser.email, username: newUser.username, name: newUser.name, role: 'seeker', phone: newUser.phone, location: newUser.location, skills: newUser.skills });
 });
 
+// API: Auth Register (Recruiters)
+apiApp.post('/api/auth/register-recruiter', (req, res) => {
+  const { name, username, email, password, company } = req.body;
+  if (!name || !email || !password || !username || !company) {
+    return res.status(400).json({ success: false, message: 'Name, username, email, company, and password are required.' });
+  }
+  const db = readDb();
+  const existingEmail = db.users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.role === 'recruiter');
+  if (existingEmail) {
+    return res.status(409).json({ success: false, message: 'A recruiter account with this email already exists.' });
+  }
+  const existingUsername = db.users.find(u => u.username && u.username.toLowerCase() === username.toLowerCase() && u.role === 'recruiter');
+  if (existingUsername) {
+    return res.status(409).json({ success: false, message: 'This username is already taken.' });
+  }
+  const newRecruiter = {
+    username,
+    email,
+    password,
+    role: 'recruiter',
+    name,
+    company
+  };
+  db.users.push(newRecruiter);
+  writeDb(db);
+  appendLog(`New recruiter registered: ${name} (${username}) from ${company}.`, 'success');
+  res.json({ success: true, email: newRecruiter.email, username: newRecruiter.username, name: newRecruiter.name, role: 'recruiter', company: newRecruiter.company });
+});
+
 // API: Update Seeker Profile
 apiApp.post('/api/auth/update-profile', (req, res) => {
   const { email, name, phone, location, skills } = req.body;
