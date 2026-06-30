@@ -1,0 +1,480 @@
+{
+  "users": [
+    {
+      "username": "seeker",
+      "email": "seeker@stellarhire.com",
+      "password": "password123",
+      "role": "seeker",
+      "name": "Alex Mercer",
+      "phone": "+91 98765 43210",
+      "location": "Remote - India",
+      "skills": [
+        "React",
+        "Python",
+        "Java",
+        "CSS",
+        "JavaScript"
+      ]
+    },
+    {
+      "username": "recruiter",
+      "email": "recruiter@stellarhire.com",
+      "password": "password123",
+      "role": "recruiter",
+      "name": "Siddharth Sharma",
+      "company": "TechCorp India"
+    },
+    {
+      "username": "recruiter_hcl",
+      "email": "recruiter@hcl.com",
+      "password": "password123",
+      "role": "recruiter",
+      "name": "Rohan Mehta",
+      "company": "HCL"
+    },
+    {
+      "username": "recruiter_cloudsync",
+      "email": "recruiter@cloudsync.com",
+      "password": "password123",
+      "role": "recruiter",
+      "name": "Priya Patel",
+      "company": "CloudSync Inc."
+    },
+    {
+      "username": "recruiter_apex",
+      "email": "recruiter@apex.com",
+      "password": "password123",
+      "role": "recruiter",
+      "name": "Amit Kapoor",
+      "company": "Apex Financial"
+    },
+    {
+      "username": "admin",
+      "email": "admin@stellarhire.com",
+      "password": "password123",
+      "role": "admin",
+      "name": "System Administrator"
+    },
+    {
+      "username": "verifycand",
+      "email": "verify@stellarhire.com",
+      "password": "password123",
+      "role": "seeker",
+      "name": "Verify Candidate",
+      "phone": "+91 99999 88888",
+      "location": "Remote - India",
+      "skills": [
+        "React",
+        "Node.js"
+      ]
+    },
+    {
+      "username": "harivarsan5",
+      "email": "harivarsan032006@gmail.com",
+      "password": "harivarsan5",
+      "role": "seeker",
+      "name": "hari varsan",
+      "phone": "9025850958",
+      "location": "Chennai, TN",
+      "skills": [
+        "react",
+        "python.html"
+      ]
+    },
+    {
+      "username": "rahul5",
+      "email": "rahul@gmail.com",
+      "password": "rahul5",
+      "role": "seeker",
+      "name": "rahul",
+      "phone": "9888588558",
+      "location": "Chennai, TN",
+      "skills": [
+        "react",
+        "python"
+      ]
+    },
+    {
+      "username": "mira5",
+      "email": "mira@gmail.com",
+      "password": "mira@5",
+      "role": "seeker",
+      "name": "mira",
+      "phone": "9888075788",
+      "location": "Chennai, TN",
+      "skills": [
+        "c language"
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job-1782798645372",
+      "title": "senior c language developer",
+      "company": "tech corp",
+      "location": "Remote - India",
+      "salary": "₹15L - ₹20L LPA",
+      "posted": "Just now",
+      "skills": [
+        "c language"
+      ],
+      "description": ""
+    },
+    {
+      "id": "job-1782719730312",
+      "title": "Senior Python Developer",
+      "company": "HCL",
+      "location": "Remote - India",
+      "salary": "₹15L - ₹20L LPA",
+      "posted": "Just now",
+      "industry": "Technology",
+      "skills": [
+        "React",
+        "Python",
+        "Java",
+        "CSS"
+      ],
+      "description": "Should have done internships or project work in Python/React."
+    },
+    {
+      "id": "job-1",
+      "title": "Senior React Developer",
+      "company": "CloudSync Inc.",
+      "location": "Remote - India",
+      "salary": "₹15L - ₹18L LPA",
+      "posted": "2h ago",
+      "industry": "Technology",
+      "skills": [
+        "React",
+        "TypeScript"
+      ],
+      "description": "Looking for a React developer with at least 5 years of experience."
+    },
+    {
+      "id": "job-2",
+      "title": "Frontend Architect",
+      "company": "Apex Financial",
+      "location": "Mumbai, MH",
+      "salary": "₹20L - ₹24L LPA",
+      "posted": "1d ago",
+      "industry": "Corporate Services",
+      "skills": [
+        "Architecture",
+        "Vue.js"
+      ],
+      "description": "Lead and design frontend architectures for major financial systems."
+    },
+    {
+      "id": "job-3",
+      "title": "Senior Data Scientist",
+      "company": "StellarHire",
+      "location": "Bengaluru, KA",
+      "salary": "₹18L - ₹22L LPA",
+      "posted": "3d ago",
+      "industry": "Technology",
+      "skills": [
+        "Python",
+        "Machine Learning"
+      ],
+      "description": "Join our AI scoring engine team. Strong Machine Learning background required."
+    },
+    {
+      "id": "job-4",
+      "title": "Civil Construction Manager",
+      "company": "BuildCorp",
+      "location": "Delhi NCR",
+      "salary": "₹12L - ₹15L LPA",
+      "posted": "4d ago",
+      "industry": "Engineering",
+      "skills": [
+        "Project Management",
+        "Civil Engineering"
+      ],
+      "description": "Oversee operations at commercial construction sites."
+    }
+  ],
+  "applications": [
+    {
+      "id": "app-1782798733916",
+      "candidateName": "mira",
+      "email": "mira@gmail.com",
+      "phone": "9888075788",
+      "role": "senior c language developer",
+      "company": "tech corp",
+      "status": "Pending",
+      "appliedDate": "Today",
+      "score": 88,
+      "skills": [
+        "c language"
+      ],
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuBnt_CLR1qxfEuWUonL8ewZMke3KS5wlED0A1_tUU0nT8bGvit3WhnUiB1dTxMYXTvtfFEQEOBtCYVkzk_vYHecHI6Mw8kF-KTy2gJRU_ECXGS9q8vyWhYxR1_J7CH39jjoqgJX-5pZ65stgmRRYBhIzqNHvspVd-2lJDikdIl2zGjcNbqWCvwwnDHI3e9Dsb1WaX_bt8KvH8nfERYXUZvVzrdyd7y3yO4HCWMpWPehq7sMtfAGbKwbYbwJ23IbqVCQnsjXsByRa58",
+      "resumeFile": "Mira.pdf"
+    },
+    {
+      "id": "app-1782748961226",
+      "candidateName": "hari varsan",
+      "email": "harivarsan032006@gmail.com",
+      "phone": "9025850958",
+      "role": "Senior Python Developer",
+      "company": "HCL",
+      "status": "Interview",
+      "appliedDate": "Today",
+      "score": 94,
+      "skills": [
+        "React",
+        "Python",
+        "Java",
+        "CSS"
+      ],
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuBnt_CLR1qxfEuWUonL8ewZMke3KS5wlED0A1_tUU0nT8bGvit3WhnUiB1dTxMYXTvtfFEQEOBtCYVkzk_vYHecHI6Mw8kF-KTy2gJRU_ECXGS9q8vyWhYxR1_J7CH39jjoqgJX-5pZ65stgmRRYBhIzqNHvspVd-2lJDikdIl2zGjcNbqWCvwwnDHI3e9Dsb1WaX_bt8KvH8nfERYXUZvVzrdyd7y3yO4HCWMpWPehq7sMtfAGbKwbYbwJ23IbqVCQnsjXsByRa58",
+      "resumeFile": "circular 1 (1).pdf"
+    },
+    {
+      "id": "app-1782719740074",
+      "candidateName": "Alex Mercer",
+      "email": "seeker@stellarhire.com",
+      "phone": "+91 98765 43210",
+      "role": "Senior Python Developer",
+      "company": "HCL",
+      "status": "Pending",
+      "appliedDate": "Today",
+      "score": 98,
+      "skills": [
+        "React",
+        "Python",
+        "Java",
+        "CSS"
+      ],
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuBnt_CLR1qxfEuWUonL8ewZMke3KS5wlED0A1_tUU0nT8bGvit3WhnUiB1dTxMYXTvtfFEQEOBtCYVkzk_vYHecHI6Mw8kF-KTy2gJRU_ECXGS9q8vyWhYxR1_J7CH39jjoqgJX-5pZ65stgmRRYBhIzqNHvspVd-2lJDikdIl2zGjcNbqWCvwwnDHI3e9Dsb1WaX_bt8KvH8nfERYXUZvVzrdyd7y3yO4HCWMpWPehq7sMtfAGbKwbYbwJ23IbqVCQnsjXsByRa58",
+      "resumeFile": "Alex_Mercer_Resume.pdf"
+    },
+    {
+      "id": "app-1782718836265",
+      "candidateName": "Alex Mercer",
+      "email": "seeker@stellarhire.com",
+      "phone": "+91 98765 43210",
+      "role": "Senior Data Scientist",
+      "company": "StellarHire",
+      "status": "Pending",
+      "appliedDate": "Today",
+      "score": 85,
+      "skills": [
+        "Python",
+        "Machine Learning"
+      ],
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuBnt_CLR1qxfEuWUonL8ewZMke3KS5wlED0A1_tUU0nT8bGvit3WhnUiB1dTxMYXTvtfFEQEOBtCYVkzk_vYHecHI6Mw8kF-KTy2gJRU_ECXGS9q8vyWhYxR1_J7CH39jjoqgJX-5pZ65stgmRRYBhIzqNHvspVd-2lJDikdIl2zGjcNbqWCvwwnDHI3e9Dsb1WaX_bt8KvH8nfERYXUZvVzrdyd7y3yO4HCWMpWPehq7sMtfAGbKwbYbwJ23IbqVCQnsjXsByRa58",
+      "resumeFile": "Alex_Mercer_Resume.pdf"
+    },
+    {
+      "id": "app-1782718196013",
+      "candidateName": "Alex Mercer",
+      "email": "seeker@stellarhire.com",
+      "phone": "+91 98765 43210",
+      "role": "Frontend Architect",
+      "company": "Apex Financial",
+      "status": "Pending",
+      "appliedDate": "Today",
+      "score": 83,
+      "skills": [
+        "Architecture",
+        "Vue.js"
+      ],
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuBnt_CLR1qxfEuWUonL8ewZMke3KS5wlED0A1_tUU0nT8bGvit3WhnUiB1dTxMYXTvtfFEQEOBtCYVkzk_vYHecHI6Mw8kF-KTy2gJRU_ECXGS9q8vyWhYxR1_J7CH39jjoqgJX-5pZ65stgmRRYBhIzqNHvspVd-2lJDikdIl2zGjcNbqWCvwwnDHI3e9Dsb1WaX_bt8KvH8nfERYXUZvVzrdyd7y3yO4HCWMpWPehq7sMtfAGbKwbYbwJ23IbqVCQnsjXsByRa58",
+      "resumeFile": "Alex_Mercer_Resume.pdf"
+    },
+    {
+      "id": "app-1",
+      "candidateName": "Sarah Jenkins",
+      "email": "sarah.jenkins@example.com",
+      "phone": "+91 91234 56789",
+      "role": "Senior React Developer",
+      "company": "CloudSync Inc.",
+      "status": "Pending",
+      "appliedDate": "Oct 12",
+      "score": 92,
+      "skills": [
+        "React",
+        "TypeScript"
+      ],
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuAvbAxWTo8dc17tbiHACLnj-mHf7yYSVCWzdOvkf97_9kN32ahs2LMIF4xvpcVZREQZN2GiySkHB6wHPoL6CL0jGKksvTvnj0ksm-GNt51zXUgIucQi6LiJheWMCodFW0WluMCWeSDfH31QE9lYKa3vGOXk6XPpvP6yFnRI0wMprC8bNcV9Fxhi_Grhw3YtYxo3S_VBb6YgGtzxQZe3mKA2qSGzvPKu8_W87yr8XH-Vw7OIt-hLFT3BU1UbQHmReBMukgSFlna4BOM",
+      "resumeFile": "Sarah_Jenkins_CV.docx"
+    }
+  ],
+  "logs": [
+    {
+      "text": "User Siddharth Sharma logged in successfully as recruiter.",
+      "time": "12:01:17 pm",
+      "type": "info"
+    },
+    {
+      "text": "User Siddharth Sharma logged in successfully as recruiter.",
+      "time": "11:59:46 am",
+      "type": "info"
+    },
+    {
+      "text": "User Rohan Mehta logged in successfully as recruiter.",
+      "time": "11:53:38 am",
+      "type": "info"
+    },
+    {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "11:44:57 am",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "11:38:40 am",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "11:36:42 am",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "11:26:29 am",
+      "type": "info"
+    },
+    {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "11:24:12 am",
+      "type": "info"
+    },
+    {
+      "text": "mira applied for 'senior c language developer' at tech corp (Contact: 9888075788).",
+      "time": "11:22:13 am",
+      "type": "info"
+    },
+    {
+      "text": "New application received for 'senior c language developer' from candidate mira (Resume: Mira.pdf).",
+      "time": "11:22:13 am",
+      "type": "info"
+    },
+    {
+      "text": "New job seeker registered: mira (mira5).",
+      "time": "11:21:58 am",
+      "type": "success"
+    },
+    {
+      "text": "User rahul logged in successfully as seeker.",
+      "time": "11:20:55 am",
+      "type": "info"
+    },
+    {
+      "text": "New job posted: 'senior c language developer' at tech corp (Remote - India).",
+      "time": "11:20:45 am",
+      "type": "info"
+    },
+    {
+      "text": "Application status for hari varsan (Senior Python Developer) updated from 'Pending' to 'Interview'.",
+      "time": "11:19:04 am",
+      "type": "success"
+    },
+    {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "11:18:44 am",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "11:18:17 am",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "11:16:06 am",
+      "type": "info"
+    },
+    {
+      "text": "User rahul logged in successfully as seeker.",
+      "time": "11:09:28 am",
+      "type": "info"
+    },
+    {
+      "text": "User rahul logged in successfully as seeker.",
+      "time": "11:07:01 am",
+      "type": "info"
+    },
+    {
+      "text": "New job seeker registered: rahul (rahul5).",
+      "time": "11:06:46 am",
+      "type": "success"
+    },
+    {
+      "text": "User hari varsan logged in successfully as seeker.",
+      "time": "11:05:42 am",
+      "type": "info"
+    },
+    {
+      "text": "User hari varsan logged in successfully as seeker.",
+      "time": "11:03:46 am",
+      "type": "info"
+    },
+    {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "hari varsan applied for 'Senior Python Developer' at HCL (Contact: 9025850958).",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "New application received for 'Senior Python Developer' from candidate hari varsan (Resume: circular 1 (1).pdf).",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "User hari varsan logged in successfully as seeker.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "New job seeker registered: hari varsan (harivarsan5).",
+      "time": "Just now",
+      "type": "success"
+    },
+    {
+      "text": "User Sarah Jenkins logged in successfully as recruiter.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "User Verify Candidate logged in successfully as seeker.",
+      "time": "Just now",
+      "type": "info"
+    },
+    {
+      "text": "New job seeker registered: Verify Candidate (verifycand).",
+      "time": "Just now",
+      "type": "success"
+    },
+    {
+      "text": "System initialized.",
+      "time": "Just now",
+      "type": "info"
+    }
+  ]
+}

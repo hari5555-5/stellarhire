@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StellarHire - AI Resume Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ba1a1a",
+                      "neutral-subtle": "#6B778C",
+                      "neutral-text": "#172B4D",
+                      "secondary-fixed": "#d7e2ff",
+                      "secondary-fixed-dim": "#abc7ff",
+                      "surface-dim": "#d9d9e4",
+                      "surface-container-high": "#e7e7f2",
+                      "inverse-on-surface": "#f0f0fb",
+                      "on-tertiary-container": "#ffc6b2",
+                      "primary-container": "#0052cc",
+                      "primary-fixed-dim": "#b2c5ff",
+                      "on-secondary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#003d9b",
+                      "surface-muted": "#F4F5F7",
+                      "warning": "#FFAB00",
+                      "outline": "#737685",
+                      "on-surface": "#191b23",
+                      "ai-accent": "#6554C0",
+                      "on-primary-fixed-variant": "#0040a2",
+                      "success": "#36B37E",
+                      "on-primary-fixed": "#001848",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#c4d2ff",
+                      "tertiary-container": "#a33500",
+                      "surface-bright": "#faf8ff",
+                      "tertiary-fixed-dim": "#ffb59b",
+                      "inverse-primary": "#b2c5ff",
+                      "outline-variant": "#c3c6d6",
+                      "primary-fixed": "#dae2ff",
+                      "secondary": "#0059b8",
+                      "on-surface-variant": "#434654",
+                      "tertiary-fixed": "#ffdbcf",
+                      "secondary-container": "#0071e6",
+                      "on-tertiary-fixed": "#380d00",
+                      "border": "#DFE1E6",
+                      "surface": "#faf8ff",
+                      "on-secondary-fixed": "#001b3f",
+                      "on-background": "#191b23",
+                      "tertiary": "#7b2600",
+                      "on-secondary-fixed-variant": "#004590",
+                      "danger": "#FF5630",
+                      "on-tertiary-fixed-variant": "#812800",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#e1e2ec",
+                      "inverse-surface": "#2e3038",
+                      "surface-container": "#ededf8",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f3f3fd",
+                      "surface-container-highest": "#e1e2ec",
+                      "background": "#FFFFFF",
+                      "error-container": "#ffdad6",
+                      "on-secondary-container": "#fefcff",
+                      "surface-tint": "#0c56d0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "container-max": "1280px",
+                      "stack-md": "16px",
+                      "margin-desktop": "40px",
+                      "base": "8px",
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "stack-lg": "32px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "display-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-sm": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-lg-mobile": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #FFFFFF; /* Using base canvas */
+        }
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(101, 84, 192, 0.4);
+        }
+        .ai-gradient-text {
+            background: linear-gradient(90deg, #6554C0, #0052cc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+    <script src="client.js"></script>
+    <script>
+        const user = checkUserAuth('recruiter');
+    </script>
+</head>
+<body class="bg-background text-on-surface antialiased flex h-screen overflow-hidden relative">
+<canvas id="stellar-wallpaper" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-15"></canvas>
+<!-- SideNavBar (from JSON) -->
+<nav class="hidden md:flex flex-col bg-surface-muted border-r border-border h-full w-64 py-stack-lg flex-shrink-0 z-20">
+<div class="px-6 mb-8 flex items-center gap-3">
+<a href="javascript:void(0)" onclick="window.location.href = getPortalUrl('welcome')" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold text-headline-sm">
+                SH
+            </div>
+<div>
+<h2 class="text-headline-sm font-headline-sm font-bold text-primary">StellarHire</h2>
+<p class="text-label-md font-label-md text-neutral-subtle">Recruiter Dashboard</p>
+</div>
+</a>
+</div>
+<!-- Active State based on Intent (AI Resume Analysis -> AI Scoring) -->
+<a class="flex items-center gap-3 text-neutral-subtle px-4 py-3 hover:bg-surface-container-high hover:text-on-surface rounded-xl transition-colors" href="javascript:void(0)" onclick="window.location.href = getPortalUrl('recruiter', '/dashboard.html')">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-neutral-subtle px-4 py-3 hover:bg-surface-container-high hover:text-on-surface rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person_search">person_search</span>
+<span class="text-label-md font-label-md">Candidate Search</span>
+</a>
+<a class="flex items-center gap-3 text-neutral-subtle px-4 py-3 hover:bg-surface-container-high hover:text-on-surface rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+<span class="text-label-md font-label-md">Job Management</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-xl px-4 py-3 opacity-100 scale-[0.98] transition-transform duration-200" href="javascript:void(0)" onclick="window.location.href = getPortalUrl('recruiter', '/resume_analysis.html')">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="text-label-md font-label-md font-bold">AI Scoring</span>
+</a>
+<a class="flex items-center gap-3 text-neutral-subtle px-4 py-3 hover:bg-surface-container-high hover:text-on-surface rounded-xl transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="text-label-md font-label-md">System Logs</span>
+</a>
+</div>
+<div class="px-6 mt-auto">
+<!-- User Profile Section in Sidebar -->
+<div class="mb-4 flex items-center gap-3 bg-surface border border-border rounded-xl p-3 shadow-sm">
+  <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container font-bold flex items-center justify-center shrink-0 text-sm" id="user-avatar-initials">
+    <!-- Initials -->
+  </div>
+  <div class="min-w-0">
+    <h4 class="text-xs font-bold text-on-surface truncate" id="user-display-name">Recruiter</h4>
+    <p class="text-[10px] text-neutral-subtle truncate" id="user-display-company">Company Name</p>
+  </div>
+</div>
+<button class="w-full bg-primary text-on-primary rounded-lg py-2 text-label-md font-label-md font-bold hover:bg-secondary-container transition-colors shadow-sm mb-4">
+                Generate Report
+            </button>
+<div class="border-t border-border pt-4 space-y-2">
+<a class="flex items-center gap-3 text-neutral-subtle hover:text-on-surface transition-colors py-1" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>
+<span class="text-label-md font-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-error hover:text-red-600 transition-colors py-1" href="javascript:void(0)" onclick="logoutUser()">
+<span class="material-symbols-outlined text-[18px] text-error" data-icon="logout">logout</span>
+<span class="text-label-md font-label-md font-bold">Logout</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background relative">
+<!-- Header -->
+<header class="sticky top-0 z-10 bg-background/90 backdrop-blur-md border-b border-border px-margin-mobile md:px-margin-desktop py-4 flex justify-between items-center h-20">
+<div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface hidden md:block" id="analysis-title">AI Candidate Analysis</h1>
+<h1 class="text-headline-lg-mobile font-headline-lg-mobile text-on-surface block md:hidden" id="analysis-title-mobile">AI Analysis</h1>
+<p class="text-body-sm font-body-sm text-neutral-subtle" id="analysis-subtitle">AI Scoring and Resume Screening Dashboard</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-label-md font-label-md text-on-surface hover:bg-surface-muted transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                    Filter
+                </button>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-border">
+<img class="w-full h-full object-cover" data-alt="A professional corporate headshot of a female recruiter in a well-lit modern office setting. She is wearing a smart navy blazer. The lighting is soft and natural, creating a clean, modern, high-key professional look suitable for an enterprise software dashboard avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvHn89Uzf9HuQmqJaWlE_uOcdgn1snxEKJPXdvjdxQnT2KXTH0L5GIz6s2ZRyH5Z7JoKhXdFeIGxuJkFndUvOdobTkTSFsw1FktJ_oaREQd35gMs_R_HQxq2b-QqKKXkcp2_gIEkHQCFnqi0TGgSt2ABV6C4fx-DmCqA-vRkjDoAsosSaUHCPAoQxDujI03deu35hZZnQkI0XIzQy5jraYjFBbO_alt53mp5w1KPFemOmGELNOKj717COLE31MN4Zui86BJVTw8JY"/>
+</div>
+</div>
+</header>
+<!-- Container -->
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg space-y-gutter">
+<!-- Context & Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-8">
+<!-- AI Summary Card -->
+<div class="col-span-1 md:col-span-2 bg-surface-bright border border-border rounded-xl p-6 relative overflow-hidden shadow-sm hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] transition-shadow">
+<div class="absolute top-0 right-0 w-32 h-32 bg-ai-accent/10 rounded-bl-full blur-xl pointer-events-none"></div>
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-ai-accent/10 flex items-center justify-center text-ai-accent">
+<span class="material-symbols-outlined text-[24px]">psychology</span>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface mb-1">AI Insights</h3>
+<p class="text-body-sm font-body-sm text-neutral-subtle mb-4">StellarHire AI has processed 45 applications for this role. Top candidates demonstrate strong alignment in Machine Learning pipelines and Python proficiency.</p>
+<div class="flex items-center gap-2">
+<span class="bg-success/10 text-success text-label-sm font-label-sm px-2 py-1 rounded-full uppercase tracking-wider">High Match Rate</span>
+<span class="text-body-sm font-body-sm text-neutral-subtle">Average Score: 76/100</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Cards -->
+<div class="col-span-1 bg-surface border border-border rounded-xl p-6 flex flex-col justify-center shadow-sm">
+<p class="text-label-md font-label-md text-neutral-subtle uppercase mb-1">Shortlisted</p>
+<p id="shortlisted-count" class="text-display-lg font-display-lg text-primary">12</p>
+</div>
+<div class="col-span-1 bg-surface border border-border rounded-xl p-6 flex flex-col justify-center shadow-sm">
+<p class="text-label-md font-label-md text-neutral-subtle uppercase mb-1">Pending Review</p>
+<p id="pending-count" class="text-display-lg font-display-lg text-warning">33</p>
+</div>
+</div>
+<!-- List Header -->
+<div class="flex justify-between items-end border-b border-border pb-4">
+<h2 class="text-headline-md font-headline-md text-on-surface">Ranked Candidates</h2>
+<div class="flex gap-2">
+<span class="text-label-md font-label-md text-neutral-subtle self-center mr-2">Sort by:</span>
+<select class="border-border rounded-lg text-body-sm font-body-sm focus:ring-primary focus:border-primary">
+<option>AI Score (High to Low)</option>
+<option>Recent Applications</option>
+</select>
+</div>
+</div>
+<!-- Candidates List -->
+<div id="candidates-list-container" class="space-y-4">
+<!-- Candidate 1 (Top Match) -->
+<div class="bg-surface border border-border hover:border-secondary-fixed-dim rounded-xl p-6 flex flex-col md:flex-row gap-6 shadow-sm hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] transition-all group relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-ai-accent"></div>
+<!-- Candidate Info -->
+<div class="flex items-start gap-4 md:w-1/3">
+<div class="w-16 h-16 rounded-full overflow-hidden border border-border shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a male software engineer in his early 30s. He is wearing a simple dark t-shirt. The background is a slightly blurred modern tech office space. Lighting is bright, crisp, and neutral, typical of modern corporate photography in light mode interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYPAEXZbChkYcE6byfnWOMlAfiTNar1pPIKKOCVghLRWCqrC_357-qShPbJzLNQW4m5bg2oJiwvDGa2kM7gBKv2uSqWWE3y4jv3zrQNhD_ijBjz07Zy-futkIkhkkVp1cBht1nAYVYgxPYUzkusXAvr98bIrbQIvt6DJyL_YWHRjVtuViVvyXdPHkP4GQC5GMJpJYqDGpcVcasTRNqvHmh6pqx8Fqp3DOrZjhpKTjEgGv1NFewX4qZ8zebccVK2O1ONfph2PFPPIY"/>
+</div>
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+                                Alex Chen
+                                <span class="material-symbols-outlined text-[16px] text-ai-accent" title="AI Verified">verified</span>
+</h3>
+<p class="text-body-sm font-body-sm text-neutral-subtle mb-2">Former Sr. ML Engineer at TechCorp</p>
+<span class="bg-surface-muted text-on-surface-variant text-label-sm font-label-sm px-2 py-1 rounded border border-border">5 yrs exp</span>
+</div>
+</div>
+<!-- AI Score & Criteria -->
+<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+<!-- Score Radial/Large Number -->
+<div class="flex items-center gap-4 border-r border-border pr-6">
+<div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-high stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="text-ai-accent stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="96, 100" stroke-width="3"></path>
+</svg>
+<span class="absolute text-headline-sm font-headline-sm font-bold ai-gradient-text">96</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-ai-accent font-bold uppercase tracking-wide">Excellent Match</p>
+<p class="text-body-sm font-body-sm text-neutral-subtle">Highly recommended</p>
+</div>
+</div>
+<!-- Criteria Bars -->
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-label-sm font-label-sm mb-1">
+<span class="text-neutral-text">Skills Match</span>
+<span class="text-on-surface font-bold">98%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-success h-1.5 rounded-full" style="width: 98%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm font-label-sm mb-1">
+<span class="text-neutral-text">Experience</span>
+<span class="text-on-surface font-bold">90%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-success h-1.5 rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm font-label-sm mb-1">
+<span class="text-neutral-text">Education</span>
+<span class="text-on-surface font-bold">100%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-success h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex md:flex-col gap-3 justify-center md:w-40 border-t md:border-t-0 md:border-l border-border pt-4 md:pt-0 md:pl-6">
+<button class="w-full bg-primary text-on-primary rounded text-label-md font-label-md py-2 px-4 hover:bg-secondary-container transition-colors flex items-center justify-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">how_to_reg</span>
+                            Shortlist
+                        </button>
+<button class="w-full bg-transparent text-primary border border-primary rounded text-label-md font-label-md py-2 px-4 hover:bg-primary-container/10 transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">description</span>
+                            Resume
+                        </button>
+</div>
+</div>
+<!-- Candidate 2 -->
+<div class="bg-surface border border-border rounded-xl p-6 flex flex-col md:flex-row gap-6 hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] transition-all">
+<!-- Candidate Info -->
+<div class="flex items-start gap-4 md:w-1/3">
+<div class="w-16 h-16 rounded-full bg-surface-dim flex items-center justify-center text-headline-md font-headline-md text-neutral-subtle shrink-0">
+                            SR
+                        </div>
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Sarah Rogers</h3>
+<p class="text-body-sm font-body-sm text-neutral-subtle mb-2">Data Scientist at DataFlow</p>
+<span class="bg-surface-muted text-on-surface-variant text-label-sm font-label-sm px-2 py-1 rounded border border-border">3 yrs exp</span>
+</div>
+</div>
+<!-- AI Score & Criteria -->
+<div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+<div class="flex items-center gap-4 border-r border-border pr-6">
+<div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+<path class="text-surface-container-high stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="text-primary stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="82, 100" stroke-width="3"></path>
+</svg>
+<span class="absolute text-headline-sm font-headline-sm font-bold text-on-surface">82</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-neutral-text font-bold uppercase tracking-wide">Strong Match</p>
+<p class="text-body-sm font-body-sm text-neutral-subtle">Solid fundamentals</p>
+</div>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-label-sm font-label-sm mb-1">
+<span class="text-neutral-text">Skills Match</span>
+<span class="text-on-surface font-bold">85%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-primary h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm font-label-sm mb-1">
+<span class="text-neutral-text">Experience</span>
+<span class="text-on-surface font-bold">75%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-warning h-1.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm font-label-sm mb-1">
+<span class="text-neutral-text">Education</span>
+<span class="text-on-surface font-bold">90%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5">
+<div class="bg-success h-1.5 rounded-full" style="width: 90%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex md:flex-col gap-3 justify-center md:w-40 border-t md:border-t-0 md:border-l border-border pt-4 md:pt-0 md:pl-6">
+<button class="w-full bg-transparent text-primary border border-primary rounded text-label-md font-label-md py-2 px-4 hover:bg-primary-container/10 transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">how_to_reg</span>
+                            Shortlist
+                        </button>
+<button class="w-full bg-transparent text-neutral-text border border-border rounded text-label-md font-label-md py-2 px-4 hover:bg-surface-muted transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">description</span>
+                            Resume
+                        </button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Candidate Detail / Resume Modal -->
+<div id="recruiter-detail-modal" class="fixed inset-0 z-[100] hidden">
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeDetailModal()"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-border overflow-hidden animate-[fadeInUp_0.3s_ease]">
+    <div class="bg-gradient-to-r from-primary to-primary-container px-6 py-5 flex items-center justify-between text-white">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[24px]">account_circle</span>
+        <h3 class="text-headline-sm font-headline-sm text-white font-bold">Applicant Profile Details</h3>
+      </div>
+      <button onclick="closeDetailModal()" class="text-white/80 hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <div class="p-6 space-y-6">
+      <div class="flex items-center gap-4">
+        <img id="detail-avatar" class="w-16 h-16 rounded-full object-cover border border-border" src="" alt="Candidate Avatar">
+        <div>
+          <h4 id="detail-name" class="text-headline-sm font-bold text-on-surface"> राहुल शर्मा </h4>
+          <p id="detail-role" class="text-body-sm text-neutral-subtle">Developer Candidate</p>
+        </div>
+      </div>
+      
+      <div class="bg-surface-muted rounded-xl p-4 border border-border space-y-3">
+        <h5 class="text-xs font-semibold text-neutral-subtle uppercase tracking-wider">Contact Information</h5>
+        <div class="grid grid-cols-2 gap-4 text-body-sm text-on-surface">
+          <div>
+            <span class="text-xs text-neutral-subtle block">Email Address</span>
+            <span id="detail-email" class="font-semibold block truncate">rahul@email.com</span>
+          </div>
+          <div>
+            <span class="text-xs text-neutral-subtle block">Phone Number</span>
+            <span id="detail-phone" class="font-semibold block">+91 98765 43210</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <h5 class="text-xs font-semibold text-neutral-subtle uppercase tracking-wider">Candidate Skills</h5>
+        <div id="detail-skills" class="flex flex-wrap gap-1.5"></div>
+      </div>
+      
+      <div class="bg-[#E3FCEF]/20 rounded-xl p-4 border border-[#006644]/10 flex justify-between items-center">
+        <div class="min-w-0 flex-1 pr-2">
+          <h5 class="text-xs font-semibold text-neutral-subtle uppercase tracking-wider">Uploaded Resume File</h5>
+          <span id="detail-resume-file" class="text-body-sm font-semibold text-primary block mt-1 truncate">rahul_resume.pdf</span>
+        </div>
+        <button onclick="alert('Downloading resume file...')" class="bg-primary text-white rounded px-3 py-1.5 text-xs font-semibold hover:bg-primary-container transition-colors flex items-center gap-1 shadow-sm shrink-0">
+          <span class="material-symbols-outlined text-[14px]">download</span> Download
+        </button>
+      </div>
+
+      <div class="flex justify-between items-center pt-2">
+        <span class="text-body-sm text-neutral-subtle">AI Match Score: <strong id="detail-ai-score" class="text-ai-accent">96%</strong></span>
+        <button onclick="closeDetailModal()" class="px-5 py-2 border border-border rounded text-body-sm font-semibold hover:bg-surface-muted transition-colors">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script>
+  async function shortlistCandidate(appId) {
+    try {
+      await apiPost('/applications/status', { id: appId, status: 'Pending Decision' });
+      renderCandidates();
+    } catch (err) {
+      alert(`Error shortlisting: ${err.message}`);
+    }
+  }
+
+  async function renderCandidates() {
+    try {
+      let applications = await apiGet('/applications');
+      if (user && user.company) {
+        applications = applications.filter(a => a.company.toLowerCase() === user.company.toLowerCase());
+      }
+      
+      // Update top stats
+      const shortlistedEl = document.getElementById('shortlisted-count');
+      if (shortlistedEl) {
+        const count = applications.filter(a => a.status === 'Pending Decision' || a.status === 'Interview' || a.status === 'Approved').length;
+        shortlistedEl.innerText = count.toString();
+      }
+      
+      const pendingEl = document.getElementById('pending-count');
+      if (pendingEl) {
+        const count = applications.filter(a => a.status === 'Pending').length;
+        pendingEl.innerText = count.toString();
+      }
+      
+      const listContainer = document.getElementById('candidates-list-container');
+      if (listContainer) {
+        listContainer.innerHTML = '';
+        
+        // Sort candidates by AI score desc
+        const sortedApps = [...applications].sort((a, b) => b.score - a.score);
+        
+        sortedApps.forEach(app => {
+          const isShortlisted = app.status === 'Pending Decision' || app.status === 'Interview' || app.status === 'Approved';
+          
+          const buttonHTML = isShortlisted
+            ? `<button disabled class="w-full bg-[#E3FCEF] text-[#006644] border border-[#006644]/20 rounded text-label-md font-label-md py-2 px-4 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">check</span> Shortlisted</button>`
+            : `<button onclick="shortlistCandidate('${app.id}')" class="w-full bg-primary text-on-primary rounded text-label-md font-label-md py-2 px-4 hover:bg-secondary-container transition-all flex items-center justify-center gap-1 shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">how_to_reg</span>
+                Shortlist
+               </button>`;
+               
+          // Save candidate details in listing card
+          const card = document.createElement('div');
+          card.className = 'bg-surface border border-border hover:border-secondary-fixed-dim rounded-xl p-6 flex flex-col md:flex-row gap-6 shadow-sm hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] transition-all group relative overflow-hidden';
+          card.innerHTML = `
+            <div class="absolute left-0 top-0 bottom-0 w-1 bg-ai-accent"></div>
+            <!-- Candidate Info -->
+            <div class="flex items-start gap-4 md:w-1/3">
+              <div class="w-16 h-16 rounded-full overflow-hidden border border-border shrink-0">
+                <img class="w-full h-full object-cover" src="${app.avatar}" alt="${app.candidateName}" />
+              </div>
+              <div>
+                <h3 class="text-headline-sm font-headline-sm text-on-surface flex items-center gap-2">
+                  ${app.candidateName}
+                  <span class="material-symbols-outlined text-[16px] text-ai-accent" title="AI Verified">verified</span>
+                </h3>
+                <p class="text-body-sm font-body-sm text-neutral-subtle mb-1">${app.role} Candidate</p>
+                <span class="bg-surface-muted text-on-surface-variant text-label-sm font-label-sm px-2 py-0.5 rounded border border-border mb-2 inline-block">${app.status}</span>
+                
+                <!-- Contact info details display -->
+                <div class="text-[11px] text-neutral-subtle space-y-0.5 mt-1 border-t border-border/50 pt-1.5">
+                  <p class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">mail</span> ${app.email || 'seeker@stellarhire.com'}</p>
+                  <p class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">call</span> ${app.phone || '+91 98765 43210'}</p>
+                </div>
+              </div>
+            </div>
+            <!-- AI Score & Criteria -->
+            <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+              <div class="flex items-center gap-4 border-r border-border pr-6">
+                <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+                  <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                    <path class="text-surface-container-high stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+                    <path class="text-ai-accent stroke-current" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="${app.score}, 100" stroke-width="3"></path>
+                  </svg>
+                  <span class="absolute text-headline-sm font-headline-sm font-bold text-ai-accent">${app.score}</span>
+                </div>
+                <div>
+                  <p class="text-label-md font-label-md text-ai-accent font-bold uppercase tracking-wide">${app.score >= 90 ? 'Excellent Match' : 'Strong Match'}</p>
+                  <p class="text-body-sm font-body-sm text-neutral-subtle">Compatibility Score</p>
+                </div>
+              </div>
+              <!-- Criteria Bars -->
+              <div class="space-y-3">
+                <div>
+                  <div class="flex justify-between text-label-sm font-label-sm mb-1">
+                    <span class="text-neutral-text">Skills Match</span>
+                    <span class="text-on-surface font-bold">${app.score}%</span>
+                  </div>
+                  <div class="w-full bg-surface-container-high rounded-full h-1.5">
+                    <div class="bg-success h-1.5 rounded-full" style="width: ${app.score}%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-label-sm font-label-sm mb-1">
+                    <span class="text-neutral-text">Experience Fit</span>
+                    <span class="text-on-surface font-bold">${Math.max(60, app.score - 10)}%</span>
+                  </div>
+                  <div class="w-full bg-surface-container-high rounded-full h-1.5">
+                    <div class="bg-primary h-1.5 rounded-full" style="width: ${Math.max(60, app.score - 10)}%"></div>
+                  </div>
+                </div>
+                <div>
+                  <div class="flex justify-between text-label-sm font-label-sm mb-1">
+                    <span class="text-neutral-text">Interview Performance</span>
+                    <span class="text-on-surface font-bold">95%</span>
+                  </div>
+                  <div class="w-full bg-surface-container-high rounded-full h-1.5">
+                    <div class="bg-success h-1.5 rounded-full" style="width: 95%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Actions -->
+            <div class="flex md:flex-col gap-3 justify-center md:w-40 border-t md:border-t-0 md:border-l border-border pt-4 md:pt-0 md:pl-6">
+              ${buttonHTML}
+              <button onclick="openDetailModal('${app.id}')" class="w-full bg-transparent text-primary border border-primary rounded text-label-md font-label-md py-2 px-4 hover:bg-primary-container/10 transition-colors flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">description</span>
+                View Details
+              </button>
+            </div>
+          `;
+          listContainer.appendChild(card);
+        });
+      }
+    } catch (err) {
+      console.error('Error rendering candidates:', err);
+    }
+  }
+
+  let allApplicationsGlobal = [];
+
+  function openDetailModal(appId) {
+    const app = allApplicationsGlobal.find(a => a.id === appId);
+    if (!app) return;
+    document.getElementById('detail-avatar').src = app.avatar;
+    document.getElementById('detail-name').innerText = app.candidateName;
+    document.getElementById('detail-role').innerText = `${app.role} Candidate`;
+    document.getElementById('detail-email').innerText = app.email || 'seeker@stellarhire.com';
+    document.getElementById('detail-phone').innerText = app.phone || '+91 98765 43210';
+    document.getElementById('detail-resume-file').innerText = app.resumeFile || 'Not uploaded';
+    document.getElementById('detail-ai-score').innerText = `${app.score}%`;
+    
+    const skillsContainer = document.getElementById('detail-skills');
+    skillsContainer.innerHTML = (app.skills || []).map(s => `<span class="px-2 py-0.5 bg-surface-container-high rounded text-[11px] font-semibold text-neutral-text">${s}</span>`).join('');
+    
+    document.getElementById('recruiter-detail-modal').classList.remove('hidden');
+  }
+
+  function closeDetailModal() {
+    document.getElementById('recruiter-detail-modal').classList.add('hidden');
+  }
+
+  // Override renderCandidates caller to save global reference
+  const originalRenderCandidates = renderCandidates;
+  renderCandidates = async function() {
+    try {
+      let applications = await apiGet('/applications');
+      if (user && user.company) {
+        applications = applications.filter(a => a.company.toLowerCase() === user.company.toLowerCase());
+      }
+      allApplicationsGlobal = applications;
+    } catch (err) {
+      console.error(err);
+    }
+    await originalRenderCandidates();
+  };
+
+  // ===== INIT =====
+  if (user) {
+    const nameEl = document.getElementById('user-display-name');
+    const compEl = document.getElementById('user-display-company');
+    const initEl = document.getElementById('user-avatar-initials');
+    const titleEl = document.getElementById('analysis-title');
+    const subtitleEl = document.getElementById('analysis-subtitle');
+    
+    if (nameEl) nameEl.innerText = user.name || 'Recruiter';
+    if (compEl) compEl.innerText = user.company || 'StellarHire';
+    if (initEl && user.name) {
+      const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      initEl.innerText = initials;
+    }
+    if (titleEl) titleEl.innerText = `${user.company} - AI Candidate Analysis`;
+    if (subtitleEl) {
+      // Find candidate count to display dynamically
+      try {
+        apiGet('/applications').then(apps => {
+          const count = apps.filter(a => a.company.toLowerCase() === user.company.toLowerCase()).length;
+          subtitleEl.innerText = `AI Scoring and Resume Screening · ${count} Candidates Scored`;
+        });
+      } catch(e) {
+        subtitleEl.innerText = `AI Scoring and Resume Screening for ${user.company}`;
+      }
+    }
+  }
+
+  renderCandidates();
+</script>
+<script>
+    (function() {
+        const canvas = document.getElementById('stellar-wallpaper');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        const particleCount = 50;
+        const maxDistance = 140;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: (Math.random() - 0.5) * 0.35,
+                radius: Math.random() * 2 + 0.8
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particleCount; i++) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(101, 84, 192, 0.25)';
+                ctx.fill();
+
+                for (let j = i + 1; j < particleCount; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < maxDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 82, 204, ${0.1 * (1 - dist / maxDistance)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    })();
+</script>
+</body></html>

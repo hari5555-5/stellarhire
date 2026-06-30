@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>StellarHire - The AI-Driven Hiring Platform</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "neutral-subtle": "#6B778C",
+                        "neutral-text": "#172B4D",
+                        "secondary-fixed": "#d7e2ff",
+                        "secondary-fixed-dim": "#abc7ff",
+                        "surface-dim": "#d9d9e4",
+                        "surface-container-high": "#e7e7f2",
+                        "inverse-on-surface": "#f0f0fb",
+                        "on-tertiary-container": "#ffc6b2",
+                        "primary-container": "#0052cc",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#003d9b",
+                        "surface-muted": "#F4F5F7",
+                        "warning": "#FFAB00",
+                        "outline": "#737685",
+                        "on-surface": "#191b23",
+                        "ai-accent": "#6554C0",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "success": "#36B37E",
+                        "on-primary-fixed": "#001848",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#c4d2ff",
+                        "tertiary-container": "#a33500",
+                        "surface-bright": "#faf8ff",
+                        "tertiary-fixed-dim": "#ffb59b",
+                        "inverse-primary": "#b2c5ff",
+                        "outline-variant": "#c3c6d6",
+                        "primary-fixed": "#dae2ff",
+                        "secondary": "#0059b8",
+                        "on-surface-variant": "#434654",
+                        "tertiary-fixed": "#ffdbcf",
+                        "secondary-container": "#0071e6",
+                        "on-tertiary-fixed": "#380d00",
+                        "border": "#DFE1E6",
+                        "surface": "#faf8ff",
+                        "on-secondary-fixed": "#001b3f",
+                        "on-background": "#191b23",
+                        "tertiary": "#7b2600",
+                        "on-secondary-fixed-variant": "#004590",
+                        "danger": "#FF5630",
+                        "on-tertiary-fixed-variant": "#812800",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e1e2ec",
+                        "inverse-surface": "#2e3038",
+                        "surface-container": "#ededf8",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f3fd",
+                        "surface-container-highest": "#e1e2ec",
+                        "background": "#FFFFFF",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#fefcff",
+                        "surface-tint": "#0c56d0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "stack-md": "16px",
+                        "margin-desktop": "40px",
+                        "base": "8px",
+                        "stack-sm": "8px",
+                        "gutter": "24px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <script src="client.js"></script>
+</head>
+
+<body
+    class="bg-background text-on-background antialiased font-body-md text-body-md min-h-screen flex flex-col relative overflow-x-hidden">
+    <canvas id="stellar-wallpaper" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
+    <!-- TopNavBar -->
+    <header
+        class="bg-background dark:bg-inverse-surface border-b border-border dark:border-outline-variant w-full px-margin-desktop sticky top-0 z-50">
+        <div class="flex justify-between items-center max-w-container-max mx-auto h-16">
+            <!-- Brand -->
+            <a class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim flex items-center gap-2"
+                href="#">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">work</span>
+                StellarHire
+            </a>
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex gap-6 items-center h-full">
+                <a class="h-full flex items-center text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim font-bold text-label-md font-label-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-200"
+                    href="#">Platform</a>
+            </nav>
+            <!-- Actions -->
+            <div class="flex items-center gap-4">
+                <a class="hidden md:flex items-center justify-center px-4 py-2 border border-primary text-primary font-label-md text-label-md rounded hover:bg-surface-muted transition-colors"
+                    href="#portals">Sign In</a>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden flex items-center text-on-surface">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative w-full py-20 px-margin-mobile md:px-margin-desktop overflow-hidden bg-surface-muted">
+            <!-- Abstract decorative background element -->
+            <div class="absolute inset-0 pointer-events-none overflow-hidden opacity-50">
+                <div
+                    class="absolute -top-[20%] -right-[10%] w-[60%] h-[120%] bg-gradient-to-bl from-secondary-fixed-dim to-transparent rounded-full blur-[120px] mix-blend-multiply">
+                </div>
+                <div
+                    class="absolute top-[40%] -left-[10%] w-[50%] h-[80%] bg-gradient-to-tr from-primary-fixed-dim to-transparent rounded-full blur-[100px] mix-blend-multiply">
+                </div>
+            </div>
+            <div class="max-w-container-max mx-auto relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
+                    <!-- Hero Text -->
+                    <div class="flex flex-col gap-stack-lg">
+                        <div>
+                            <span
+                                class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full text-ai-accent text-label-sm font-label-sm mb-4 border border-outline-variant">
+                                <span class="material-symbols-outlined text-[14px]">psychology</span>
+                                AI-Powered Matching Engine
+                            </span>
+                            <h1 class="text-display-lg font-display-lg text-on-surface mb-6">
+                                Elevate hiring with <span class="text-primary">precision</span> intelligence.
+                            </h1>
+                            <p class="text-body-lg font-body-lg text-neutral-subtle max-w-xl">
+                                StellarHire unites administrators, recruiters, and top-tier candidates on a single,
+                                transparent platform. Experience the next generation of career decision-making powered
+                                by contextual AI scoring.
+                            </p>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <a class="flex items-center justify-center px-6 py-3 bg-primary text-on-primary font-label-md text-label-md rounded shadow-[0px_4px_12px_rgba(0,61,155,0.2)] hover:bg-on-primary-fixed-variant transition-all hover:translate-y-[-2px]"
+                                href="#portals">
+                                Explore Portals
+                                <span class="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!-- Hero Visual / Dashboard Preview -->
+                    <div
+                        class="relative hidden lg:block h-[500px] w-full bg-background border border-border rounded-xl shadow-[0px_12px_48px_rgba(9,30,66,0.1)] p-6 overflow-hidden">
+                        <!-- Glassmorphic Overlay -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-background/80 to-surface-muted/90 backdrop-blur-sm z-0">
+                        </div>
+                        <!-- UI Mockup Elements -->
+                        <div class="relative z-10 flex flex-col gap-4 h-full">
+                            <!-- Top Bar Mockup -->
+                            <div class="flex justify-between items-center border-b border-border pb-4">
+                                <div class="h-6 w-32 bg-surface-container-high rounded animate-pulse"></div>
+                                <div class="flex gap-2">
+                                    <div class="h-6 w-6 rounded-full bg-surface-container-high"></div>
+                                    <div class="h-6 w-6 rounded-full bg-surface-container-high"></div>
+                                </div>
+                            </div>
+                            <!-- Main Content Mockup -->
+                            <div class="flex gap-4 h-full">
+                                <!-- Sidebar -->
+                                <div class="w-1/4 flex flex-col gap-3">
+                                    <div class="h-8 w-full bg-primary-container/20 rounded"></div>
+                                    <div class="h-8 w-full bg-surface-container-high rounded"></div>
+                                    <div class="h-8 w-full bg-surface-container-high rounded"></div>
+                                    <div class="h-8 w-full bg-surface-container-high rounded"></div>
+                                </div>
+                                <!-- Content Area -->
+                                <div class="flex-1 flex flex-col gap-4">
+                                    <div class="flex justify-between items-center">
+                                        <div class="h-8 w-48 bg-surface-container-high rounded"></div>
+                                        <div class="h-8 w-24 bg-primary/20 rounded"></div>
+                                    </div>
+                                    <!-- Data Cards -->
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <div
+                                            class="h-24 bg-surface-container rounded border border-border flex flex-col justify-center p-3 relative overflow-hidden">
+                                            <div class="h-3 w-16 bg-outline-variant rounded mb-2"></div>
+                                            <div class="h-6 w-12 bg-on-surface rounded"></div>
+                                            <div
+                                                class="absolute -right-4 -bottom-4 w-12 h-12 bg-success/20 rounded-full">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="h-24 bg-surface-container rounded border border-border flex flex-col justify-center p-3 relative overflow-hidden">
+                                            <div class="h-3 w-20 bg-outline-variant rounded mb-2"></div>
+                                            <div class="h-6 w-16 bg-on-surface rounded"></div>
+                                            <div
+                                                class="absolute -right-4 -bottom-4 w-12 h-12 bg-warning/20 rounded-full">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="h-24 bg-surface-container rounded border border-border flex flex-col justify-center p-3 relative overflow-hidden">
+                                            <div class="h-3 w-12 bg-outline-variant rounded mb-2"></div>
+                                            <div class="h-6 w-10 bg-on-surface rounded"></div>
+                                            <div
+                                                class="absolute -right-4 -bottom-4 w-12 h-12 bg-primary/20 rounded-full">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- List Mockup -->
+                                    <div class="flex-1 border border-border rounded flex flex-col gap-2 p-3">
+                                        <div
+                                            class="h-12 w-full bg-surface-container-lowest border border-border rounded flex items-center px-3 gap-3">
+                                            <div class="h-8 w-8 rounded-full bg-surface-container-high"></div>
+                                            <div class="flex-1 h-4 bg-surface-container-high rounded"></div>
+                                            <div class="h-6 w-12 bg-ai-accent/20 rounded-full"></div>
+                                        </div>
+                                        <div
+                                            class="h-12 w-full bg-surface-container-lowest border border-border rounded flex items-center px-3 gap-3">
+                                            <div class="h-8 w-8 rounded-full bg-surface-container-high"></div>
+                                            <div class="flex-1 h-4 bg-surface-container-high rounded"></div>
+                                            <div class="h-6 w-12 bg-ai-accent/20 rounded-full"></div>
+                                        </div>
+                                        <div
+                                            class="h-12 w-full bg-surface-container-lowest border border-border rounded flex items-center px-3 gap-3">
+                                            <div class="h-8 w-8 rounded-full bg-surface-container-high"></div>
+                                            <div class="flex-1 h-4 bg-surface-container-high rounded"></div>
+                                            <div class="h-6 w-12 bg-ai-accent/20 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Access Portals Section -->
+        <section class="py-24 px-margin-mobile md:px-margin-desktop" id="portals">
+            <div class="max-w-container-max mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Select Your Workspace</h2>
+                    <p class="text-body-md font-body-md text-neutral-subtle max-w-2xl mx-auto">
+                        StellarHire provides specialized environments tailored to your role. Choose your path below to
+                        access context-specific tools and dashboards.
+                    </p>
+                </div>
+                <!-- Bento Grid Layout for Portals -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+                    <!-- Candidate Portal -->
+                    <div
+                        class="group flex flex-col bg-background border border-border rounded-xl overflow-hidden hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] hover:border-secondary-fixed-dim transition-all duration-300">
+                        <div class="h-48 relative overflow-hidden bg-surface-container">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                                data-alt="A focused young professional using a modern laptop in a bright, clean cafe setting. Soft natural window light illuminates the scene, creating an optimistic and forward-looking atmosphere suitable for a job seeker. High quality corporate lifestyle photography."
+                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBB2TZA9tRK0XYOW9o5C9V-wM--JHvMaK2tBxSSXVmOxIM4dG5msPNMM1Uj8sxrSHY8ePgBhE38kQs9xTHrs-ZkLygn508KNwXW3_SlQHURRHdDR_wzL4wkNPK0tlMjY_Zt1_vg16CQDc1UP6JkOPCjD8hr5Unfiq2VhcDZHEJI_z0cR5iUTNb8V2JJHT0BFL7D3Rcu51UZdNDtX9Ui3u0WmL1YIZ7OovyDmq0XtvVG4AKERyqy2qDmrIcvqyNjeNMnsyjgeP7mh_E')">
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-80">
+                            </div>
+                            <div class="absolute bottom-4 left-6 flex items-center gap-2">
+                                <div
+                                    class="w-10 h-10 rounded bg-background shadow flex items-center justify-center text-primary">
+                                    <span class="material-symbols-outlined">person</span>
+                                </div>
+                                <h3 class="text-headline-sm font-headline-sm text-on-surface">Job Seeker</h3>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <p class="text-body-sm font-body-sm text-neutral-subtle mb-6 flex-grow">
+                                Discover opportunities matched to your skills. Track applications, manage your profile,
+                                and leverage AI insights to improve your resume visibility.
+                            </p>
+                            <a class="flex items-center justify-between w-full px-4 py-2 bg-surface-muted hover:bg-surface-container text-on-surface border border-border rounded font-label-md text-label-md transition-colors"
+                                href="javascript:void(0)"
+                                onclick="window.location.href = getPortalUrl('seeker', '/login.html')">
+                                Candidate Login
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Recruiter Portal -->
+                    <div
+                        class="group flex flex-col bg-background border border-border rounded-xl overflow-hidden hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] hover:border-primary transition-all duration-300 relative">
+                        <!-- Highlight Badge -->
+                        <div
+                            class="absolute top-0 right-0 bg-primary text-on-primary text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-bl-lg z-10">
+                            Primary User</div>
+                        <div class="h-48 relative overflow-hidden bg-primary-container/10">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                                data-alt="Two corporate recruiters reviewing candidate profiles on a large monitor in a modern boardroom. Bright, professional setting with sleek office furniture. The mood is collaborative, analytical, and highly professional. High-end corporate photography."
+                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4zpQIqfCHb2YqjrWSobgyNt90f1rvBCaacvAX21mqSMlmXfBLObNWErjW9w1pZrGXfbVhmqnE4qpoBD2UtoOodobVD-aKdp6_ecC7We_g8YKAjVFES8K0zY-9iNju8-ggcjNktozzxNA8y3zuhIHd_UWciGAmt4eokbmNX1ADw0BTigVtK47AlUiKUf8nRvugjf5rQshEPTwg2iV94wdMql30ttBs2h5Ved7DADAV0xEfzvo-hphWMXaCiqRhjnsWuZCPRmHGwKw')">
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-80">
+                            </div>
+                            <div class="absolute bottom-4 left-6 flex items-center gap-2">
+                                <div
+                                    class="w-10 h-10 rounded bg-primary shadow flex items-center justify-center text-on-primary">
+                                    <span class="material-symbols-outlined">work</span>
+                                </div>
+                                <h3 class="text-headline-sm font-headline-sm text-on-surface">Recruiter</h3>
+                            </div>
+                        </div>
+                        <div
+                            class="p-6 flex flex-col flex-grow border-t-2 border-primary/20 group-hover:border-primary transition-colors">
+                            <p class="text-body-sm font-body-sm text-neutral-subtle mb-6 flex-grow">
+                                Manage pipelines efficiently. Utilize AI-driven candidate scoring, collaborative review
+                                tools, and streamlined communication to hire top talent faster.
+                            </p>
+                            <a class="flex items-center justify-between w-full px-4 py-2 bg-primary hover:bg-on-primary-fixed-variant text-on-primary rounded font-label-md text-label-md transition-colors shadow-sm"
+                                href="javascript:void(0)"
+                                onclick="window.location.href = getPortalUrl('recruiter', '/login.html')">
+                                Recruiter Login
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Admin Portal -->
+                    <div
+                        class="group flex flex-col bg-background border border-border rounded-xl overflow-hidden hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] hover:border-ai-accent transition-all duration-300">
+                        <div class="h-48 relative overflow-hidden bg-surface-container-highest">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                                data-alt="A sophisticated data dashboard displayed on a large screen in a dimly lit, high-tech control room. The visual focus is on glowing charts and analytics representing system health and user data. The aesthetic is clean, technical, and authoritative."
+                                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAU8tChdCSMKrv3qNutKq7bDxmKdSKJj7VTJa8CarE0awIjy8R5IO_2DcKW9zkKma7CG0QC1zO_HWsejsI504bR_NdMBKubtw5M7a-rDwlZIKTOc0tW3k_N0A0GbS7ArgBO7kX3a-qnnVE6JkzGYo1hWbF5rCask_VDp3PuuGL2fgSgaPMZOXhfoGRa6jKApsC9iwlCioEXmku3-AT2qd7euZJibJ40oun07HwflXjRlmNim3TMIo0l5WQ4cLnBpqBsP5oO82Oo6DM')">
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-80">
+                            </div>
+                            <div class="absolute bottom-4 left-6 flex items-center gap-2">
+                                <div
+                                    class="w-10 h-10 rounded bg-background shadow flex items-center justify-center text-ai-accent">
+                                    <span class="material-symbols-outlined">admin_panel_settings</span>
+                                </div>
+                                <h3 class="text-headline-sm font-headline-sm text-on-surface">Administrator</h3>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <p class="text-body-sm font-body-sm text-neutral-subtle mb-6 flex-grow">
+                                Command center for platform oversight. Manage organization settings, configure AI
+                                scoring parameters, monitor system logs, and control access permissions.
+                            </p>
+                            <a class="flex items-center justify-between w-full px-4 py-2 bg-surface-muted hover:bg-surface-container text-on-surface border border-border rounded font-label-md text-label-md transition-colors"
+                                href="javascript:void(0)"
+                                onclick="window.location.href = getPortalUrl('admin', '/login.html')">
+                                Admin Login
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer
+        class="bg-surface-container dark:bg-inverse-surface border-t border-border dark:border-outline-variant w-full py-stack-lg px-margin-desktop mt-auto">
+        <div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div
+                class="text-body-lg font-headline-sm font-bold text-on-surface dark:text-inverse-on-surface flex items-center gap-2">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">work</span>
+                StellarHire AI
+            </div>
+            <nav class="flex flex-wrap justify-center gap-6">
+                <a class="text-neutral-subtle dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-sm font-label-sm"
+                    href="#">Privacy Policy</a>
+                <a class="text-neutral-subtle dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-sm font-label-sm"
+                    href="#">Terms of Service</a>
+                <a class="text-neutral-subtle dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-sm font-label-sm"
+                    href="#">AI Ethics</a>
+                <a class="text-neutral-subtle dark:text-outline-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors text-label-sm font-label-sm"
+                    href="#">Contact Support</a>
+            </nav>
+            <div></div>
+        </div>
+    </footer>
+    <script>
+        (function() {
+            const canvas = document.getElementById('stellar-wallpaper');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = [];
+            const particleCount = 60;
+            const maxDistance = 120;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < particleCount; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(101, 84, 192, 0.4)';
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particleCount; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < maxDistance) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(0, 82, 204, ${0.15 * (1 - dist / maxDistance)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+    </script>
+</body>
+
+</html>

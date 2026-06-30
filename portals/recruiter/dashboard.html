@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StellarHire - Recruiter Dashboard</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "error": "#ba1a1a","neutral-subtle": "#6B778C","neutral-text": "#172B4D",
+          "secondary-fixed": "#d7e2ff","secondary-fixed-dim": "#abc7ff","surface-dim": "#d9d9e4",
+          "surface-container-high": "#e7e7f2","inverse-on-surface": "#f0f0fb","on-tertiary-container": "#ffc6b2",
+          "primary-container": "#0052cc","primary-fixed-dim": "#b2c5ff","on-secondary": "#ffffff",
+          "on-error": "#ffffff","on-tertiary": "#ffffff","primary": "#003d9b","surface-muted": "#F4F5F7",
+          "warning": "#FFAB00","outline": "#737685","on-surface": "#191b23","ai-accent": "#6554C0",
+          "on-primary-fixed-variant": "#0040a2","success": "#36B37E","on-primary-fixed": "#001848",
+          "on-primary": "#ffffff","on-primary-container": "#c4d2ff","tertiary-container": "#a33500",
+          "surface-bright": "#faf8ff","tertiary-fixed-dim": "#ffb59b","inverse-primary": "#b2c5ff",
+          "outline-variant": "#c3c6d6","primary-fixed": "#dae2ff","secondary": "#0059b8",
+          "on-surface-variant": "#434654","tertiary-fixed": "#ffdbcf","secondary-container": "#0071e6",
+          "on-tertiary-fixed": "#380d00","border": "#DFE1E6","surface": "#faf8ff","on-secondary-fixed": "#001b3f",
+          "on-background": "#191b23","tertiary": "#7b2600","on-secondary-fixed-variant": "#004590",
+          "danger": "#FF5630","on-tertiary-fixed-variant": "#812800","on-error-container": "#93000a",
+          "surface-variant": "#e1e2ec","inverse-surface": "#2e3038","surface-container": "#ededf8",
+          "surface-container-lowest": "#ffffff","surface-container-low": "#f3f3fd",
+          "surface-container-highest": "#e1e2ec","background": "#FFFFFF","error-container": "#ffdad6",
+          "on-secondary-container": "#fefcff","surface-tint": "#0c56d0"
+        },
+        "borderRadius": { "DEFAULT": "0.125rem","lg": "0.25rem","xl": "0.5rem","full": "0.75rem" },
+        "spacing": {
+          "margin-mobile": "16px","container-max": "1280px","stack-md": "16px",
+          "margin-desktop": "40px","base": "8px","stack-sm": "8px","gutter": "24px","stack-lg": "32px"
+        },
+        "fontFamily": {
+          "body-lg": ["Inter"],"display-lg": ["Hanken Grotesk"],"label-sm": ["Inter"],
+          "headline-lg": ["Hanken Grotesk"],"body-sm": ["Inter"],"label-md": ["Inter"],
+          "headline-md": ["Hanken Grotesk"],"headline-lg-mobile": ["Hanken Grotesk"],"headline-sm": ["Hanken Grotesk"],"body-md": ["Inter"]
+        },
+        "fontSize": {
+          "body-lg": ["18px",{"lineHeight":"28px","fontWeight":"400"}],"display-lg": ["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"700"}],
+          "label-sm": ["11px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"700"}],
+          "headline-lg": ["32px",{"lineHeight":"40px","fontWeight":"600"}],"body-sm": ["14px",{"lineHeight":"20px","fontWeight":"400"}],
+          "label-md": ["12px",{"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"600"}],
+          "headline-md": ["24px",{"lineHeight":"32px","fontWeight":"600"}],"headline-lg-mobile": ["24px",{"lineHeight":"32px","fontWeight":"600"}],
+          "headline-sm": ["20px",{"lineHeight":"28px","fontWeight":"600"}],"body-md": ["16px",{"lineHeight":"24px","fontWeight":"400"}]
+        }
+      }
+    }
+  }
+</script>
+<script src="client.js"></script>
+<script>const user = checkUserAuth('recruiter');</script>
+<style>
+  @keyframes fadeInUp { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .tab-content { animation: slideIn 0.25s ease; }
+  .nav-active { background: #0052cc; color: #c4d2ff; border-radius: 12px; }
+  .nav-inactive { color: #6B778C; border-radius: 12px; }
+  .nav-inactive:hover { background: #e7e7f2; color: #191b23; }
+  .log-info { border-left: 3px solid #003d9b; }
+  .log-success { border-left: 3px solid #36B37E; }
+  .log-warning { border-left: 3px solid #FFAB00; }
+  .log-error { border-left: 3px solid #ba1a1a; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased h-screen overflow-hidden flex relative">
+<canvas id="stellar-wallpaper" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-15"></canvas>
+
+<!-- ===== SIDEBAR NAV ===== -->
+<nav class="fixed left-0 top-0 h-full flex flex-col py-6 border-r border-border bg-surface-muted w-64 z-50">
+  <!-- Logo -->
+  <div class="px-6 mb-8 flex items-center gap-3">
+    <a href="javascript:void(0)" onclick="window.location.href = getPortalUrl('welcome')" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+      <div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">work</span>
+      </div>
+      <div>
+        <h1 class="text-headline-sm font-headline-sm font-bold text-primary">StellarHire</h1>
+        <p class="text-label-sm font-label-sm text-neutral-subtle">Recruiter Portal</p>
+      </div>
+    </a>
+  </div>
+
+  <!-- Nav Links -->
+  <div class="flex flex-col gap-1 px-4 flex-grow">
+    <button id="nav-overview" onclick="switchTab('overview')" class="nav-active flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>
+      <span class="text-label-md font-label-md font-semibold">Overview</span>
+    </button>
+    <button id="nav-candidates" onclick="switchTab('candidates')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">person_search</span>
+      <span class="text-label-md font-label-md font-semibold">Candidate Search</span>
+    </button>
+    <button id="nav-jobs" onclick="switchTab('jobs')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">work</span>
+      <span class="text-label-md font-label-md font-semibold">Job Management</span>
+    </button>
+    <button id="nav-ai" onclick="window.location.href = getPortalUrl('recruiter', '/resume_analysis.html')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">psychology</span>
+      <span class="text-label-md font-label-md font-semibold">AI Scoring</span>
+    </button>
+  </div>
+
+  <!-- User Profile Section in Sidebar -->
+  <div class="px-4 mb-4 flex items-center gap-3 bg-surface border border-border rounded-xl p-3 shadow-sm mx-4">
+    <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container font-bold flex items-center justify-center shrink-0 text-sm" id="user-avatar-initials">
+      <!-- Initials -->
+    </div>
+    <div class="min-w-0">
+      <h4 class="text-xs font-bold text-on-surface truncate" id="user-display-name">Recruiter</h4>
+      <p class="text-[10px] text-neutral-subtle truncate" id="user-display-company">Company Name</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="px-4 mt-auto space-y-1 border-t border-border pt-4">
+    <button onclick="openGenerateReport()" class="w-full bg-ai-accent text-white rounded-lg py-2.5 px-4 text-label-md font-label-md flex items-center justify-center gap-2 hover:opacity-90 transition-opacity mb-1">
+      <span class="material-symbols-outlined text-[18px]">assessment</span>
+      Generate Report
+    </button>
+    <button onclick="openPostJobModal()" class="w-full bg-primary text-white rounded-lg py-2.5 px-4 text-label-md font-label-md flex items-center justify-center gap-2 hover:bg-secondary transition-colors mb-2">
+      <span class="material-symbols-outlined text-[18px]">add_circle</span>
+      Post a Job
+    </button>
+    <button onclick="logoutUser()" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left text-error hover:bg-red-50 rounded-xl transition-colors">
+      <span class="material-symbols-outlined text-error">logout</span>
+      <span class="text-label-md font-label-md font-bold">Logout</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== MAIN CANVAS ===== -->
+<main class="ml-64 flex-1 h-full overflow-y-auto bg-background">
+
+<!-- ========== POST JOB MODAL ========== -->
+<div id="post-job-modal" class="fixed inset-0 z-[100] hidden">
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closePostJobModal()"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-border overflow-hidden" style="animation: fadeInUp 0.3s ease;">
+    <div class="bg-gradient-to-r from-primary to-primary-container px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-white text-[24px]">add_circle</span>
+        <h3 class="text-headline-sm font-headline-sm text-white font-bold">Post a New Job</h3>
+      </div>
+      <button onclick="closePostJobModal()" class="text-white/80 hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form id="post-job-form" class="p-6 space-y-4" onsubmit="handlePostJob(event)">
+      <div>
+        <label class="block text-label-md font-label-md text-on-surface mb-1">Job Title <span class="text-error">*</span></label>
+        <input id="pj-title" required type="text" placeholder="e.g. Senior React Developer" class="w-full border border-border rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-label-md font-label-md text-on-surface mb-1">Company <span class="text-error">*</span></label>
+          <input id="pj-company" required type="text" placeholder="e.g. TechCorp India" class="w-full border border-border rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+        </div>
+        <div>
+          <label class="block text-label-md font-label-md text-on-surface mb-1">Location</label>
+          <select id="pj-location" class="w-full border border-border rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
+            <option value="Remote - India">Remote - India</option>
+            <option value="Bengaluru, KA">Bengaluru, KA</option>
+            <option value="Mumbai, MH">Mumbai, MH</option>
+            <option value="Hyderabad, TG">Hyderabad, TG</option>
+            <option value="Chennai, TN">Chennai, TN</option>
+            <option value="Pune, MH">Pune, MH</option>
+            <option value="Delhi NCR">Delhi NCR</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-label-md font-label-md text-on-surface mb-1">Salary Range</label>
+          <select id="pj-salary" class="w-full border border-border rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
+            <option value="₹6L - ₹10L LPA">₹6L - ₹10L LPA</option>
+            <option value="₹10L - ₹15L LPA">₹10L - ₹15L LPA</option>
+            <option value="₹15L - ₹20L LPA" selected>₹15L - ₹20L LPA</option>
+            <option value="₹20L - ₹30L LPA">₹20L - ₹30L LPA</option>
+            <option value="₹30L - ₹50L LPA">₹30L - ₹50L LPA</option>
+            <option value="₹50L+ LPA">₹50L+ LPA</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-label-md font-label-md text-on-surface mb-1">Industry</label>
+          <select id="pj-industry" class="w-full border border-border rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
+            <option value="Technology">Technology</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Corporate Services">Corporate Services</option>
+            <option value="Finance">Finance</option>
+            <option value="Healthcare">Healthcare</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-label-md font-label-md text-on-surface mb-1">Required Skills <span class="text-neutral-subtle text-label-sm">(comma separated)</span></label>
+        <input id="pj-skills" type="text" placeholder="e.g. React, TypeScript, Node.js" class="w-full border border-border rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+      </div>
+      <div>
+        <label class="block text-label-md font-label-md text-on-surface mb-1">Job Description</label>
+        <textarea id="pj-description" rows="3" placeholder="Brief description of the role..." class="w-full border border-border rounded-lg px-4 py-2.5 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"></textarea>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button type="submit" class="flex-1 bg-primary text-on-primary rounded-lg py-3 text-label-md font-label-md font-semibold hover:bg-secondary transition-colors flex items-center justify-center gap-2 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">publish</span> Publish Job
+        </button>
+        <button type="button" onclick="closePostJobModal()" class="px-6 border border-border rounded-lg text-label-md font-label-md text-neutral-text hover:bg-surface-muted transition-colors">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ========== TAB: OVERVIEW ========== -->
+<div id="tab-overview" class="tab-content px-10 py-10 max-w-container-max mx-auto">
+  <!-- Header -->
+  <header class="flex justify-between items-center mb-10">
+    <div>
+      <h2 class="text-headline-lg font-headline-lg text-on-surface">Overview</h2>
+      <p class="text-body-md font-body-md text-neutral-subtle mt-1">Here's what's happening with your hiring pipeline.</p>
+    </div>
+    <button onclick="openPostJobModal()" class="bg-primary text-white rounded-lg py-2 px-5 text-label-md font-label-md flex items-center gap-2 hover:bg-secondary transition-colors shadow-sm">
+      <span class="material-symbols-outlined text-[18px]">add</span> Post a Job
+    </button>
+  </header>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+    <div class="bg-white border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+      <div class="absolute -right-6 -top-6 w-24 h-24 bg-primary-container/10 rounded-full group-hover:scale-110 transition-transform"></div>
+      <div class="flex justify-between items-start mb-4 relative z-10">
+        <div>
+          <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider">Total Applicants</p>
+          <h3 id="total-applicants" class="text-display-lg font-display-lg text-on-surface mt-1">0</h3>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+          <span class="material-symbols-outlined">group</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 text-label-sm font-label-sm text-success relative z-10">
+        <span class="material-symbols-outlined text-[16px]">trending_up</span><span>Live from applications</span>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-surface-bright to-surface-muted border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+      <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #6554C0 1px, transparent 0); background-size: 16px 16px;"></div>
+      <div class="flex justify-between items-start mb-4 relative z-10">
+        <div>
+          <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider flex items-center gap-1">
+            <span class="material-symbols-outlined text-ai-accent text-[14px]">auto_awesome</span> Avg AI Score
+          </p>
+          <h3 id="avg-ai-score" class="text-display-lg font-display-lg text-ai-accent mt-1">--<span class="text-headline-md font-headline-md text-neutral-subtle">/100</span></h3>
+        </div>
+        <div class="w-16 h-16 relative">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path class="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="100, 100" stroke-width="3"></path>
+            <path id="ai-score-ring" class="text-ai-accent" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="0, 100" stroke-width="3"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="text-label-sm font-label-sm text-neutral-subtle relative z-10">Pipeline quality indicator</div>
+    </div>
+
+    <div class="bg-white border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider">Active Jobs</p>
+          <h3 id="active-jobs" class="text-display-lg font-display-lg text-on-surface mt-1">0</h3>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center">
+          <span class="material-symbols-outlined">work</span>
+        </div>
+      </div>
+      <div class="text-label-sm font-label-sm text-neutral-subtle">Posted by you</div>
+    </div>
+  </div>
+
+  <!-- Overview 2-col: Active Postings + Recent Applicants -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter mt-8">
+    <div class="lg:col-span-2 flex flex-col gap-4">
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="text-headline-sm font-headline-sm text-on-surface">Active Postings</h3>
+        <button onclick="openPostJobModal()" class="text-label-md font-label-md text-primary hover:underline flex items-center gap-1">Post New <span class="material-symbols-outlined text-[16px]">add</span></button>
+      </div>
+      <div id="job-postings-container" class="flex flex-col gap-4">
+        <div class="p-8 text-center text-neutral-subtle text-body-sm bg-background border border-border rounded-xl shadow-sm">Loading jobs...</div>
+      </div>
+    </div>
+
+    <div class="bg-surface-muted rounded-xl border border-border p-5 flex flex-col h-fit">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-headline-sm font-headline-sm text-on-surface">Recent Applicants</h3>
+        <span class="bg-primary-container text-on-primary-container text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">Live</span>
+      </div>
+      <div id="recent-applicants-list" class="flex flex-col gap-3 overflow-y-auto pr-2" style="max-height: 420px;">
+        <div class="p-4 text-center text-neutral-subtle text-body-sm">Loading...</div>
+      </div>
+      <button onclick="window.location.href = getPortalUrl('recruiter', '/resume_analysis.html')" class="mt-4 w-full py-2 border border-border rounded-lg text-label-md font-label-md text-neutral-text hover:bg-surface-container-high transition-colors">
+        View All Applicants & AI Scores
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TAB: CANDIDATE SEARCH ========== -->
+<div id="tab-candidates" class="tab-content hidden px-10 py-10 max-w-container-max mx-auto">
+  <header class="mb-8">
+    <h2 class="text-headline-lg font-headline-lg text-on-surface">Candidate Search</h2>
+    <p class="text-body-md text-neutral-subtle mt-1">Search and filter all applicants across every job posting.</p>
+  </header>
+
+  <!-- Search & Filters Bar -->
+  <div class="bg-white border border-border rounded-xl p-4 mb-6 flex flex-col md:flex-row gap-4 items-center shadow-sm">
+    <div class="flex-1 relative w-full">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-subtle">search</span>
+      <input id="cs-search" oninput="renderCandidateSearch()" type="text" placeholder="Search by name, email, role, or skill..." class="w-full pl-10 pr-4 py-2.5 border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" />
+    </div>
+    <div class="flex gap-3 w-full md:w-auto flex-wrap">
+      <select id="cs-status" onchange="renderCandidateSearch()" class="border border-border rounded-lg px-3 py-2.5 text-body-sm bg-surface-muted focus:ring-primary focus:outline-none cursor-pointer">
+        <option value="">All Statuses</option>
+        <option value="Pending">Pending</option>
+        <option value="Pending Decision">Shortlisted</option>
+        <option value="Interview">Interview</option>
+        <option value="Approved">Approved</option>
+        <option value="Closed">Closed</option>
+      </select>
+      <select id="cs-sort" onchange="renderCandidateSearch()" class="border border-border rounded-lg px-3 py-2.5 text-body-sm bg-surface-muted focus:ring-primary focus:outline-none cursor-pointer">
+        <option value="score-desc">AI Score: High→Low</option>
+        <option value="score-asc">AI Score: Low→High</option>
+        <option value="name-asc">Name: A→Z</option>
+        <option value="date-desc">Newest First</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Results Count -->
+  <div class="flex justify-between items-center mb-4">
+    <span id="cs-count" class="text-body-sm text-neutral-subtle">Loading candidates...</span>
+    <button onclick="window.location.href = getPortalUrl('recruiter', '/resume_analysis.html')" class="text-label-md font-label-md text-primary hover:underline flex items-center gap-1">
+      View AI Scores <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+    </button>
+  </div>
+
+  <!-- Candidate List -->
+  <div id="cs-list" class="space-y-3">
+    <div class="p-8 text-center text-neutral-subtle text-body-sm bg-white border border-border rounded-xl">Loading...</div>
+  </div>
+</div>
+
+<!-- ========== TAB: JOB MANAGEMENT ========== -->
+<div id="tab-jobs" class="tab-content hidden px-10 py-10 max-w-container-max mx-auto">
+  <header class="flex justify-between items-center mb-8">
+    <div>
+      <h2 class="text-headline-lg font-headline-lg text-on-surface">Job Management</h2>
+      <p class="text-body-md text-neutral-subtle mt-1">Create, review, and remove job postings.</p>
+    </div>
+    <button onclick="openPostJobModal()" class="bg-primary text-on-primary rounded-lg py-2.5 px-5 text-label-md font-label-md flex items-center gap-2 hover:bg-secondary transition-colors shadow-sm">
+      <span class="material-symbols-outlined text-[18px]">add</span> Post New Job
+    </button>
+  </header>
+
+  <!-- Search Jobs -->
+  <div class="relative mb-6">
+    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-subtle">search</span>
+    <input id="jm-search" oninput="renderJobManagement()" type="text" placeholder="Search jobs by title, company, or location..." class="w-full pl-10 pr-4 py-2.5 border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all bg-white shadow-sm" />
+  </div>
+
+  <!-- Stats Row -->
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="jm-total" class="text-2xl font-bold text-on-surface">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Total Jobs</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="jm-applicants" class="text-2xl font-bold text-ai-accent">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Total Applicants</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="jm-pending" class="text-2xl font-bold text-warning">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Pending Review</p>
+    </div>
+  </div>
+
+  <!-- Jobs Table -->
+  <div class="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+    <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-surface-muted border-b border-border text-label-sm font-label-sm text-neutral-subtle uppercase tracking-wider">
+      <div class="col-span-4">Job Title / Company</div>
+      <div class="col-span-2">Location</div>
+      <div class="col-span-2">Salary</div>
+      <div class="col-span-1 text-center">Applicants</div>
+      <div class="col-span-1 text-center">Posted</div>
+      <div class="col-span-2 text-right">Actions</div>
+    </div>
+    <div id="jm-list">
+      <div class="p-10 text-center text-neutral-subtle text-body-sm">Loading jobs...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== GENERATE REPORT MODAL ========== -->
+<div id="report-modal" class="fixed inset-0 z-[100] hidden">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeGenerateReport()"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-2xl border border-border overflow-hidden" style="animation: fadeInUp 0.3s ease;">
+    <!-- Modal Header -->
+    <div class="bg-gradient-to-r from-[#6554C0] to-primary px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-white text-[26px]" style="font-variation-settings:'FILL' 1;">assessment</span>
+        <div>
+          <h3 class="text-headline-sm font-headline-sm text-white font-bold">Hiring Pipeline Report</h3>
+          <p class="text-white/70 text-xs mt-0.5">Generated on <span id="rpt-date"></span></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="printReport()" class="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white rounded-lg text-xs font-semibold transition-colors">
+          <span class="material-symbols-outlined text-[16px]">print</span> Print
+        </button>
+        <button onclick="closeGenerateReport()" class="text-white/80 hover:text-white transition-colors">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="report-body" class="p-6 overflow-y-auto" style="max-height: 70vh;">
+      <!-- KPI Cards Row -->
+      <div class="grid grid-cols-4 gap-3 mb-6">
+        <div class="bg-primary/5 border border-primary/10 rounded-xl p-4 text-center">
+          <p id="rpt-total-apps" class="text-2xl font-bold text-primary">0</p>
+          <p class="text-[11px] text-neutral-subtle mt-0.5 font-semibold">Total Applicants</p>
+        </div>
+        <div class="bg-ai-accent/5 border border-ai-accent/10 rounded-xl p-4 text-center">
+          <p id="rpt-avg-score" class="text-2xl font-bold text-ai-accent">--</p>
+          <p class="text-[11px] text-neutral-subtle mt-0.5 font-semibold">Avg AI Score</p>
+        </div>
+        <div class="bg-success/5 border border-success/10 rounded-xl p-4 text-center">
+          <p id="rpt-shortlisted" class="text-2xl font-bold text-success">0</p>
+          <p class="text-[11px] text-neutral-subtle mt-0.5 font-semibold">Shortlisted</p>
+        </div>
+        <div class="bg-warning/5 border border-warning/10 rounded-xl p-4 text-center">
+          <p id="rpt-pending" class="text-2xl font-bold text-warning">0</p>
+          <p class="text-[11px] text-neutral-subtle mt-0.5 font-semibold">Pending Review</p>
+        </div>
+      </div>
+
+      <!-- Pipeline Funnel -->
+      <div class="bg-surface-muted rounded-xl p-5 border border-border mb-6">
+        <h4 class="text-body-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-ai-accent text-[18px]">filter_alt</span> Pipeline Funnel
+        </h4>
+        <div id="rpt-funnel" class="space-y-2"></div>
+      </div>
+
+      <!-- Top Jobs by Applicants -->
+      <div class="bg-surface-muted rounded-xl p-5 border border-border mb-6">
+        <h4 class="text-body-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[18px]">work</span> Top Job Postings by Applicants
+        </h4>
+        <div id="rpt-top-jobs" class="space-y-2"></div>
+      </div>
+
+      <!-- Top Candidates -->
+      <div class="bg-surface-muted rounded-xl p-5 border border-border mb-6">
+        <h4 class="text-body-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-success text-[18px]">star</span> Top Candidates by AI Score
+        </h4>
+        <div id="rpt-top-candidates" class="space-y-2"></div>
+      </div>
+
+      <!-- Status Breakdown -->
+      <div class="bg-surface-muted rounded-xl p-5 border border-border">
+        <h4 class="text-body-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-neutral-text text-[18px]">donut_large</span> Status Breakdown
+        </h4>
+        <div id="rpt-status-breakdown" class="grid grid-cols-2 gap-3"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-4 border-t border-border flex justify-between items-center bg-surface-muted">
+      <p class="text-xs text-neutral-subtle">StellarHire · Recruiter Report · Confidential</p>
+      <button onclick="closeGenerateReport()" class="px-5 py-2 border border-border rounded-lg text-body-sm font-semibold hover:bg-white transition-colors">Close</button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+  // ===== STATE =====
+  let allApplications = [];
+  let allJobs = [];
+  let currentTab = 'overview';
+
+  // ===== TAB SWITCHING =====
+  const tabIds = ['overview','candidates','jobs'];
+  const navIds = ['nav-overview','nav-candidates','nav-jobs'];
+
+  function switchTab(tab) {
+    currentTab = tab;
+    tabIds.forEach(t => {
+      const el = document.getElementById(`tab-${t}`);
+      if (el) el.classList.toggle('hidden', t !== tab);
+    });
+    navIds.forEach(n => {
+      const btn = document.getElementById(n);
+      if (!btn) return;
+      const isActive = n === `nav-${tab}`;
+      btn.className = (isActive ? 'nav-active' : 'nav-inactive') + ' flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150';
+    });
+
+    // Lazy-load tab data
+    if (tab === 'candidates') renderCandidateSearch();
+    if (tab === 'jobs') renderJobManagement();
+  }
+
+  // ===== MODAL CONTROLS =====
+  function openPostJobModal() {
+    document.getElementById('post-job-modal').classList.remove('hidden');
+    // Pre-fill recruiter's company and make it readonly
+    const companyInput = document.getElementById('pj-company');
+    if (companyInput && user && user.company) {
+      companyInput.value = user.company;
+      companyInput.readOnly = true;
+      companyInput.classList.add('bg-surface-muted', 'cursor-not-allowed');
+    }
+  }
+  function closePostJobModal() {
+    document.getElementById('post-job-modal').classList.add('hidden');
+    document.getElementById('post-job-form').reset();
+    // Keep company pre-filled if logged in
+    const companyInput = document.getElementById('pj-company');
+    if (companyInput && user && user.company) {
+      companyInput.value = user.company;
+    }
+  }
+
+  async function handlePostJob(event) {
+    event.preventDefault();
+    const title = document.getElementById('pj-title').value.trim();
+    const company = document.getElementById('pj-company').value.trim();
+    const location = document.getElementById('pj-location').value;
+    const salary = document.getElementById('pj-salary').value;
+    const industry = document.getElementById('pj-industry').value;
+    const skillsRaw = document.getElementById('pj-skills').value.trim();
+    const description = document.getElementById('pj-description').value.trim();
+    const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+    try {
+      const newJob = await apiPost('/jobs', { title, company, location, salary, industry, skills, description });
+      if (newJob.id) {
+        closePostJobModal();
+        alert(`✅ Job "${title}" posted successfully!`);
+        await loadAllData();
+        // Refresh current tab if needed
+        if (currentTab === 'jobs') renderJobManagement();
+      } else {
+        alert('❌ Failed to post job: ' + (newJob.message || 'Unknown error'));
+      }
+    } catch (err) {
+      alert('❌ Error posting job: ' + err.message);
+    }
+  }
+
+  // ===== DATA LOADING =====
+  async function loadAllData() {
+    try {
+      const [rawApplications, rawJobs] = await Promise.all([apiGet('/applications'), apiGet('/jobs')]);
+      
+      // Filter by logged-in recruiter's company
+      if (user && user.company) {
+        allJobs = rawJobs.filter(job => job.company.toLowerCase() === user.company.toLowerCase());
+        allApplications = rawApplications.filter(app => app.company.toLowerCase() === user.company.toLowerCase());
+      } else {
+        allJobs = rawJobs;
+        allApplications = rawApplications;
+      }
+      
+      renderOverview();
+    } catch (err) {
+      console.error('Data Load Error:', err);
+    }
+  }
+
+  // ===== OVERVIEW TAB =====
+  function renderOverview() {
+    // Stats
+    const totalEl = document.getElementById('total-applicants');
+    if (totalEl) totalEl.innerText = allApplications.length.toLocaleString();
+
+    const jobsEl = document.getElementById('active-jobs');
+    if (jobsEl) jobsEl.innerText = allJobs.length.toString();
+
+    const avgScoreEl = document.getElementById('avg-ai-score');
+    const scoreRing = document.getElementById('ai-score-ring');
+    if (avgScoreEl && allApplications.length > 0) {
+      const avg = Math.round(allApplications.reduce((s, a) => s + (a.score || 0), 0) / allApplications.length);
+      avgScoreEl.innerHTML = `${avg}<span class="text-headline-md font-headline-md text-neutral-subtle">/100</span>`;
+      if (scoreRing) scoreRing.setAttribute('stroke-dasharray', `${avg}, 100`);
+    }
+
+    // Job Postings
+    const jobContainer = document.getElementById('job-postings-container');
+    if (jobContainer) {
+      jobContainer.innerHTML = '';
+      if (allJobs.length === 0) {
+        jobContainer.innerHTML = '<div class="p-8 text-center text-neutral-subtle text-body-sm bg-background border border-border rounded-xl shadow-sm">No jobs posted yet. Click "Post a Job" to get started!</div>';
+      } else {
+        const iconMap = {'react':'code','developer':'code','engineer':'engineering','architect':'architecture','designer':'draw','product':'inventory_2','data':'analytics','scientist':'science','manager':'manage_accounts','devops':'cloud','backend':'dns','frontend':'web','fullstack':'layers','qa':'bug_report','marketing':'campaign','sales':'storefront'};
+        allJobs.forEach(job => {
+          const count = allApplications.filter(a => a.role.toLowerCase() === job.title.toLowerCase()).length;
+          let icon = 'work';
+          const tl = job.title.toLowerCase();
+          for (const [k,i] of Object.entries(iconMap)) { if (tl.includes(k)) { icon = i; break; } }
+          const card = document.createElement('div');
+          card.className = 'bg-white border border-border rounded-xl p-5 hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] hover:border-secondary-fixed transition-all group flex justify-between items-center cursor-pointer';
+          card.onclick = () => { window.location.href = getPortalUrl('recruiter', '/resume_analysis.html'); };
+          card.innerHTML = `
+            <div class="flex gap-4 items-center">
+              <div class="w-12 h-12 rounded-lg bg-surface-muted border border-border flex items-center justify-center text-neutral-subtle">
+                <span class="material-symbols-outlined">${icon}</span>
+              </div>
+              <div>
+                <h4 class="text-headline-sm font-headline-sm text-on-surface group-hover:text-primary transition-colors">${job.title}</h4>
+                <div class="flex items-center gap-3 mt-1 text-label-sm font-label-sm text-neutral-subtle">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">apartment</span> ${job.company}</span>
+                  <span class="w-1 h-1 rounded-full bg-neutral-subtle"></span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">location_on</span> ${job.location}</span>
+                  <span class="w-1 h-1 rounded-full bg-neutral-subtle"></span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">currency_rupee</span> ${job.salary}</span>
+                </div>
+                ${job.skills && job.skills.length > 0 ? `<div class="flex flex-wrap gap-1.5 mt-2">${job.skills.map(s => `<span class="px-2 py-0.5 bg-surface-container-high rounded text-[10px] font-semibold text-neutral-text">${s}</span>`).join('')}</div>` : ''}
+              </div>
+            </div>
+            <div class="flex items-center gap-6">
+              <div class="text-right">
+                <p class="text-[24px] font-bold text-on-surface leading-none">${count}</p>
+                <p class="text-label-sm font-label-sm text-neutral-subtle">Applicants</p>
+              </div>
+              <div class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-ai-accent text-[18px]">auto_awesome</span>
+                <span class="text-label-sm font-label-sm text-ai-accent font-bold">AI Score</span>
+              </div>
+              <span class="material-symbols-outlined text-neutral-subtle group-hover:text-primary transition-colors">arrow_forward</span>
+            </div>
+          `;
+          jobContainer.appendChild(card);
+        });
+      }
+    }
+
+    // Recent applicants
+    const listEl = document.getElementById('recent-applicants-list');
+    if (listEl) {
+      listEl.innerHTML = '';
+      if (allApplications.length === 0) {
+        listEl.innerHTML = '<div class="p-4 text-center text-neutral-subtle text-body-sm">No applicants yet.</div>';
+      } else {
+        allApplications.slice(0, 6).forEach(app => {
+          const scoreColor = app.score >= 90 ? 'text-success' : app.score >= 80 ? 'text-ai-accent' : 'text-warning';
+          const item = document.createElement('div');
+          item.className = 'bg-white rounded-lg p-3 border border-border shadow-sm flex items-start gap-3 hover:border-ai-accent transition-colors cursor-pointer';
+          item.onclick = () => { window.location.href = getPortalUrl('recruiter', '/resume_analysis.html'); };
+          item.innerHTML = `
+            <img class="w-10 h-10 rounded-full object-cover shrink-0" src="${app.avatar}" alt="${app.candidateName}" />
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-start">
+                <p class="text-label-md font-label-md text-on-surface truncate">${app.candidateName}</p>
+                <span class="bg-surface-container-high ${scoreColor} px-1.5 py-0.5 rounded text-[10px] font-bold flex items-center gap-0.5">
+                  <span class="material-symbols-outlined text-[10px]">auto_awesome</span> ${app.score}
+                </span>
+              </div>
+              <p class="text-label-sm font-label-sm text-neutral-subtle truncate">${app.role}</p>
+              <p class="text-[10px] text-neutral-subtle truncate flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">mail</span> ${app.email || 'seeker@stellarhire.com'}</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-[10px] ${app.status === 'Pending' ? 'text-warning' : 'text-success'} font-semibold">${app.status}</span>
+                <span class="text-[10px] text-neutral-subtle flex items-center gap-0.5"><span class="material-symbols-outlined text-[10px]">schedule</span> ${app.appliedDate === 'Today' ? 'Just now' : app.appliedDate}</span>
+              </div>
+            </div>
+          `;
+          listEl.appendChild(item);
+        });
+      }
+    }
+  }
+
+  // ===== CANDIDATE SEARCH TAB =====
+  function renderCandidateSearch() {
+    const query = (document.getElementById('cs-search')?.value || '').toLowerCase().trim();
+    const statusFilter = document.getElementById('cs-status')?.value || '';
+    const sortMode = document.getElementById('cs-sort')?.value || 'score-desc';
+    const container = document.getElementById('cs-list');
+    const countEl = document.getElementById('cs-count');
+    if (!container) return;
+
+    let filtered = allApplications.filter(app => {
+      const matchSearch = !query ||
+        app.candidateName.toLowerCase().includes(query) ||
+        (app.email || '').toLowerCase().includes(query) ||
+        app.role.toLowerCase().includes(query) ||
+        (app.skills || []).some(s => s.toLowerCase().includes(query));
+      const matchStatus = !statusFilter || app.status === statusFilter;
+      return matchSearch && matchStatus;
+    });
+
+    // Sort
+    filtered.sort((a, b) => {
+      if (sortMode === 'score-desc') return (b.score || 0) - (a.score || 0);
+      if (sortMode === 'score-asc') return (a.score || 0) - (b.score || 0);
+      if (sortMode === 'name-asc') return a.candidateName.localeCompare(b.candidateName);
+      return 0; // date-desc: already in newest-first order from API
+    });
+
+    if (countEl) countEl.innerText = `${filtered.length} candidate${filtered.length !== 1 ? 's' : ''} found`;
+    container.innerHTML = '';
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="p-10 text-center text-neutral-subtle text-body-sm bg-white border border-border rounded-xl shadow-sm">No candidates match your search.</div>';
+      return;
+    }
+
+    filtered.forEach(app => {
+      const scoreColor = app.score >= 90 ? '#36B37E' : app.score >= 80 ? '#6554C0' : '#FFAB00';
+      const statusMap = {
+        'Pending': 'bg-amber-50 text-amber-700 border-amber-200/50',
+        'Pending Decision': 'bg-blue-50 text-blue-700 border-blue-200/50',
+        'Interview': 'bg-emerald-50 text-emerald-700 border-emerald-200/50',
+        'Approved': 'bg-green-50 text-green-700 border-green-200/50',
+        'Closed': 'bg-red-50 text-red-700 border-red-200/50',
+      };
+      const badgeClass = statusMap[app.status] || 'bg-surface-container-high text-neutral-text border-border';
+
+      const card = document.createElement('div');
+      card.className = 'bg-white border border-border rounded-xl p-5 hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] hover:border-secondary-fixed-dim transition-all flex items-center gap-5';
+      card.innerHTML = `
+        <img class="w-14 h-14 rounded-full object-cover border border-border shrink-0" src="${app.avatar}" alt="${app.candidateName}" />
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-0.5">
+            <h4 class="text-body-md font-semibold text-on-surface">${app.candidateName}</h4>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badgeClass}">${app.status}</span>
+          </div>
+          <p class="text-body-sm text-neutral-subtle mb-1">${app.role} · ${app.company}</p>
+          <div class="flex items-center gap-4 text-[11px] text-neutral-subtle flex-wrap">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">mail</span> ${app.email || 'seeker@stellarhire.com'}</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">call</span> ${app.phone || '+91 98765 43210'}</span>
+            ${app.resumeFile ? `<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[13px]">description</span> ${app.resumeFile}</span>` : ''}
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            ${(app.skills || []).slice(0, 5).map(s => `<span class="px-2 py-0.5 bg-surface-container-high rounded text-[10px] font-semibold text-neutral-text">${s}</span>`).join('')}
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-2 shrink-0">
+          <div class="relative w-14 h-14 flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path fill="none" stroke="#e7e7f2" stroke-width="3" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+              <path fill="none" stroke="${scoreColor}" stroke-width="3" stroke-dasharray="${app.score}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+            </svg>
+            <span class="absolute text-xs font-bold" style="color:${scoreColor}">${app.score}</span>
+          </div>
+          <span class="text-[10px] text-neutral-subtle font-semibold">AI Score</span>
+          <button onclick="shortlistCandidate('${app.id}', this)" class="px-3 py-1 text-[11px] font-semibold rounded border ${app.status === 'Pending Decision' || app.status === 'Interview' || app.status === 'Approved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/50 cursor-not-allowed' : 'border-primary text-primary hover:bg-primary/5 transition-colors'}">
+            ${app.status === 'Pending Decision' || app.status === 'Interview' || app.status === 'Approved' ? '✓ Shortlisted' : 'Shortlist'}
+          </button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  async function shortlistCandidate(appId, btn) {
+    try {
+      btn.disabled = true;
+      btn.innerText = 'Saving...';
+      await apiPost('/applications/status', { id: appId, status: 'Pending Decision' });
+      await loadAllData();
+      renderCandidateSearch();
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerText = 'Shortlist';
+      alert('Error shortlisting: ' + err.message);
+    }
+  }
+
+  // ===== JOB MANAGEMENT TAB =====
+  function renderJobManagement() {
+    const query = (document.getElementById('jm-search')?.value || '').toLowerCase();
+    const container = document.getElementById('jm-list');
+    if (!container) return;
+
+    // Update mini-stats
+    const totalApps = allApplications.length;
+    const pendingApps = allApplications.filter(a => a.status === 'Pending').length;
+    document.getElementById('jm-total').innerText = allJobs.length;
+    document.getElementById('jm-applicants').innerText = totalApps;
+    document.getElementById('jm-pending').innerText = pendingApps;
+
+    const filtered = allJobs.filter(j =>
+      !query ||
+      j.title.toLowerCase().includes(query) ||
+      j.company.toLowerCase().includes(query) ||
+      j.location.toLowerCase().includes(query)
+    );
+
+    container.innerHTML = '';
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="p-10 text-center text-neutral-subtle text-body-sm">No jobs found. Click "Post New Job" to get started.</div>';
+      return;
+    }
+
+    filtered.forEach(job => {
+      const count = allApplications.filter(a => a.role.toLowerCase() === job.title.toLowerCase()).length;
+      const row = document.createElement('div');
+      row.className = 'grid grid-cols-12 gap-4 px-6 py-4 items-center border-b border-border last:border-b-0 hover:bg-surface-muted/50 transition-colors group';
+      row.innerHTML = `
+        <div class="col-span-4">
+          <p class="text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">${job.title}</p>
+          <p class="text-[11px] text-neutral-subtle mt-0.5 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">apartment</span> ${job.company}</p>
+          ${job.industry ? `<span class="mt-1 inline-block bg-primary/5 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded border border-primary/10">${job.industry}</span>` : ''}
+        </div>
+        <div class="col-span-2 text-body-sm text-neutral-subtle flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">location_on</span> ${job.location}</div>
+        <div class="col-span-2 text-body-sm text-neutral-subtle">${job.salary}</div>
+        <div class="col-span-1 text-center">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-bold">${count}</span>
+        </div>
+        <div class="col-span-1 text-center text-[11px] text-neutral-subtle">${job.posted || 'Recent'}</div>
+        <div class="col-span-2 flex justify-end gap-2">
+          <button onclick="window.location.href = getPortalUrl('recruiter', '/resume_analysis.html')" class="p-2 rounded-lg border border-border hover:bg-primary/5 hover:border-primary text-neutral-subtle hover:text-primary transition-colors" title="View Applicants">
+            <span class="material-symbols-outlined text-[16px]">people</span>
+          </button>
+          <button onclick="deleteJob('${job.id}', '${job.title.replace(/'/g, "\\'")}', this)" class="p-2 rounded-lg border border-error/20 bg-red-50 hover:bg-red-100 text-error transition-colors" title="Delete Job">
+            <span class="material-symbols-outlined text-[16px]">delete</span>
+          </button>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  async function deleteJob(jobId, jobTitle, btn) {
+    if (!confirm(`Are you sure you want to delete the job posting:\n"${jobTitle}"?\n\nThis cannot be undone.`)) return;
+    try {
+      btn.disabled = true;
+      btn.querySelector('.material-symbols-outlined').innerText = 'hourglass_empty';
+      await apiDelete(`/jobs/${jobId}`);
+      await loadAllData();
+      renderJobManagement();
+    } catch (err) {
+      alert('Error deleting job: ' + err.message);
+      btn.disabled = false;
+      btn.querySelector('.material-symbols-outlined').innerText = 'delete';
+    }
+  }
+
+  // ===== GENERATE REPORT =====
+  function openGenerateReport() {
+    // Set report date
+    const now = new Date();
+    document.getElementById('rpt-date').innerText = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+    // KPI stats
+    const total = allApplications.length;
+    const avg = total > 0 ? Math.round(allApplications.reduce((s,a) => s + (a.score||0), 0) / total) : 0;
+    const shortlisted = allApplications.filter(a => ['Pending Decision','Interview','Approved'].includes(a.status)).length;
+    const pending = allApplications.filter(a => a.status === 'Pending').length;
+    document.getElementById('rpt-total-apps').innerText = total;
+    document.getElementById('rpt-avg-score').innerText = avg || '--';
+    document.getElementById('rpt-shortlisted').innerText = shortlisted;
+    document.getElementById('rpt-pending').innerText = pending;
+
+    // Pipeline funnel
+    const funnelStages = [
+      { label: 'Applied', count: total, color: '#003d9b', pct: 100 },
+      { label: 'AI Screened', count: total, color: '#6554C0', pct: 100 },
+      { label: 'Shortlisted', count: shortlisted, color: '#0059b8', pct: total ? Math.round(shortlisted/total*100) : 0 },
+      { label: 'Interview', count: allApplications.filter(a => ['Interview','Approved'].includes(a.status)).length, color: '#36B37E', pct: total ? Math.round(allApplications.filter(a=>['Interview','Approved'].includes(a.status)).length/total*100) : 0 },
+      { label: 'Approved', count: allApplications.filter(a => a.status === 'Approved').length, color: '#00875A', pct: total ? Math.round(allApplications.filter(a=>a.status==='Approved').length/total*100) : 0 },
+    ];
+    const funnelEl = document.getElementById('rpt-funnel');
+    funnelEl.innerHTML = funnelStages.map(s => `
+      <div class="flex items-center gap-3">
+        <span class="text-[11px] font-semibold text-neutral-subtle w-24 shrink-0">${s.label}</span>
+        <div class="flex-1 bg-white rounded-full h-5 border border-border overflow-hidden">
+          <div class="h-full rounded-full flex items-center justify-end pr-2 transition-all" style="width:${Math.max(s.pct,2)}%; background:${s.color}">
+            <span class="text-[10px] font-bold text-white">${s.count}</span>
+          </div>
+        </div>
+        <span class="text-[11px] font-bold text-neutral-subtle w-10 text-right">${s.pct}%</span>
+      </div>
+    `).join('');
+
+    // Top jobs
+    const jobApplicantMap = allJobs.map(j => ({
+      title: j.title, company: j.company,
+      count: allApplications.filter(a => a.role.toLowerCase() === j.title.toLowerCase()).length
+    })).sort((a,b) => b.count - a.count).slice(0, 5);
+    const maxCount = jobApplicantMap[0]?.count || 1;
+    document.getElementById('rpt-top-jobs').innerHTML = jobApplicantMap.length === 0
+      ? '<p class="text-xs text-neutral-subtle">No jobs posted yet.</p>'
+      : jobApplicantMap.map(j => `
+        <div class="flex items-center gap-3">
+          <div class="min-w-0 flex-1">
+            <p class="text-[12px] font-semibold text-on-surface truncate">${j.title}</p>
+            <p class="text-[10px] text-neutral-subtle">${j.company}</p>
+          </div>
+          <div class="w-32 bg-white rounded-full h-3 border border-border overflow-hidden">
+            <div class="h-full rounded-full bg-primary" style="width:${Math.max(j.count/maxCount*100,2)}%"></div>
+          </div>
+          <span class="text-[11px] font-bold text-primary w-6 text-right">${j.count}</span>
+        </div>
+      `).join('');
+
+    // Top candidates
+    const topCandidates = [...allApplications].sort((a,b) => (b.score||0)-(a.score||0)).slice(0, 5);
+    document.getElementById('rpt-top-candidates').innerHTML = topCandidates.length === 0
+      ? '<p class="text-xs text-neutral-subtle">No applicants yet.</p>'
+      : topCandidates.map((a,i) => {
+          const scoreColor = a.score >= 90 ? '#36B37E' : a.score >= 80 ? '#6554C0' : '#FFAB00';
+          return `
+            <div class="flex items-center gap-3 bg-white rounded-lg px-3 py-2 border border-border">
+              <span class="text-xs font-bold text-neutral-subtle w-5">#${i+1}</span>
+              <img class="w-8 h-8 rounded-full object-cover border border-border shrink-0" src="${a.avatar}" alt="${a.candidateName}" />
+              <div class="flex-1 min-w-0">
+                <p class="text-[12px] font-semibold text-on-surface truncate">${a.candidateName}</p>
+                <p class="text-[10px] text-neutral-subtle truncate">${a.role} · ${a.email || 'N/A'}</p>
+              </div>
+              <span class="text-[13px] font-bold" style="color:${scoreColor}">${a.score}</span>
+            </div>
+          `;
+        }).join('');
+
+    // Status breakdown
+    const statusGroups = [
+      { label: 'Pending', color: 'bg-amber-50 text-amber-700 border-amber-200', count: allApplications.filter(a=>a.status==='Pending').length },
+      { label: 'Shortlisted', color: 'bg-blue-50 text-blue-700 border-blue-200', count: allApplications.filter(a=>a.status==='Pending Decision').length },
+      { label: 'Interview', color: 'bg-emerald-50 text-emerald-700 border-emerald-200', count: allApplications.filter(a=>a.status==='Interview').length },
+      { label: 'Approved', color: 'bg-green-50 text-green-700 border-green-200', count: allApplications.filter(a=>a.status==='Approved').length },
+      { label: 'Closed', color: 'bg-red-50 text-red-700 border-red-200', count: allApplications.filter(a=>a.status==='Closed'||a.status==='Rejected').length },
+      { label: 'Other', color: 'bg-surface-container-high text-neutral-text border-border', count: allApplications.filter(a=>!['Pending','Pending Decision','Interview','Approved','Closed','Rejected'].includes(a.status)).length },
+    ];
+    document.getElementById('rpt-status-breakdown').innerHTML = statusGroups.map(s => `
+      <div class="flex items-center justify-between bg-white border ${s.color.split(' ').pop()} rounded-lg px-4 py-3">
+        <span class="text-[11px] font-semibold ${s.color.split(' ')[1]} ${s.color.split(' ')[2]}">${s.label}</span>
+        <span class="text-xl font-bold ${s.color.split(' ')[1]}">${s.count}</span>
+      </div>
+    `).join('');
+
+    document.getElementById('report-modal').classList.remove('hidden');
+  }
+
+  function closeGenerateReport() {
+    document.getElementById('report-modal').classList.add('hidden');
+  }
+
+  function printReport() {
+    const body = document.getElementById('report-body');
+    const win = window.open('', '_blank');
+    win.document.write(`
+      <html><head><title>StellarHire Hiring Report</title>
+      <style>body{font-family:Inter,sans-serif;padding:24px;color:#191b23;} h1{font-size:22px;} table{width:100%;border-collapse:collapse;margin:12px 0;} td,th{border:1px solid #DFE1E6;padding:8px 12px;text-align:left;font-size:13px;} th{background:#F4F5F7;font-weight:600;} .kpi{display:inline-block;margin:8px;padding:16px 24px;border:1px solid #DFE1E6;border-radius:8px;text-align:center;} .kpi-val{font-size:28px;font-weight:700;} .kpi-label{font-size:11px;color:#6B778C;}</style></head>
+      <body>
+      <h1>StellarHire – Hiring Pipeline Report</h1>
+      <p style="color:#6B778C;font-size:12px;">Generated: ${new Date().toLocaleString()}</p>
+      <hr style="margin:16px 0;border:none;border-top:1px solid #DFE1E6;"/>
+      ${body.innerHTML}
+      </body></html>
+    `);
+    win.document.close();
+    win.print();
+  }
+
+  // ===== INIT =====
+  if (user) {
+    const nameEl = document.getElementById('user-display-name');
+    const compEl = document.getElementById('user-display-company');
+    const initEl = document.getElementById('user-avatar-initials');
+    if (nameEl) nameEl.innerText = user.name || 'Recruiter';
+    if (compEl) compEl.innerText = user.company || 'StellarHire';
+    if (initEl && user.name) {
+      const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      initEl.innerText = initials;
+    }
+  }
+  loadAllData();
+</script>
+<script>
+    (function() {
+        const canvas = document.getElementById('stellar-wallpaper');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const particles = [];
+        const particleCount = 50;
+        const maxDistance = 140;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.35,
+                vy: (Math.random() - 0.5) * 0.35,
+                radius: Math.random() * 2 + 0.8
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < particleCount; i++) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > width) p.vx *= -1;
+                if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(101, 84, 192, 0.25)';
+                ctx.fill();
+
+                for (let j = i + 1; j < particleCount; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < maxDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(0, 82, 204, ${0.1 * (1 - dist / maxDistance)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    })();
+</script>
+</body></html>

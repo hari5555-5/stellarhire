@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>StellarHire - Job Seeker Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error": "#ba1a1a",
+                      "neutral-subtle": "#6B778C",
+                      "neutral-text": "#172B4D",
+                      "secondary-fixed": "#d7e2ff",
+                      "secondary-fixed-dim": "#abc7ff",
+                      "surface-dim": "#d9d9e4",
+                      "surface-container-high": "#e7e7f2",
+                      "inverse-on-surface": "#f0f0fb",
+                      "on-tertiary-container": "#ffc6b2",
+                      "primary-container": "#0052cc",
+                      "primary-fixed-dim": "#b2c5ff",
+                      "on-secondary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#003d9b",
+                      "surface-muted": "#F4F5F7",
+                      "warning": "#FFAB00",
+                      "outline": "#737685",
+                      "on-surface": "#191b23",
+                      "ai-accent": "#6554C0",
+                      "on-primary-fixed-variant": "#0040a2",
+                      "success": "#36B37E",
+                      "on-primary-fixed": "#001848",
+                      "on-primary": "#ffffff",
+                      "on-primary-container": "#c4d2ff",
+                      "tertiary-container": "#a33500",
+                      "surface-bright": "#faf8ff",
+                      "tertiary-fixed-dim": "#ffb59b",
+                      "inverse-primary": "#b2c5ff",
+                      "outline-variant": "#c3c6d6",
+                      "primary-fixed": "#dae2ff",
+                      "secondary": "#0059b8",
+                      "on-surface-variant": "#434654",
+                      "tertiary-fixed": "#ffdbcf",
+                      "secondary-container": "#0071e6",
+                      "on-tertiary-fixed": "#380d00",
+                      "border": "#DFE1E6",
+                      "surface": "#faf8ff",
+                      "on-secondary-fixed": "#001b3f",
+                      "on-background": "#191b23",
+                      "tertiary": "#7b2600",
+                      "on-secondary-fixed-variant": "#004590",
+                      "danger": "#FF5630",
+                      "on-tertiary-fixed-variant": "#812800",
+                      "on-error-container": "#93000a",
+                      "surface-variant": "#e1e2ec",
+                      "inverse-surface": "#2e3038",
+                      "surface-container": "#ededf8",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f3f3fd",
+                      "surface-container-highest": "#e1e2ec",
+                      "background": "#FFFFFF",
+                      "error-container": "#ffdad6",
+                      "on-secondary-container": "#fefcff",
+                      "surface-tint": "#0c56d0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "container-max": "1280px",
+                      "stack-md": "16px",
+                      "margin-desktop": "40px",
+                      "base": "8px",
+                      "stack-sm": "8px",
+                      "gutter": "24px",
+                      "stack-lg": "32px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "label-sm": ["Inter"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "headline-sm": ["Hanken Grotesk"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          }
+        }
+    </script>
+    <style>
+        .drag-active {
+            border-color: #6554C0;
+            background-color: #f0f0fb;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <script src="client.js"></script>
+    <script>
+        const user = checkUserAuth('seeker');
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+
+<!-- SideNavBar (Hidden on Mobile) -->
+<nav class="hidden md:flex flex-col bg-surface-muted border-r border-border fixed left-0 top-0 h-full w-64 py-stack-lg z-50">
+    <div class="px-margin-desktop mb-stack-lg">
+        <a href="javascript:void(0)" onclick="window.location.href = getPortalUrl('welcome')" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary font-bold text-headline-sm shadow-sm">
+                SH
+            </div>
+            <div>
+                <h1 class="text-headline-sm font-headline-sm font-bold text-primary">StellarHire</h1>
+                <p class="text-label-sm font-label-sm text-neutral-subtle">Job Seeker</p>
+            </div>
+        </a>
+    </div>
+    
+    <div class="flex-grow px-4 space-y-2">
+        <!-- Dashboard Tab -->
+        <a id="nav-dashboard" class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-xl px-4 py-3 scale-98 transition-transform duration-200 cursor-pointer" onclick="showTab('dashboard')">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+            <span class="text-label-md font-label-md font-semibold">Dashboard</span>
+        </a>
+        <!-- Profile Tab -->
+        <a id="nav-profile" class="flex items-center gap-3 text-neutral-subtle px-4 py-3 hover:bg-surface-container hover:text-on-surface rounded-xl transition-colors cursor-pointer" onclick="showTab('profile')">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-label-md font-label-md font-semibold">My Profile</span>
+        </a>
+    </div>
+
+    <div class="px-4 space-y-2 border-t border-border pt-4">
+        <a class="flex items-center gap-3 text-error px-4 py-3 hover:bg-red-50 transition-colors duration-200 rounded-xl" href="javascript:void(0)" onclick="logoutUser()">
+            <span class="material-symbols-outlined text-error">logout</span>
+            <span class="text-label-md font-label-md font-bold">Logout</span>
+        </a>
+    </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 w-full max-w-container-max mx-auto p-margin-mobile md:p-margin-desktop bg-surface">
+    <!-- Header -->
+    <header class="mb-stack-lg flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div>
+            <h2 id="welcome-text" class="text-headline-lg-mobile md:text-headline-lg font-headline-lg font-bold text-on-surface mb-1">Welcome back.</h2>
+            <p class="text-body-md font-body-md text-neutral-subtle">Manage your resume, search for open opportunities, and track your applications.</p>
+        </div>
+    </header>
+
+    <!-- Dashboard Tab Content -->
+    <div id="tab-dashboard-content" class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+        
+        <!-- Left Column: Open Positions Search & Filtering -->
+        <div class="lg:col-span-8 flex flex-col gap-gutter">
+            
+            <!-- Unified Search & Filters -->
+            <section class="bg-background border border-border rounded-xl p-4 flex flex-col md:flex-row gap-4 shadow-sm items-center">
+                <!-- Search Input -->
+                <div class="flex-1 relative w-full">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-subtle">search</span>
+                    <input id="search-input" class="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="Search by job title, company, or skills..." type="text"/>
+                </div>
+                
+                <div class="flex flex-wrap md:flex-nowrap gap-3 w-full md:w-auto">
+                    <!-- Industry Filter -->
+                    <div class="flex-1 md:w-36">
+                        <select id="filter-industry" class="w-full bg-surface-muted border-border rounded-lg text-body-sm py-2 px-3 focus:ring-primary cursor-pointer border">
+                            <option value="">All Industries</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Corporate Services">Corporate Services</option>
+                            <option value="Engineering">Engineering</option>
+                        </select>
+                    </div>
+
+                    <!-- Location Filter -->
+                    <div class="flex-1 md:w-36">
+                        <select id="filter-location" class="w-full bg-surface-muted border-border rounded-lg text-body-sm py-2 px-3 focus:ring-primary cursor-pointer border">
+                            <option value="">All Locations</option>
+                            <option value="Remote">Remote</option>
+                            <option value="Bengaluru">Bengaluru, KA</option>
+                            <option value="Mumbai">Mumbai, MH</option>
+                            <option value="Delhi NCR">Delhi NCR</option>
+                        </select>
+                    </div>
+
+                    <!-- Minimum Salary Filter -->
+                    <div class="flex-1 md:w-36">
+                        <select id="filter-salary" class="w-full bg-surface-muted border-border rounded-lg text-body-sm py-2 px-3 focus:ring-primary cursor-pointer border">
+                            <option value="">All Salaries</option>
+                            <option value="12">Over ₹12 LPA</option>
+                            <option value="15">Over ₹15 LPA</option>
+                            <option value="18">Over ₹18 LPA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Saved Jobs Toggle -->
+                <button id="btn-saved-toggle" onclick="toggleSavedFilter()" class="flex items-center gap-1 px-3 py-2 border border-border rounded-lg text-body-sm font-semibold hover:bg-surface-muted text-neutral-subtle transition-colors shrink-0">
+                    <span id="saved-toggle-icon" class="material-symbols-outlined text-[18px]">favorite_border</span>
+                    Saved
+                </button>
+            </section>
+
+            <!-- Job Postings List -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-headline-sm font-headline-sm font-semibold flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">work_outline</span>
+                        Available Opportunities
+                    </h3>
+                    <span id="jobs-count" class="text-label-md font-label-md bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full">0 Roles</span>
+                </div>
+                
+                <div id="jobs-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic Job Cards Rendered via JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- Right Column: Application Status Tracker -->
+        <div class="lg:col-span-4 flex flex-col gap-gutter">
+
+            <!-- Application Tracker -->
+            <section class="bg-background border border-border rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-border bg-surface-container-lowest flex justify-between items-center">
+                    <h3 class="text-body-md font-body-md font-semibold text-on-surface flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">assignment</span>
+                        Application Tracker
+                    </h3>
+                </div>
+                <div class="divide-y divide-border cursor-pointer" id="application-list">
+                    <!-- Dynamic Applications List -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Profile Tab Content -->
+    <div id="tab-profile-content" class="hidden">
+        <div class="w-full max-w-2xl bg-background border border-border rounded-2xl p-8 shadow-sm">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                    <span class="material-symbols-outlined text-[32px]">account_circle</span>
+                </div>
+                <div>
+                    <h3 class="text-headline-sm font-headline-sm text-on-surface font-bold">Candidate Profile</h3>
+                    <p class="text-body-sm text-neutral-subtle mt-0.5">Keep your profile updated to streamline your job applications.</p>
+                </div>
+            </div>
+            
+            <form id="profile-form" class="space-y-5" onsubmit="handleProfileUpdate(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Full Name <span class="text-error">*</span></label>
+                        <input type="text" id="prof-name" required class="w-full px-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Email Address (Read-only)</label>
+                        <input type="email" id="prof-email" readonly class="w-full px-4 py-2 bg-surface-muted border border-border rounded-lg text-body-sm cursor-not-allowed outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Phone Number</label>
+                        <input type="tel" id="prof-phone" class="w-full px-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Location</label>
+                        <select id="prof-location" class="w-full px-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer">
+                            <option value="">Select location</option>
+                            <option value="Bengaluru, KA">Bengaluru, KA</option>
+                            <option value="Mumbai, MH">Mumbai, MH</option>
+                            <option value="Hyderabad, TG">Hyderabad, TG</option>
+                            <option value="Chennai, TN">Chennai, TN</option>
+                            <option value="Pune, MH">Pune, MH</option>
+                            <option value="Delhi NCR">Delhi NCR</option>
+                            <option value="Remote - India">Remote - India</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-neutral-subtle mb-1">Key Skills <span class="text-[10px] font-normal text-neutral-subtle">(comma separated)</span></label>
+                    <input type="text" id="prof-skills" class="w-full px-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="e.g. React, Python, JavaScript, CSS">
+                </div>
+                
+                <div id="profile-msg" class="hidden p-3 bg-red-50 text-error rounded-lg text-xs flex items-center gap-2 border border-error/20">
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" id="profile-submit-btn" class="px-6 py-2.5 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">save</span>
+                        Save Profile Details
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- Apply for Job Modal -->
+<div id="apply-modal" class="fixed inset-0 z-[100] hidden">
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeApplyModal()"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-border overflow-hidden" style="animation: fadeInUp 0.3s ease;">
+    <div class="bg-gradient-to-r from-primary to-primary-container px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-white text-[24px]">description</span>
+        <h3 class="text-headline-sm font-headline-sm text-white font-bold">Apply for Job</h3>
+      </div>
+      <button onclick="closeApplyModal()" class="text-white/80 hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="p-6">
+      <!-- Job Info -->
+      <div class="bg-surface-muted rounded-xl p-4 mb-5 border border-border">
+        <h4 id="apply-job-title" class="text-body-lg font-semibold text-on-surface"></h4>
+        <p id="apply-job-details" class="text-body-sm text-neutral-subtle mt-1"></p>
+        <div id="apply-job-skills" class="flex flex-wrap gap-1.5 mt-2"></div>
+      </div>
+
+      <!-- Candidate Contact Details (Editable) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-xs font-semibold text-neutral-subtle mb-1">Full Name <span class="text-error">*</span></label>
+          <input type="text" id="apply-name" required class="w-full px-3 py-1.5 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-neutral-subtle mb-1">Email Address <span class="text-error">*</span></label>
+          <input type="email" id="apply-email" required class="w-full px-3 py-1.5 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Phone Number <span class="text-error">*</span></label>
+        <input type="tel" id="apply-phone" required class="w-full px-3 py-1.5 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all">
+      </div>
+
+      <!-- Resume Upload -->
+      <div class="mb-5">
+        <label class="block text-sm font-semibold text-on-surface mb-2">Upload Your Resume <span class="text-error">*</span></label>
+        <div id="apply-drop-zone" class="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer" onclick="document.getElementById('apply-file-input').click()">
+          <input accept=".pdf,.doc,.docx" class="hidden" id="apply-file-input" type="file"/>
+          <span class="material-symbols-outlined text-neutral-subtle text-[32px] mb-2 block">cloud_upload</span>
+          <p id="apply-file-label" class="text-body-sm text-neutral-subtle">Click to upload or drag & drop your resume</p>
+          <p class="text-label-sm text-neutral-subtle mt-1">PDF, DOCX up to 5MB</p>
+        </div>
+      </div>
+
+      <!-- Hidden state -->
+      <input type="hidden" id="apply-job-id" />
+      <input type="hidden" id="apply-job-role" />
+      <input type="hidden" id="apply-job-company" />
+      <input type="hidden" id="apply-job-salary" />
+      <input type="hidden" id="apply-job-skills-data" />
+
+      <!-- Submit -->
+      <button id="apply-submit-btn" disabled onclick="submitApplication()" class="w-full py-3 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+        <span class="material-symbols-outlined text-[18px]">send</span>
+        Submit Application
+      </button>
+      <p id="apply-error" class="hidden text-xs text-error mt-2 text-center"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Application Detail / Tracker Modal -->
+<div id="tracker-modal" class="fixed inset-0 z-[100] hidden">
+  <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeTrackerModal()"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-lg border border-border overflow-hidden" style="animation: fadeInUp 0.3s ease;">
+    <div class="bg-gradient-to-r from-[#6554C0] to-[#0052cc] px-6 py-5 flex items-center justify-between text-white">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[24px]">explore</span>
+        <h3 class="text-headline-sm font-headline-sm text-white font-bold">Application Tracking Timeline</h3>
+      </div>
+      <button onclick="closeTrackerModal()" class="text-white/80 hover:text-white transition-colors">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <div class="p-6 overflow-y-auto max-h-[80vh]">
+      <!-- Application Basic Details -->
+      <div class="bg-surface-muted border border-border rounded-xl p-4 mb-6 flex justify-between items-start">
+        <div>
+          <h4 id="track-job-role" class="text-body-lg font-bold text-on-surface">Senior Developer</h4>
+          <p id="track-job-company" class="text-body-sm text-neutral-subtle">CloudSync Inc.</p>
+          <div class="mt-2 text-label-sm text-neutral-subtle space-y-1">
+            <p id="track-candidate-contact" class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">call</span> +91 98765 43210</p>
+            <p id="track-candidate-email" class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">mail</span> seeker@stellarhire.com</p>
+            <p id="track-candidate-resume" class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">description</span> resume.pdf</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <span id="track-status-badge" class="px-2.5 py-1 rounded-full text-xs font-bold border">Pending</span>
+          <p id="track-date" class="text-[11px] text-neutral-subtle mt-2">Applied Oct 12</p>
+        </div>
+      </div>
+
+      <!-- Timeline Progress -->
+      <div class="space-y-6 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-[2px] before:bg-border">
+        
+        <!-- Step 1: Submission -->
+        <div class="flex items-start gap-4 relative">
+          <div id="step-1-icon" class="w-9 h-9 rounded-full bg-success text-white flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm animate-pulse">
+            <span class="material-symbols-outlined text-[16px]">check</span>
+          </div>
+          <div class="pt-0.5">
+            <h5 class="text-body-sm font-bold text-on-surface">Application Submitted</h5>
+            <p class="text-xs text-neutral-subtle mt-0.5">Your profile, contact details, and resume were successfully submitted.</p>
+          </div>
+        </div>
+
+        <!-- Step 2: AI Scoring -->
+        <div class="flex items-start gap-4 relative">
+          <div id="step-2-icon" class="w-9 h-9 rounded-full bg-success text-white flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">auto_awesome</span>
+          </div>
+          <div class="pt-0.5">
+            <h5 class="text-body-sm font-bold text-on-surface flex items-center gap-1">
+              AI Match Engine Complete
+              <span id="track-ai-score-badge" class="bg-ai-accent/15 text-ai-accent text-[10px] font-bold px-1.5 py-0.5 rounded">95% Match</span>
+            </h5>
+            <p class="text-xs text-neutral-subtle mt-0.5">StellarHire AI analyzed your skills and experience against the job description.</p>
+          </div>
+        </div>
+
+        <!-- Step 3: Recruiter Screening -->
+        <div class="flex items-start gap-4 relative">
+          <div id="step-3-icon" class="w-9 h-9 rounded-full bg-border text-neutral-subtle flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">person_search</span>
+          </div>
+          <div class="pt-0.5">
+            <h5 class="text-body-sm font-bold text-on-surface" id="step-3-title">Recruiter Review</h5>
+            <p class="text-xs text-neutral-subtle mt-0.5" id="step-3-desc">The recruitment team is evaluating your AI profile match.</p>
+          </div>
+        </div>
+
+        <!-- Step 4: Interviewing -->
+        <div class="flex items-start gap-4 relative">
+          <div id="step-4-icon" class="w-9 h-9 rounded-full bg-border text-neutral-subtle flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">forum</span>
+          </div>
+          <div class="pt-0.5">
+            <h5 class="text-body-sm font-bold text-on-surface" id="step-4-title">Interview Phase</h5>
+            <p class="text-xs text-neutral-subtle mt-0.5" id="step-4-desc">Interviews will be scheduled if shortlisted by the recruiter.</p>
+          </div>
+        </div>
+
+        <!-- Step 5: Final Decision -->
+        <div class="flex items-start gap-4 relative">
+          <div id="step-5-icon" class="w-9 h-9 rounded-full bg-border text-neutral-subtle flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">gavel</span>
+          </div>
+          <div class="pt-0.5">
+            <h5 class="text-body-sm font-bold text-on-surface" id="step-5-title">Hiring Decision</h5>
+            <p class="text-xs text-neutral-subtle mt-0.5" id="step-5-desc">Final selection outcome will be posted here.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translate(-50%, -45%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+</style>
+
+<script>
+    let allJobs = [];
+    let allApplications = [];
+
+    // Welcome Header Setup
+    if (user && user.name) {
+        document.getElementById('welcome-text').innerText = `Welcome back, ${user.name.split(' ')[0]}.`;
+    }
+
+    // Dynamic Filter Change Handlers
+    document.getElementById('search-input').addEventListener('input', renderJobsList);
+    document.getElementById('filter-location').addEventListener('change', renderJobsList);
+    document.getElementById('filter-salary').addEventListener('change', renderJobsList);
+    document.getElementById('filter-industry').addEventListener('change', renderJobsList);
+
+    // Initial Database Data Retrieval
+    async function loadData() {
+        try {
+            allJobs = await apiGet('/jobs');
+            await loadApplicationsAndRender();
+        } catch (err) {
+            console.error('Error loading jobs:', err);
+        }
+    }
+
+    // Refresh application state and render lists
+    async function loadApplicationsAndRender() {
+        try {
+            allApplications = await apiGet('/applications');
+            renderApplications();
+            renderJobsList();
+        } catch (err) {
+            console.error('Error loading applications:', err);
+        }
+    }
+
+    // --- Tab Switching Logic ---
+    function showTab(tabName) {
+        const dashboardNav = document.getElementById('nav-dashboard');
+        const profileNav = document.getElementById('nav-profile');
+        const dashboardContent = document.getElementById('tab-dashboard-content');
+        const profileContent = document.getElementById('tab-profile-content');
+        
+        if (tabName === 'dashboard') {
+            dashboardNav.className = "flex items-center gap-3 bg-primary-container text-on-primary-container rounded-xl px-4 py-3 scale-98 transition-transform duration-200 cursor-pointer";
+            profileNav.className = "flex items-center gap-3 text-neutral-subtle px-4 py-3 hover:bg-surface-container hover:text-on-surface rounded-xl transition-colors cursor-pointer";
+            dashboardContent.classList.remove('hidden');
+            profileContent.classList.add('hidden');
+        } else {
+            profileNav.className = "flex items-center gap-3 bg-primary-container text-on-primary-container rounded-xl px-4 py-3 scale-98 transition-transform duration-200 cursor-pointer";
+            dashboardNav.className = "flex items-center gap-3 text-neutral-subtle px-4 py-3 hover:bg-surface-container hover:text-on-surface rounded-xl transition-colors cursor-pointer";
+            profileContent.classList.remove('hidden');
+            dashboardContent.classList.add('hidden');
+            
+            // Populate profile inputs
+            document.getElementById('prof-name').value = user.name || '';
+            document.getElementById('prof-email').value = user.email || '';
+            document.getElementById('prof-phone').value = user.phone || '';
+            document.getElementById('prof-location').value = user.location || '';
+            document.getElementById('prof-skills').value = (user.skills || []).join(', ');
+            
+            const msgBox = document.getElementById('profile-msg');
+            msgBox.classList.add('hidden');
+        }
+    }
+
+    // --- Profile Update logic ---
+    async function handleProfileUpdate(event) {
+        event.preventDefault();
+        const name = document.getElementById('prof-name').value.trim();
+        const phone = document.getElementById('prof-phone').value.trim();
+        const location = document.getElementById('prof-location').value;
+        const skillsRaw = document.getElementById('prof-skills').value.trim();
+        const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+        
+        const submitBtn = document.getElementById('profile-submit-btn');
+        const msgBox = document.getElementById('profile-msg');
+        
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span> Saving...';
+        msgBox.classList.add('hidden');
+        
+        try {
+            const result = await apiPost('/auth/update-profile', { email: user.email, name, phone, location, skills });
+            if (result.success) {
+                // Update session storage
+                user.name = result.name;
+                user.phone = result.phone;
+                user.location = result.location;
+                user.skills = result.skills;
+                sessionStorage.setItem('stellar_user', JSON.stringify(user));
+                
+                // Show success message
+                msgBox.className = "p-3 bg-emerald-50 text-emerald-850 rounded-lg text-xs flex items-center gap-2 border border-emerald-200/50";
+                msgBox.innerHTML = '<span class="material-symbols-outlined text-[16px] text-emerald-600 animate-bounce">check_circle</span> Profile updated successfully!';
+                msgBox.classList.remove('hidden');
+                
+                // Update header name
+                document.getElementById('welcome-text').innerText = `Welcome back, ${user.name.split(' ')[0]}.`;
+            } else {
+                throw new Error(result.message || 'Update failed.');
+            }
+        } catch (err) {
+            msgBox.className = "p-3 bg-red-50 text-error rounded-lg text-xs flex items-center gap-2 border border-error/20";
+            msgBox.innerHTML = `<span class="material-symbols-outlined text-[16px]">error</span> ${err.message || 'Error updating profile.'}`;
+            msgBox.classList.remove('hidden');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">save</span> Save Profile Details';
+        }
+    }
+
+    // --- Saved Jobs State ---
+    function getSavedJobsKey() {
+        return `stellar_saved_${user.email}`;
+    }
+    function getSavedJobs() {
+        const data = localStorage.getItem(getSavedJobsKey());
+        return data ? JSON.parse(data) : [];
+    }
+    function toggleSaveJob(jobId, event) {
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        let saved = getSavedJobs();
+        if (saved.includes(jobId)) {
+            saved = saved.filter(id => id !== jobId);
+        } else {
+            saved.push(jobId);
+        }
+        localStorage.setItem(getSavedJobsKey(), JSON.stringify(saved));
+        renderJobsList();
+    }
+    
+    let showOnlySaved = false;
+    function toggleSavedFilter() {
+        showOnlySaved = !showOnlySaved;
+        const btn = document.getElementById('btn-saved-toggle');
+        const icon = document.getElementById('saved-toggle-icon');
+        if (showOnlySaved) {
+            btn.className = "flex items-center gap-1 px-3 py-2 border border-pink-500 rounded-lg text-body-sm font-semibold bg-pink-50 text-pink-600 transition-colors shrink-0";
+            icon.innerText = "favorite";
+            icon.style.fontVariationSettings = "'FILL' 1";
+        } else {
+            btn.className = "flex items-center gap-1 px-3 py-2 border border-border rounded-lg text-body-sm font-semibold hover:bg-surface-muted text-neutral-subtle transition-colors shrink-0";
+            icon.innerText = "favorite_border";
+            icon.style.fontVariationSettings = "";
+        }
+        renderJobsList();
+    }
+
+    // --- Apply Modal Logic ---
+    let applyResumeFile = null;
+
+    function openApplyModal(jobId, role, company, salary, skillsString) {
+        document.getElementById('apply-job-id').value = jobId;
+        document.getElementById('apply-job-role').value = role;
+        document.getElementById('apply-job-company').value = company;
+        document.getElementById('apply-job-salary').value = salary;
+        document.getElementById('apply-job-skills-data').value = skillsString;
+
+        document.getElementById('apply-job-title').innerText = role;
+        document.getElementById('apply-job-details').innerText = `${company} • ${salary}`;
+        const skillsContainer = document.getElementById('apply-job-skills');
+        skillsContainer.innerHTML = skillsString.split(',').map(s => `<span class="px-2 py-0.5 bg-surface-container-high rounded text-[11px] font-semibold text-neutral-text">${s.trim()}</span>`).join('');
+
+        // Prepopulate candidate info from user profile
+        document.getElementById('apply-name').value = user.name || '';
+        document.getElementById('apply-email').value = user.email || '';
+        document.getElementById('apply-phone').value = user.phone || '';
+
+        // Reset file state
+        applyResumeFile = null;
+        document.getElementById('apply-file-input').value = '';
+        document.getElementById('apply-file-label').innerText = 'Click to upload or drag & drop your resume';
+        document.getElementById('apply-file-label').className = 'text-body-sm text-neutral-subtle';
+        document.getElementById('apply-submit-btn').disabled = true;
+        document.getElementById('apply-error').classList.add('hidden');
+
+        document.getElementById('apply-modal').classList.remove('hidden');
+    }
+
+    function closeApplyModal() {
+        document.getElementById('apply-modal').classList.add('hidden');
+    }
+
+    // File input handler for apply modal
+    document.getElementById('apply-file-input').addEventListener('change', function() {
+        if (this.files.length > 0) {
+            applyResumeFile = this.files[0];
+            document.getElementById('apply-file-label').innerHTML = `<span class="text-success font-semibold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-[16px]">check_circle</span> ${applyResumeFile.name}</span>`;
+            document.getElementById('apply-submit-btn').disabled = false;
+        }
+    });
+
+    // Drag and drop for apply modal
+    const applyDropZone = document.getElementById('apply-drop-zone');
+    if (applyDropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            applyDropZone.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+        });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            applyDropZone.addEventListener(eventName, () => applyDropZone.classList.add('border-primary', 'bg-primary/5'), false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            applyDropZone.addEventListener(eventName, () => applyDropZone.classList.remove('border-primary', 'bg-primary/5'), false);
+        });
+        applyDropZone.addEventListener('drop', e => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                applyResumeFile = files[0];
+                document.getElementById('apply-file-label').innerHTML = `<span class="text-success font-semibold flex items-center gap-1 justify-center"><span class="material-symbols-outlined text-[16px]">check_circle</span> ${applyResumeFile.name}</span>`;
+                document.getElementById('apply-submit-btn').disabled = false;
+                // Also set the file input
+                const dt = new DataTransfer();
+                dt.items.add(applyResumeFile);
+                document.getElementById('apply-file-input').files = dt.files;
+            }
+        }, false);
+    }
+
+    async function submitApplication() {
+        const role = document.getElementById('apply-job-role').value;
+        const company = document.getElementById('apply-job-company').value;
+        const skillsString = document.getElementById('apply-job-skills-data').value;
+        const skills = skillsString.split(',').map(s => s.trim());
+
+        const candidateName = document.getElementById('apply-name').value.trim();
+        const email = document.getElementById('apply-email').value.trim();
+        const phone = document.getElementById('apply-phone').value.trim();
+
+        if (!candidateName || !email || !phone) {
+            document.getElementById('apply-error').innerText = 'Please fill in all contact details.';
+            document.getElementById('apply-error').classList.remove('hidden');
+            return;
+        }
+
+        if (!applyResumeFile) {
+            document.getElementById('apply-error').innerText = 'Please upload your resume first.';
+            document.getElementById('apply-error').classList.remove('hidden');
+            return;
+        }
+
+        const submitBtn = document.getElementById('apply-submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">progress_activity</span> Submitting...';
+
+        try {
+            // Simulated AI match score between 75% and 98%
+            const score = Math.floor(Math.random() * 24) + 75;
+
+            await apiPost('/applications', {
+                candidateName,
+                email,
+                phone,
+                role,
+                company,
+                score,
+                skills,
+                resumeFile: applyResumeFile.name
+            });
+
+            // Log application
+            await apiPost('/logs', {
+                text: `${candidateName} applied for '${role}' at ${company} (Contact: ${phone}).`,
+                type: 'info'
+            });
+
+            closeApplyModal();
+            alert(`✅ Successfully applied for ${role} at ${company}!\nResume: ${applyResumeFile.name}\nAI Match Score: ${score}%`);
+            await loadApplicationsAndRender();
+        } catch (err) {
+            document.getElementById('apply-error').innerText = 'Failed to apply: ' + err.message;
+            document.getElementById('apply-error').classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">send</span> Submit Application';
+        }
+    }
+
+    // Legacy clickApply
+    function clickApply(jobId, role, company, salary, skillsString) {
+        openApplyModal(jobId, role, company, salary, skillsString);
+    }
+
+    // --- Timeline Tracker Modal Logic ---
+    function openTrackerModal(appId) {
+        const app = allApplications.find(a => a.id === appId);
+        if (!app) return;
+        
+        document.getElementById('track-job-role').innerText = app.role;
+        document.getElementById('track-job-company').innerText = app.company;
+        document.getElementById('track-candidate-contact').innerHTML = `<span class="material-symbols-outlined text-[14px]">call</span> ${app.phone || 'Not provided'}`;
+        document.getElementById('track-candidate-email').innerHTML = `<span class="material-symbols-outlined text-[14px]">mail</span> ${app.email || 'Not provided'}`;
+        document.getElementById('track-candidate-resume').innerHTML = `<span class="material-symbols-outlined text-[14px]">description</span> ${app.resumeFile || 'No resume file'}`;
+        
+        // Update status badge
+        const statusBadge = document.getElementById('track-status-badge');
+        statusBadge.innerText = app.status;
+        
+        const status = app.status.toLowerCase();
+        if (status === 'pending') {
+            statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/50";
+        } else if (status === 'interview' || status === 'approved') {
+            statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/50";
+        } else if (status === 'closed' || status === 'rejected') {
+            statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200/50";
+        } else {
+            statusBadge.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200/50";
+        }
+        
+        document.getElementById('track-date').innerText = `Applied ${app.appliedDate || 'Today'}`;
+        document.getElementById('track-ai-score-badge').innerText = `${app.score}% Match`;
+        
+        // Reset all steps to grey/border state
+        const steps = ['step-1', 'step-2', 'step-3', 'step-4', 'step-5'];
+        steps.forEach(step => {
+            const el = document.getElementById(`${step}-icon`);
+            el.className = "w-9 h-9 rounded-full bg-border text-neutral-subtle flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm";
+        });
+        
+        // Setup step timeline based on status
+        setStepCompleted('step-1', 'check');
+        setStepCompleted('step-2', 'auto_awesome');
+        
+        const step3Title = document.getElementById('step-3-title');
+        const step3Desc = document.getElementById('step-3-desc');
+        const step4Title = document.getElementById('step-4-title');
+        const step4Desc = document.getElementById('step-4-desc');
+        const step5Title = document.getElementById('step-5-title');
+        const step5Desc = document.getElementById('step-5-desc');
+        
+        // Reset descriptions
+        step3Title.innerText = "Recruiter Review";
+        step3Desc.innerText = "The recruitment team is evaluating your AI profile match.";
+        step4Title.innerText = "Interview Phase";
+        step4Desc.innerText = "Interviews will be scheduled if shortlisted by the recruiter.";
+        step5Title.innerText = "Hiring Decision";
+        step5Desc.innerText = "Final selection outcome will be posted here.";
+        
+        if (status === 'pending') {
+            setStepActive('step-3', 'person_search');
+        } else if (status === 'pending decision') {
+            setStepCompleted('step-3', 'how_to_reg');
+            setStepActive('step-4', 'forum');
+            step3Desc.innerText = "Recruiter reviewed. Candidate shortlisted for evaluation!";
+        } else if (status === 'interview') {
+            setStepCompleted('step-3', 'how_to_reg');
+            setStepCompleted('step-4', 'forum');
+            setStepActive('step-5', 'gavel');
+            step3Desc.innerText = "Recruiter reviewed and shortlisted.";
+            step4Desc.innerText = "Interview scheduled! Please check your email for call invites.";
+        } else if (status === 'approved') {
+            setStepCompleted('step-3', 'how_to_reg');
+            setStepCompleted('step-4', 'forum');
+            setStepCompleted('step-5', 'gavel');
+            step3Desc.innerText = "Recruiter reviewed and approved.";
+            step4Desc.innerText = "Interviews completed successfully!";
+            step5Title.innerText = "Offer Extended!";
+            step5Desc.innerText = "Congratulations! Recruiter has approved your application and extended an offer.";
+        } else if (status === 'closed' || status === 'rejected') {
+            setStepCompleted('step-3', 'how_to_reg');
+            // Mark final step as red/closed
+            const el = document.getElementById('step-5-icon');
+            el.className = "w-9 h-9 rounded-full bg-red-500 text-white flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm";
+            el.innerHTML = '<span class="material-symbols-outlined text-[16px]">close</span>';
+            step5Title.innerText = "Application Closed";
+            step5Desc.innerText = "This role is no longer accepting applicants or the candidacy has ended.";
+        }
+        
+        document.getElementById('tracker-modal').classList.remove('hidden');
+    }
+    
+    function setStepCompleted(id, icon) {
+        const el = document.getElementById(`${id}-icon`);
+        el.className = "w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm";
+        el.innerHTML = `<span class="material-symbols-outlined text-[16px]">${icon}</span>`;
+    }
+    
+    function setStepActive(id, icon) {
+        const el = document.getElementById(`${id}-icon`);
+        el.className = "w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-sm animate-pulse";
+        el.innerHTML = `<span class="material-symbols-outlined text-[16px]">${icon}</span>`;
+    }
+    
+    function closeTrackerModal() {
+        document.getElementById('tracker-modal').classList.add('hidden');
+    }
+
+    // Render applications tracker list
+    function renderApplications() {
+        const listEl = document.getElementById('application-list');
+        if (!listEl) return;
+        
+        const myApps = allApplications.filter(app => app.candidateName.toLowerCase() === user.name.toLowerCase());
+        listEl.innerHTML = '';
+        
+        if (myApps.length === 0) {
+            listEl.innerHTML = '<div class="p-4 text-center text-neutral-subtle text-body-sm">No applications submitted yet. Click "Apply Now" on a job to get started!</div>';
+            return;
+        }
+        
+        myApps.forEach(app => {
+            let badge = '';
+            const status = app.status.toLowerCase();
+            
+            if (status === 'pending') {
+                badge = `<span class="bg-surface-container-high text-neutral-text text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-outline-variant flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">schedule</span> Pending</span>`;
+            } else if (status === 'interview' || status === 'approved') {
+                badge = `<span class="bg-[#E3FCEF] text-[#006644] text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-[#006644]/20 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> ${app.status}</span>`;
+            } else if (status === 'closed' || status === 'rejected') {
+                badge = `<span class="bg-error-container text-on-error-container text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-error/20 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">cancel</span> Closed</span>`;
+            } else {
+                badge = `<span class="bg-warning/20 text-[#A26B00] text-label-sm font-label-sm px-2 py-0.5 rounded-full border border-warning/30 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">hourglass_empty</span> Review</span>`;
+            }
+            
+            const item = document.createElement('div');
+            item.className = 'p-4 hover:bg-surface-muted transition-colors border-b border-border last:border-b-0 cursor-pointer';
+            item.onclick = () => openTrackerModal(app.id);
+            item.innerHTML = `
+                <div class="flex justify-between items-start mb-1">
+                    <h4 class="text-body-sm font-body-sm font-semibold text-on-surface hover:text-primary transition-colors">${app.role}</h4>
+                    ${badge}
+                </div>
+                <p class="text-label-md font-label-md text-neutral-subtle">${app.company} • Applied ${app.appliedDate || 'Today'}</p>
+                <div class="flex justify-between items-center mt-2">
+                    ${app.resumeFile ? `<span class="text-[11px] text-primary flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">description</span> ${app.resumeFile}</span>` : '<span></span>'}
+                    <span class="text-[11px] text-neutral-subtle flex items-center gap-0.5">Click to track <span class="material-symbols-outlined text-[12px]">arrow_forward</span></span>
+                </div>
+            `;
+            listEl.appendChild(item);
+        });
+    }
+
+    // Render open jobs applying filters
+    function renderJobsList() {
+        const container = document.getElementById('jobs-list-container');
+        const countEl = document.getElementById('jobs-count');
+        if (!container) return;
+        
+        const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+        const selectedLoc = document.getElementById('filter-location').value;
+        const selectedSalary = document.getElementById('filter-salary').value;
+        const selectedIndustry = document.getElementById('filter-industry').value;
+        const saved = getSavedJobs();
+        
+        // Filter Logic
+        const filteredJobs = allJobs.filter(job => {
+            const matchSearch = !searchQuery || 
+                                job.title.toLowerCase().includes(searchQuery) || 
+                                job.company.toLowerCase().includes(searchQuery) ||
+                                (job.industry && job.industry.toLowerCase().includes(searchQuery)) ||
+                                job.skills.some(s => s.toLowerCase().includes(searchQuery));
+            const matchLocation = !selectedLoc || job.location.toLowerCase().includes(selectedLoc.toLowerCase());
+            const matchIndustry = !selectedIndustry || (job.industry && job.industry.toLowerCase() === selectedIndustry.toLowerCase());
+            const matchSaved = !showOnlySaved || saved.includes(job.id);
+            
+            let matchSalary = true;
+            if (selectedSalary) {
+                const minSalVal = parseInt(selectedSalary);
+                const firstPart = job.salary.split('-')[0];
+                const jobMinSal = parseInt(firstPart.replace(/[^0-9]/g, '')) || 0;
+                matchSalary = jobMinSal >= minSalVal;
+            }
+            return matchSearch && matchLocation && matchSalary && matchIndustry && matchSaved;
+        });
+        
+        countEl.innerText = `${filteredJobs.length} ${filteredJobs.length === 1 ? 'Role' : 'Roles'}`;
+        container.innerHTML = '';
+        
+        if (filteredJobs.length === 0) {
+            container.innerHTML = '<div class="col-span-2 p-8 text-center text-neutral-subtle text-body-sm bg-background border border-border rounded-xl shadow-sm">No jobs found matching your filters.</div>';
+            return;
+        }
+
+        filteredJobs.forEach(job => {
+            const appRecord = allApplications.find(app => 
+                app.candidateName.toLowerCase() === user.name.toLowerCase() &&
+                app.role.toLowerCase() === job.title.toLowerCase() &&
+                app.company.toLowerCase() === job.company.toLowerCase()
+            );
+            
+            let actionBtnHTML = '';
+            if (appRecord) {
+                actionBtnHTML = `
+                    <button disabled class="w-full bg-[#E3FCEF] text-[#006644] border border-[#006644]/20 rounded text-label-md font-label-md py-2 px-4 flex items-center justify-center gap-1 cursor-not-allowed">
+                        <span class="material-symbols-outlined text-[16px]">check_circle</span> Applied (${appRecord.status})
+                    </button>
+                `;
+            } else {
+                actionBtnHTML = `
+                    <button onclick="openApplyModal('${job.id}', '${job.title.replace(/'/g, "\\'") }', '${job.company.replace(/'/g, "\\'")}', '${job.salary}', '${job.skills.join(',')}')" class="w-full bg-primary text-on-primary rounded text-label-md font-label-md py-2 px-4 hover:bg-primary-container transition-all flex items-center justify-center gap-1 shadow-sm">
+                        <span class="material-symbols-outlined text-[16px]">upload_file</span>
+                        Upload Resume & Apply
+                    </button>
+                `;
+            }
+
+            const isSaved = saved.includes(job.id);
+            const heartIcon = isSaved ? 'favorite' : 'favorite_border';
+            const heartColor = isSaved ? 'text-pink-600 font-filled' : 'text-neutral-subtle hover:text-pink-600';
+            const heartStyle = isSaved ? "font-variation-settings: 'FILL' 1;" : "";
+
+            const card = document.createElement('div');
+            card.className = 'bg-background border border-border rounded-xl p-4 hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] hover:border-secondary-fixed-dim transition-all group relative overflow-hidden flex flex-col justify-between';
+            card.innerHTML = `
+                <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-primary/5 to-transparent rounded-bl-full pointer-events-none"></div>
+                <div>
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-surface-muted border border-border flex items-center justify-center text-primary font-bold text-lg">
+                            ${job.company.substring(0, 2).toUpperCase()}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            ${job.industry ? `<span class="bg-primary/5 text-primary text-[10px] font-bold px-2 py-0.5 rounded-full border border-primary/10">${job.industry}</span>` : ''}
+                            <button onclick="toggleSaveJob('${job.id}', event)" class="p-1 rounded-full hover:bg-surface-muted transition-colors">
+                                <span class="material-symbols-outlined ${heartColor} text-[20px]" style="${heartStyle}">${heartIcon}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <h4 class="text-body-lg font-body-lg font-semibold text-on-surface mb-1 group-hover:text-primary transition-colors">${job.title}</h4>
+                    <p class="text-body-sm font-body-sm text-neutral-subtle mb-3">${job.company} • ${job.location}</p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${job.skills.map(s => `<span class="px-2 py-1 bg-surface-container rounded text-label-sm font-label-sm text-neutral-text">${s}</span>`).join('')}
+                        <span class="px-2 py-1 bg-surface-container rounded text-label-sm font-label-sm text-neutral-text">${job.salary}</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-border pt-3 mt-auto flex flex-col gap-2">
+                    <div class="flex justify-between items-center text-label-sm font-label-sm text-neutral-subtle mb-1">
+                        <span>Posted ${job.posted}</span>
+                    </div>
+                    ${actionBtnHTML}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Launch initial data loading
+    loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Recruiter Login | StellarHire</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#003d9b",
+                        "primary-container": "#0052cc",
+                        "on-primary": "#ffffff",
+                        "background": "#FFFFFF",
+                        "surface": "#faf8ff",
+                        "surface-muted": "#F4F5F7",
+                        "border": "#DFE1E6",
+                        "outline": "#737685",
+                        "on-surface": "#191b23",
+                        "neutral-subtle": "#6B778C",
+                        "success": "#36B37E",
+                        "error": "#ba1a1a"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-muted text-on-surface font-body-md antialiased min-h-screen flex flex-col justify-center items-center p-4 relative">
+    <canvas id="stellar-wallpaper" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
+    <!-- Main Card -->
+    <div class="w-full max-w-md bg-background border border-border rounded-2xl shadow-lg p-8 relative overflow-hidden">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 justify-center mb-6">
+            <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">work</span>
+            <span class="text-headline-md font-bold text-primary text-2xl">StellarHire</span>
+        </div>
+
+        <div class="text-center mb-8">
+            <h2 class="text-xl font-bold text-on-surface">Recruiter Login</h2>
+            <p class="text-body-sm text-neutral-subtle mt-1">Manage talent and resume screening analytics</p>
+        </div>
+
+        <!-- Form -->
+        <form id="login-form" class="space-y-5">
+            <div>
+                <label for="email" class="block text-sm font-semibold text-neutral-subtle mb-1">Email Address</label>
+                <input type="email" id="email" required class="w-full px-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="name@company.com">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-semibold text-neutral-subtle mb-1">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" required class="w-full pl-4 pr-10 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="••••••••">
+                    <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-subtle hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Banner -->
+            <div id="error-banner" class="hidden p-3 bg-red-50 border border-error/20 text-error rounded-lg text-xs flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px]">error</span>
+                <span id="error-message">Invalid email or password.</span>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submit-btn" class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm flex justify-center items-center gap-2">
+                Sign In
+                <span class="material-symbols-outlined text-[18px]">login</span>
+            </button>
+        </form>
+
+        <!-- Demo Account Box -->
+        <div class="mt-8 pt-6 border-t border-border bg-surface rounded-xl p-4">
+            <span class="text-xs font-semibold text-neutral-subtle uppercase tracking-wider block mb-3 text-center">Demo Recruiter Accounts</span>
+            <div class="grid grid-cols-2 gap-2">
+                <button type="button" onclick="fillRecruiter('recruiter@stellarhire.com')" class="flex flex-col items-center justify-center p-2.5 bg-white border border-border hover:border-primary hover:shadow-sm rounded-lg text-center transition-all duration-200">
+                    <span class="text-xs font-bold text-primary">TechCorp India</span>
+                    <span class="text-[10px] text-neutral-subtle">Siddharth Sharma</span>
+                </button>
+                <button type="button" onclick="fillRecruiter('recruiter@hcl.com')" class="flex flex-col items-center justify-center p-2.5 bg-white border border-border hover:border-primary hover:shadow-sm rounded-lg text-center transition-all duration-200">
+                    <span class="text-xs font-bold text-primary">HCL</span>
+                    <span class="text-[10px] text-neutral-subtle">Rohan Mehta</span>
+                </button>
+                <button type="button" onclick="fillRecruiter('recruiter@cloudsync.com')" class="flex flex-col items-center justify-center p-2.5 bg-white border border-border hover:border-primary hover:shadow-sm rounded-lg text-center transition-all duration-200">
+                    <span class="text-xs font-bold text-primary">CloudSync Inc.</span>
+                    <span class="text-[10px] text-neutral-subtle">Priya Patel</span>
+                </button>
+                <button type="button" onclick="fillRecruiter('recruiter@apex.com')" class="flex flex-col items-center justify-center p-2.5 bg-white border border-border hover:border-primary hover:shadow-sm rounded-lg text-center transition-all duration-200">
+                    <span class="text-xs font-bold text-primary">Apex Financial</span>
+                    <span class="text-[10px] text-neutral-subtle">Amit Kapoor</span>
+                </button>
+            </div>
+            <div class="text-center text-[10.5px] text-neutral-subtle mt-3">
+                Password: <code class="font-bold text-primary bg-primary/5 px-1.5 py-0.5 rounded">password123</code>
+            </div>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="../welcome/index.html" class="text-xs text-primary hover:underline flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">arrow_back</span>
+                Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="client.js"></script>
+    <script>
+        // Password visibility toggle
+        const passwordInput = document.getElementById('password');
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const eyeIcon = document.getElementById('eye-icon');
+
+        togglePasswordBtn.addEventListener('click', () => {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerText = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerText = 'visibility';
+            }
+        });
+
+        // Quick Fill Demo helper
+        function fillRecruiter(email) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = 'password123';
+            document.getElementById('error-banner').classList.add('hidden');
+        }
+        window.fillRecruiter = fillRecruiter;
+
+        // Form Submit
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = passwordInput.value;
+            const submitBtn = document.getElementById('submit-btn');
+            const errorBanner = document.getElementById('error-banner');
+            const errorMessage = document.getElementById('error-message');
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Authenticating...';
+            errorBanner.classList.add('hidden');
+
+            try {
+                const result = await loginUser(email, password, 'recruiter');
+                if (result) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    throw new Error('Authentication failed.');
+                }
+            } catch (err) {
+                errorBanner.classList.remove('hidden');
+                errorMessage.innerText = err.message || 'Invalid credentials or connection issue.';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `Sign In <span class="material-symbols-outlined text-[18px]">login</span>`;
+            }
+        });
+    </script>
+    <script>
+        (function() {
+            const canvas = document.getElementById('stellar-wallpaper');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = [];
+            const particleCount = 40;
+            const maxDistance = 120;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                for (let i = 0; i < particleCount; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(101, 84, 192, 0.4)';
+                    ctx.fill();
+
+                    for (let j = i + 1; j < particleCount; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < maxDistance) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(0, 82, 204, ${0.15 * (1 - dist / maxDistance)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Admin Command Center | StellarHire</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode:"class",
+    theme:{extend:{
+      "colors":{"error":"#ba1a1a","neutral-subtle":"#6B778C","neutral-text":"#172B4D","secondary-fixed":"#d7e2ff","secondary-fixed-dim":"#abc7ff","surface-container-high":"#e7e7f2","primary-container":"#0052cc","primary-fixed-dim":"#b2c5ff","primary":"#003d9b","surface-muted":"#F4F5F7","warning":"#FFAB00","on-surface":"#191b23","ai-accent":"#6554C0","success":"#36B37E","on-primary":"#ffffff","on-primary-container":"#c4d2ff","secondary":"#0059b8","border":"#DFE1E6","surface":"#faf8ff","danger":"#FF5630","surface-container":"#ededf8","background":"#FFFFFF","error-container":"#ffdad6"},
+      "borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},
+      "fontFamily":{"body-lg":["Inter"],"display-lg":["Hanken Grotesk"],"label-sm":["Inter"],"headline-lg":["Hanken Grotesk"],"body-sm":["Inter"],"label-md":["Inter"],"headline-md":["Hanken Grotesk"],"headline-sm":["Hanken Grotesk"],"body-md":["Inter"]},
+      "fontSize":{"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.02em","fontWeight":"700"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","fontWeight":"600"}],"body-sm":["14px",{"lineHeight":"20px","fontWeight":"400"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","fontWeight":"600"}],"headline-sm":["20px",{"lineHeight":"28px","fontWeight":"600"}],"body-md":["16px",{"lineHeight":"24px","fontWeight":"400"}]},
+      "spacing":{"margin-desktop":"40px","container-max":"1280px","gutter":"24px","stack-lg":"32px","stack-md":"16px","stack-sm":"8px"}
+    }}
+  }
+</script>
+<script src="client.js"></script>
+<script>const user = checkUserAuth('admin');</script>
+<style>
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeInUp { from{opacity:0;transform:translate(-50%,-45%)} to{opacity:1;transform:translate(-50%,-50%)} }
+  .tab-section { animation: fadeIn 0.25s ease; }
+  .nav-active { background:#0052cc; color:#c4d2ff; border-radius:12px; }
+  .nav-inactive { color:#6B778C; border-radius:12px; }
+  .nav-inactive:hover { background:#e7e7f2; color:#191b23; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased h-screen overflow-hidden flex">
+
+<!-- ======= SIDEBAR ======= -->
+<nav class="fixed left-0 top-0 h-full flex flex-col py-6 border-r border-border bg-surface-muted w-64 z-50">
+  <div class="px-6 mb-8 flex items-center gap-3">
+    <a href="javascript:void(0)" onclick="window.location.href=getPortalUrl('welcome')" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+      <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined text-white" style="font-variation-settings:'FILL' 1;">shield_person</span>
+      </div>
+      <div>
+        <h1 class="text-headline-sm font-headline-sm font-bold text-primary">StellarHire</h1>
+        <p class="text-label-sm font-label-sm text-neutral-subtle">Admin Command Center</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="flex flex-col gap-1 px-4 flex-grow">
+    <button id="nav-overview" onclick="switchTab('overview')" class="nav-active flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>
+      <span class="text-label-md font-label-md font-semibold">Dashboard</span>
+    </button>
+    <button id="nav-candidates" onclick="switchTab('candidates')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">person_search</span>
+      <span class="text-label-md font-label-md font-semibold">Candidate Search</span>
+    </button>
+    <button id="nav-ai" onclick="switchTab('ai')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">psychology</span>
+      <span class="text-label-md font-label-md font-semibold">AI Scoring & Reports</span>
+    </button>
+    <button id="nav-approvals" onclick="switchTab('approvals')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">task_alt</span>
+      <span class="text-label-md font-label-md font-semibold">Final Approvals</span>
+      <span id="approval-badge" class="ml-auto bg-warning text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+    </button>
+    <button id="nav-jobs" onclick="switchTab('jobs')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">work</span>
+      <span class="text-label-md font-label-md font-semibold">Job Management</span>
+    </button>
+  </div>
+
+  <div class="px-4 mt-auto space-y-1 border-t border-border pt-4">
+    <button onclick="logoutUser()" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left text-error hover:bg-red-50 rounded-xl transition-colors">
+      <span class="material-symbols-outlined text-error">logout</span>
+      <span class="text-label-md font-label-md font-bold">Logout</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ======= DECISION MODAL ======= -->
+<div id="decision-modal" class="fixed inset-0 z-[100] hidden">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeDecisionModal()"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-xl border border-border overflow-hidden" style="animation:fadeInUp 0.3s ease;">
+    <!-- Header -->
+    <div id="dm-header" class="bg-gradient-to-r from-primary to-ai-accent px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-white text-[24px]" style="font-variation-settings:'FILL' 1;">gavel</span>
+        <div>
+          <h3 class="text-headline-sm font-headline-sm text-white font-bold">Final Decision</h3>
+          <p id="dm-subtitle" class="text-white/70 text-xs mt-0.5">Review and finalise application</p>
+        </div>
+      </div>
+      <button onclick="closeDecisionModal()" class="text-white/80 hover:text-white"><span class="material-symbols-outlined">close</span></button>
+    </div>
+
+    <div class="p-6 space-y-5">
+      <!-- Candidate Info -->
+      <div id="dm-candidate-info" class="flex items-center gap-4 p-4 bg-surface-muted rounded-xl border border-border"></div>
+
+      <!-- AI Score Section -->
+      <div id="dm-ai-section" class="bg-ai-accent/5 border border-ai-accent/15 rounded-xl p-4">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-label-md font-label-md font-semibold text-ai-accent flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">auto_awesome</span> AI Match Analysis</span>
+          <span id="dm-score-val" class="text-2xl font-bold text-ai-accent">--</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="bg-white rounded-lg p-3 text-center border border-border">
+            <p id="dm-tech" class="text-sm font-bold text-on-surface">--</p>
+            <p class="text-[10px] text-neutral-subtle mt-0.5">Technical Skills</p>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-1.5 overflow-hidden"><div id="dm-tech-bar" class="h-full bg-success rounded-full" style="width:0%"></div></div>
+          </div>
+          <div class="bg-white rounded-lg p-3 text-center border border-border">
+            <p id="dm-culture" class="text-sm font-bold text-on-surface">--</p>
+            <p class="text-[10px] text-neutral-subtle mt-0.5">Culture Fit</p>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-1.5 overflow-hidden"><div id="dm-culture-bar" class="h-full bg-primary rounded-full" style="width:0%"></div></div>
+          </div>
+          <div class="bg-white rounded-lg p-3 text-center border border-border">
+            <p id="dm-exp" class="text-sm font-bold text-on-surface">--</p>
+            <p class="text-[10px] text-neutral-subtle mt-0.5">Experience</p>
+            <div class="w-full bg-surface-container h-1.5 rounded-full mt-1.5 overflow-hidden"><div id="dm-exp-bar" class="h-full bg-ai-accent rounded-full" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills comparison -->
+      <div id="dm-skills" class="space-y-2">
+        <p class="text-label-md font-label-md text-neutral-subtle font-semibold">MATCHED SKILLS</p>
+        <div id="dm-skills-chips" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Contact info -->
+      <div id="dm-contact" class="grid grid-cols-2 gap-3 text-[12px] text-neutral-subtle"></div>
+
+      <!-- Action Buttons -->
+      <div id="dm-actions" class="grid grid-cols-1 gap-2 pt-2 border-t border-border"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= MAIN CANVAS ======= -->
+<main class="ml-64 flex-1 h-full overflow-y-auto bg-background">
+
+<!-- ==== TAB: OVERVIEW ==== -->
+<div id="tab-overview" class="tab-section px-10 py-10 max-w-container-max mx-auto">
+  <header class="flex justify-between items-center mb-8">
+    <div>
+      <h2 class="text-headline-lg font-headline-lg text-on-surface">System Overview</h2>
+      <p class="text-body-md text-neutral-subtle mt-1">Platform-wide hiring pipeline at a glance.</p>
+    </div>
+    <div class="flex items-center gap-2 bg-surface-muted px-3 py-1.5 rounded-full border border-border">
+      <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+      <span class="text-label-sm font-label-sm text-neutral-subtle">Live Sync Active</span>
+    </div>
+  </header>
+
+  <!-- Stats Row -->
+  <div class="grid grid-cols-4 gap-6 mb-8">
+    <div class="bg-white border border-border rounded-xl p-5 hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-3">
+        <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider">Total Applicants</p>
+        <span class="material-symbols-outlined text-primary">group</span>
+      </div>
+      <p id="ov-total" class="text-3xl font-bold text-on-surface">0</p>
+      <p class="text-xs text-neutral-subtle mt-1">From all job seekers</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-5 hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-3">
+        <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider">Pending Approvals</p>
+        <span class="material-symbols-outlined text-warning">pending</span>
+      </div>
+      <p id="ov-pending" class="text-3xl font-bold text-warning">0</p>
+      <p class="text-xs text-neutral-subtle mt-1">Awaiting admin action</p>
+    </div>
+    <div class="bg-gradient-to-br from-surface to-ai-accent/5 border border-ai-accent/20 rounded-xl p-5 hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-3">
+        <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider">Avg AI Score</p>
+        <span class="material-symbols-outlined text-ai-accent">auto_awesome</span>
+      </div>
+      <p id="ov-avg-score" class="text-3xl font-bold text-ai-accent">--</p>
+      <p class="text-xs text-neutral-subtle mt-1">Pipeline quality</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-5 hover:shadow-md transition-shadow">
+      <div class="flex justify-between items-start mb-3">
+        <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider">Active Jobs</p>
+        <span class="material-symbols-outlined text-success">work</span>
+      </div>
+      <p id="ov-jobs" class="text-3xl font-bold text-on-surface">0</p>
+      <p class="text-xs text-neutral-subtle mt-1">Across all companies</p>
+    </div>
+  </div>
+
+  <!-- Two-col: Pending Approvals + Activity -->
+  <div class="grid grid-cols-12 gap-6">
+    <!-- Pending Approvals -->
+    <div class="col-span-7 bg-white border border-border rounded-xl p-6">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-headline-sm font-headline-sm text-on-surface">Pending Final Approvals</h3>
+        <button onclick="switchTab('approvals')" class="text-label-sm font-label-sm text-primary hover:underline">View All →</button>
+      </div>
+      <div id="ov-approvals-list" class="space-y-3">
+        <div class="p-4 text-center text-neutral-subtle text-body-sm">Loading...</div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="col-span-5 bg-white border border-border rounded-xl p-6">
+      <h3 class="text-headline-sm font-headline-sm text-on-surface mb-5">Recent Activity</h3>
+      <div id="ov-activity" class="relative pl-5 space-y-5 before:absolute before:inset-y-0 before:left-4 before:w-px before:bg-border">
+        <div class="p-4 text-center text-neutral-subtle text-body-sm">Loading...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==== TAB: CANDIDATE SEARCH ==== -->
+<div id="tab-candidates" class="tab-section hidden px-10 py-10 max-w-container-max mx-auto">
+  <header class="mb-8">
+    <h2 class="text-headline-lg font-headline-lg text-on-surface">Candidate Search</h2>
+    <p class="text-body-md text-neutral-subtle mt-1">Search and review all applicants across every job and company.</p>
+  </header>
+
+  <!-- Filters -->
+  <div class="bg-white border border-border rounded-xl p-4 mb-6 flex flex-col md:flex-row gap-3 shadow-sm">
+    <div class="flex-1 relative">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-subtle">search</span>
+      <input id="cs-q" oninput="renderCandidates()" type="text" placeholder="Search name, email, role, skill, company..." class="w-full pl-10 pr-4 py-2.5 border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+    </div>
+    <select id="cs-status" onchange="renderCandidates()" class="border border-border rounded-lg px-3 py-2.5 text-body-sm bg-surface-muted focus:ring-primary focus:outline-none cursor-pointer">
+      <option value="">All Statuses</option>
+      <option value="Pending">Pending</option>
+      <option value="Pending Decision">Shortlisted</option>
+      <option value="Interview">Interview</option>
+      <option value="Approved">Approved</option>
+      <option value="Closed">Closed/Rejected</option>
+    </select>
+    <select id="cs-sort" onchange="renderCandidates()" class="border border-border rounded-lg px-3 py-2.5 text-body-sm bg-surface-muted focus:ring-primary focus:outline-none cursor-pointer">
+      <option value="score-desc">AI Score: High→Low</option>
+      <option value="score-asc">AI Score: Low→High</option>
+      <option value="name-asc">Name: A→Z</option>
+    </select>
+  </div>
+
+  <div class="flex justify-between items-center mb-4">
+    <span id="cs-count" class="text-body-sm text-neutral-subtle">Loading...</span>
+  </div>
+
+  <div id="cs-list" class="space-y-3">
+    <div class="p-10 text-center text-neutral-subtle text-body-sm bg-white border border-border rounded-xl">Loading...</div>
+  </div>
+</div>
+
+<!-- ==== TAB: AI SCORING & REPORTS ==== -->
+<div id="tab-ai" class="tab-section hidden px-10 py-10 max-w-container-max mx-auto">
+  <header class="mb-8">
+    <h2 class="text-headline-lg font-headline-lg text-on-surface">AI Scoring & Recruiter Reports</h2>
+    <p class="text-body-md text-neutral-subtle mt-1">Full AI match analysis for every application, sourced from recruiter reports.</p>
+  </header>
+
+  <!-- AI Scoring Summary Cards -->
+  <div class="grid grid-cols-3 gap-6 mb-8">
+    <div class="bg-gradient-to-br from-ai-accent to-[#8B6FD0] rounded-xl p-5 text-white shadow-lg">
+      <p class="text-xs font-semibold opacity-80 uppercase tracking-wider mb-2">Avg AI Score (Platform)</p>
+      <p id="ai-avg" class="text-4xl font-bold">--</p>
+      <p class="text-xs opacity-70 mt-1">Out of 100</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-5">
+      <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider mb-2">High Match (&gt;=90)</p>
+      <p id="ai-high" class="text-3xl font-bold text-success">0</p>
+      <p class="text-xs text-neutral-subtle mt-1">Candidates</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-5">
+      <p class="text-label-md font-label-md text-neutral-subtle uppercase tracking-wider mb-2">Needs Review (&lt;80)</p>
+      <p id="ai-low" class="text-3xl font-bold text-warning">0</p>
+      <p class="text-xs text-neutral-subtle mt-1">Candidates</p>
+    </div>
+  </div>
+
+  <!-- Score distribution bar -->
+  <div class="bg-white border border-border rounded-xl p-5 mb-6">
+    <h4 class="text-body-sm font-semibold text-on-surface mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined text-ai-accent text-[18px]">bar_chart</span> Score Distribution
+    </h4>
+    <div id="ai-dist" class="flex items-end gap-2 h-20"></div>
+    <div class="flex justify-between text-[10px] text-neutral-subtle mt-1">
+      <span>50</span><span>60</span><span>70</span><span>80</span><span>90</span><span>100</span>
+    </div>
+  </div>
+
+  <!-- Full AI Table -->
+  <div class="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-3 bg-surface-muted border-b border-border">
+      <span class="text-label-md font-label-md font-semibold text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-ai-accent text-[16px]">auto_awesome</span> All Application Reports
+      </span>
+      <div class="relative">
+        <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-neutral-subtle text-[16px]">search</span>
+        <input id="ai-q" oninput="renderAITable()" type="text" placeholder="Filter..." class="pl-8 pr-3 py-1.5 border border-border rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-primary" />
+      </div>
+    </div>
+    <!-- Table Header -->
+    <div class="grid grid-cols-12 gap-3 px-5 py-2.5 bg-surface-muted/50 border-b border-border text-[10px] font-bold text-neutral-subtle uppercase tracking-wider">
+      <div class="col-span-3">Candidate</div>
+      <div class="col-span-3">Role / Company</div>
+      <div class="col-span-2 text-center">AI Score</div>
+      <div class="col-span-2">Skills</div>
+      <div class="col-span-1 text-center">Status</div>
+      <div class="col-span-1 text-right">Action</div>
+    </div>
+    <div id="ai-table" class="divide-y divide-border">
+      <div class="p-10 text-center text-neutral-subtle text-body-sm">Loading AI reports...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==== TAB: FINAL APPROVALS ==== -->
+<div id="tab-approvals" class="tab-section hidden px-10 py-10 max-w-container-max mx-auto">
+  <header class="mb-8">
+    <h2 class="text-headline-lg font-headline-lg text-on-surface">Final Approvals</h2>
+    <p class="text-body-md text-neutral-subtle mt-1">Admin-level decisions: approve, schedule interview, or reject candidates.</p>
+  </header>
+
+  <!-- Filter Tabs -->
+  <div class="flex gap-2 mb-6">
+    <button onclick="setApprovalFilter('all')" id="af-all" class="px-4 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition-colors">All</button>
+    <button onclick="setApprovalFilter('Pending Decision')" id="af-shortlisted" class="px-4 py-1.5 rounded-full text-xs font-bold bg-surface-container-high text-neutral-text hover:bg-primary/10 transition-colors">Shortlisted</button>
+    <button onclick="setApprovalFilter('Interview')" id="af-interview" class="px-4 py-1.5 rounded-full text-xs font-bold bg-surface-container-high text-neutral-text hover:bg-primary/10 transition-colors">Interview</button>
+    <button onclick="setApprovalFilter('Approved')" id="af-approved" class="px-4 py-1.5 rounded-full text-xs font-bold bg-surface-container-high text-neutral-text hover:bg-primary/10 transition-colors">Approved</button>
+    <button onclick="setApprovalFilter('Closed')" id="af-closed" class="px-4 py-1.5 rounded-full text-xs font-bold bg-surface-container-high text-neutral-text hover:bg-primary/10 transition-colors">Rejected</button>
+  </div>
+
+  <div id="approval-count" class="text-body-sm text-neutral-subtle mb-4">Loading...</div>
+  <div id="approvals-list" class="space-y-4">
+    <div class="p-10 text-center text-neutral-subtle text-body-sm bg-white border border-border rounded-xl">Loading...</div>
+  </div>
+</div>
+
+<!-- ==== TAB: JOB MANAGEMENT ==== -->
+<div id="tab-jobs" class="tab-section hidden px-10 py-10 max-w-container-max mx-auto">
+  <header class="mb-8">
+    <h2 class="text-headline-lg font-headline-lg text-on-surface">Job Management</h2>
+    <p class="text-body-md text-neutral-subtle mt-1">Platform-wide overview of all active job postings.</p>
+  </header>
+
+  <div class="relative mb-5">
+    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-subtle">search</span>
+    <input id="jm-q" oninput="renderJobsAdmin()" type="text" placeholder="Search jobs by title, company or location..." class="w-full pl-10 pr-4 py-2.5 border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white shadow-sm" />
+  </div>
+
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="jm-count" class="text-2xl font-bold text-on-surface">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Total Jobs</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="jm-apps" class="text-2xl font-bold text-ai-accent">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Total Applications</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="jm-pending" class="text-2xl font-bold text-warning">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Pending Review</p>
+    </div>
+  </div>
+
+  <div class="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+    <div class="grid grid-cols-12 gap-3 px-5 py-3 bg-surface-muted border-b border-border text-[10px] font-bold text-neutral-subtle uppercase tracking-wider">
+      <div class="col-span-4">Job Title / Company</div>
+      <div class="col-span-2">Location</div>
+      <div class="col-span-2">Salary</div>
+      <div class="col-span-1 text-center">Applicants</div>
+      <div class="col-span-1 text-center">Avg Score</div>
+      <div class="col-span-2 text-center">Actions</div>
+    </div>
+    <div id="jm-list">
+      <div class="p-10 text-center text-neutral-subtle text-body-sm">Loading jobs...</div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+  let allApplications = [];
+  let allJobs = [];
+  let currentTab = 'overview';
+  let approvalFilter = 'all';
+
+  // ===== TAB SWITCHING =====
+  const tabIds = ['overview','candidates','ai','approvals','jobs'];
+  const navIds = ['nav-overview','nav-candidates','nav-ai','nav-approvals','nav-jobs'];
+
+  function switchTab(tab) {
+    currentTab = tab;
+    tabIds.forEach(t => {
+      const el = document.getElementById(`tab-${t}`);
+      if (el) el.classList.toggle('hidden', t !== tab);
+    });
+    navIds.forEach(n => {
+      const btn = document.getElementById(n);
+      if (!btn) return;
+      btn.className = (n === `nav-${tab}` ? 'nav-active' : 'nav-inactive') + ' flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150';
+    });
+    if (tab === 'candidates') renderCandidates();
+    if (tab === 'ai') renderAITab();
+    if (tab === 'approvals') renderApprovals();
+    if (tab === 'jobs') renderJobsAdmin();
+  }
+
+  // ===== DATA LOAD =====
+  async function loadAll() {
+    try {
+      [allApplications, allJobs] = await Promise.all([apiGet('/applications'), apiGet('/jobs')]);
+      renderOverview();
+      // Update approval badge
+      const pending = allApplications.filter(a => a.status === 'Pending Decision').length;
+      const badge = document.getElementById('approval-badge');
+      if (pending > 0) {
+        badge.innerText = pending;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    } catch(e) { console.error('Load error:', e); }
+  }
+
+  // ===== OVERVIEW TAB =====
+  function renderOverview() {
+    const total = allApplications.length;
+    const pending = allApplications.filter(a => a.status === 'Pending Decision').length;
+    const avg = total ? Math.round(allApplications.reduce((s,a)=>s+(a.score||0),0)/total) : 0;
+
+    document.getElementById('ov-total').innerText = total;
+    document.getElementById('ov-pending').innerText = pending;
+    document.getElementById('ov-avg-score').innerText = avg || '--';
+    document.getElementById('ov-jobs').innerText = allJobs.length;
+
+    // Pending approvals list
+    const list = document.getElementById('ov-approvals-list');
+    const pendingApps = allApplications.filter(a => a.status === 'Pending Decision').slice(0,5);
+    list.innerHTML = pendingApps.length === 0
+      ? '<div class="p-4 text-center text-neutral-subtle text-body-sm bg-surface-muted rounded-lg border border-border">No pending approvals.</div>'
+      : pendingApps.map(app => `
+        <div class="flex items-center justify-between p-3 border border-border rounded-lg bg-white hover:border-primary transition-all">
+          <div class="flex items-center gap-3">
+            <img class="w-9 h-9 rounded-full object-cover border border-border" src="${app.avatar}" alt="${app.candidateName}" />
+            <div>
+              <p class="text-body-sm font-semibold text-on-surface">${app.candidateName}</p>
+              <p class="text-[11px] text-neutral-subtle">${app.role} · <span class="text-ai-accent font-semibold">Score: ${app.score}</span></p>
+            </div>
+          </div>
+          <div class="flex gap-2" onclick="event.stopPropagation()">
+            <button onclick="quickDecision('${app.id}','Closed')" class="px-3 py-1 border border-error text-error hover:bg-error/10 rounded text-xs font-semibold transition-colors">Reject</button>
+            <button onclick="openDecisionModal('${app.id}')" class="px-3 py-1 bg-primary text-white hover:bg-secondary rounded text-xs font-semibold transition-colors shadow-sm">Review →</button>
+          </div>
+        </div>
+      `).join('');
+
+    // Activity feed from logs
+    loadActivity();
+  }
+
+  async function loadActivity() {
+    try {
+      const logs = await apiGet('/logs');
+      const container = document.getElementById('ov-activity');
+      if (!logs || logs.length === 0) {
+        container.innerHTML = '<p class="text-body-sm text-neutral-subtle">No recent activity.</p>';
+        return;
+      }
+      container.innerHTML = '';
+      logs.slice(0,6).forEach(log => {
+        let dotColor = 'bg-ai-accent';
+        if (log.type === 'warning') dotColor = 'bg-warning';
+        if (log.type === 'success') dotColor = 'bg-success';
+        if (log.type === 'error') dotColor = 'bg-error';
+        const div = document.createElement('div');
+        div.className = 'relative pl-6';
+        div.innerHTML = `
+          <span class="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full ${dotColor} border-2 border-white"></span>
+          <p class="text-body-sm text-on-surface">${log.text}</p>
+          <p class="text-[10px] text-neutral-subtle mt-0.5">${log.time || ''}</p>
+        `;
+        container.appendChild(div);
+      });
+    } catch(e) { }
+  }
+
+  // ===== CANDIDATE SEARCH TAB =====
+  function renderCandidates() {
+    const q = (document.getElementById('cs-q')?.value||'').toLowerCase();
+    const st = document.getElementById('cs-status')?.value||'';
+    const sort = document.getElementById('cs-sort')?.value||'score-desc';
+    const container = document.getElementById('cs-list');
+    const countEl = document.getElementById('cs-count');
+    if (!container) return;
+
+    let list = allApplications.filter(a => {
+      const matchQ = !q || a.candidateName.toLowerCase().includes(q) || (a.email||'').toLowerCase().includes(q) || a.role.toLowerCase().includes(q) || (a.skills||[]).some(s=>s.toLowerCase().includes(q)) || (a.company||'').toLowerCase().includes(q);
+      const matchSt = !st || a.status === st || (st==='Closed' && (a.status==='Closed'||a.status==='Rejected'));
+      return matchQ && matchSt;
+    });
+
+    list.sort((a,b) => sort==='score-desc'?(b.score||0)-(a.score||0):sort==='score-asc'?(a.score||0)-(b.score||0):a.candidateName.localeCompare(b.candidateName));
+    if (countEl) countEl.innerText = `${list.length} candidate${list.length!==1?'s':''} found`;
+    container.innerHTML = '';
+
+    if (list.length === 0) {
+      container.innerHTML = '<div class="p-10 text-center text-neutral-subtle text-body-sm bg-white border border-border rounded-xl shadow-sm">No candidates match your search.</div>';
+      return;
+    }
+
+    list.forEach(app => {
+      const scoreColor = app.score>=90?'#36B37E':app.score>=80?'#6554C0':'#FFAB00';
+      const statusMap = {'Pending':'bg-amber-50 text-amber-700','Pending Decision':'bg-blue-50 text-blue-700','Interview':'bg-emerald-50 text-emerald-700','Approved':'bg-green-50 text-green-700','Closed':'bg-red-50 text-red-700','Rejected':'bg-red-50 text-red-700'};
+      const badge = statusMap[app.status]||'bg-surface-container-high text-neutral-text';
+      const card = document.createElement('div');
+      card.className = 'bg-white border border-border rounded-xl p-5 hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] hover:border-secondary-fixed-dim transition-all flex items-center gap-5';
+      card.innerHTML = `
+        <img class="w-14 h-14 rounded-full object-cover border border-border shrink-0" src="${app.avatar}" alt="${app.candidateName}" />
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-0.5">
+            <h4 class="text-body-md font-semibold text-on-surface">${app.candidateName}</h4>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badge}">${app.status}</span>
+          </div>
+          <p class="text-body-sm text-neutral-subtle mb-1">${app.role} · ${app.company||'StellarHire'}</p>
+          <div class="flex items-center gap-4 text-[11px] text-neutral-subtle flex-wrap">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">mail</span> ${app.email||'—'}</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">call</span> ${app.phone||'—'}</span>
+            ${app.resumeFile?`<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[13px]">description</span> ${app.resumeFile}</span>`:''}
+          </div>
+          <div class="flex flex-wrap gap-1 mt-2">
+            ${(app.skills||[]).slice(0,5).map(s=>`<span class="px-2 py-0.5 bg-surface-container-high rounded text-[10px] font-semibold text-neutral-text">${s}</span>`).join('')}
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-2 shrink-0">
+          <div class="relative w-14 h-14 flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path fill="none" stroke="#e7e7f2" stroke-width="3" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+              <path fill="none" stroke="${scoreColor}" stroke-width="3" stroke-dasharray="${app.score}, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+            </svg>
+            <span class="absolute text-xs font-bold" style="color:${scoreColor}">${app.score}</span>
+          </div>
+          <span class="text-[10px] text-neutral-subtle font-semibold">AI Score</span>
+          <button onclick="openDecisionModal('${app.id}')" class="px-3 py-1 text-[11px] font-semibold rounded border border-primary text-primary hover:bg-primary/5 transition-colors">Review</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // ===== AI SCORING TAB =====
+  function renderAITab() {
+    const total = allApplications.length;
+    const avg = total ? Math.round(allApplications.reduce((s,a)=>s+(a.score||0),0)/total) : 0;
+    const high = allApplications.filter(a=>(a.score||0)>=90).length;
+    const low = allApplications.filter(a=>(a.score||0)<80).length;
+    document.getElementById('ai-avg').innerText = avg||'--';
+    document.getElementById('ai-high').innerText = high;
+    document.getElementById('ai-low').innerText = low;
+
+    // Score distribution
+    const buckets = [50,60,70,80,90];
+    const counts = buckets.map((b,i)=>allApplications.filter(a=>(a.score||0)>=b&&(a.score||0)<(buckets[i+1]||101)).length);
+    const maxCount = Math.max(...counts,1);
+    const dist = document.getElementById('ai-dist');
+    const colors = ['#FFAB00','#6B778C','#0059b8','#6554C0','#36B37E'];
+    dist.innerHTML = counts.map((c,i)=>`
+      <div class="flex-1 flex flex-col items-center gap-1">
+        <span class="text-[10px] font-bold text-neutral-subtle">${c}</span>
+        <div class="w-full rounded-t transition-all" style="height:${Math.max(c/maxCount*64,4)}px; background:${colors[i]};"></div>
+      </div>
+    `).join('');
+
+    renderAITable();
+  }
+
+  function renderAITable() {
+    const q = (document.getElementById('ai-q')?.value||'').toLowerCase();
+    const tbody = document.getElementById('ai-table');
+    if (!tbody) return;
+
+    let list = [...allApplications].sort((a,b)=>(b.score||0)-(a.score||0));
+    if (q) list = list.filter(a=>a.candidateName.toLowerCase().includes(q)||a.role.toLowerCase().includes(q)||(a.email||'').toLowerCase().includes(q));
+
+    tbody.innerHTML = '';
+    if (list.length===0) { tbody.innerHTML='<div class="p-8 text-center text-neutral-subtle text-body-sm">No results.</div>'; return; }
+
+    list.forEach(app => {
+      const sc = app.score||0;
+      const scoreColor = sc>=90?'text-success':sc>=80?'text-ai-accent':'text-warning';
+      const statusMap = {'Pending':'bg-amber-50 text-amber-700','Pending Decision':'bg-blue-50 text-blue-700','Interview':'bg-emerald-50 text-emerald-700','Approved':'bg-green-50 text-green-700','Closed':'bg-red-50 text-red-700'};
+      const badge = statusMap[app.status]||'bg-surface-container-high text-neutral-text';
+      const row = document.createElement('div');
+      row.className = 'grid grid-cols-12 gap-3 px-5 py-3 items-center hover:bg-surface-muted/50 transition-colors';
+      row.innerHTML = `
+        <div class="col-span-3 flex items-center gap-2">
+          <img class="w-8 h-8 rounded-full object-cover border border-border shrink-0" src="${app.avatar}" alt="${app.candidateName}" />
+          <div class="min-w-0">
+            <p class="text-[12px] font-semibold text-on-surface truncate">${app.candidateName}</p>
+            <p class="text-[10px] text-neutral-subtle truncate">${app.email||'—'}</p>
+          </div>
+        </div>
+        <div class="col-span-3 min-w-0">
+          <p class="text-[12px] font-semibold text-on-surface truncate">${app.role}</p>
+          <p class="text-[10px] text-neutral-subtle truncate">${app.company||'—'}</p>
+        </div>
+        <div class="col-span-2 text-center">
+          <div class="inline-flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px] ${scoreColor}">auto_awesome</span>
+            <span class="text-base font-bold ${scoreColor}">${sc}</span>
+          </div>
+          <div class="w-full bg-surface-container h-1.5 rounded-full mt-1 overflow-hidden">
+            <div class="h-full rounded-full ${sc>=90?'bg-success':sc>=80?'bg-ai-accent':'bg-warning'}" style="width:${sc}%"></div>
+          </div>
+        </div>
+        <div class="col-span-2">
+          <div class="flex flex-wrap gap-1">
+            ${(app.skills||[]).slice(0,2).map(s=>`<span class="px-1.5 py-0.5 bg-surface-container-high rounded text-[9px] font-semibold text-neutral-text">${s}</span>`).join('')}
+            ${(app.skills||[]).length>2?`<span class="text-[9px] text-neutral-subtle">+${(app.skills||[]).length-2}</span>`:''}
+          </div>
+        </div>
+        <div class="col-span-1 text-center">
+          <span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${badge}">${app.status}</span>
+        </div>
+        <div class="col-span-1 text-right">
+          <button onclick="openDecisionModal('${app.id}')" class="p-1.5 rounded border border-primary text-primary hover:bg-primary/5 transition-colors" title="Review">
+            <span class="material-symbols-outlined text-[14px]">gavel</span>
+          </button>
+        </div>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // ===== APPROVALS TAB =====
+  let currentApprovalFilter = 'all';
+
+  function setApprovalFilter(filter) {
+    currentApprovalFilter = filter;
+    ['all','shortlisted','interview','approved','closed'].forEach(k => {
+      const btn = document.getElementById(`af-${k}`);
+      if (!btn) return;
+      const active = (k === filter) || (filter === 'Pending Decision' && k==='shortlisted') || (filter === 'Interview' && k==='interview') || (filter === 'Approved' && k==='approved') || (filter === 'Closed' && k==='closed') || (filter === 'all' && k==='all');
+      btn.className = (active ? 'bg-primary text-white' : 'bg-surface-container-high text-neutral-text hover:bg-primary/10') + ' px-4 py-1.5 rounded-full text-xs font-bold transition-colors';
+    });
+    renderApprovals();
+  }
+
+  function renderApprovals() {
+    const container = document.getElementById('approvals-list');
+    const countEl = document.getElementById('approval-count');
+    if (!container) return;
+
+    let list = allApplications;
+    if (currentApprovalFilter !== 'all') {
+      list = allApplications.filter(a => a.status === currentApprovalFilter || (currentApprovalFilter==='Closed'&&(a.status==='Closed'||a.status==='Rejected')));
+    }
+    if (countEl) countEl.innerText = `${list.length} application${list.length!==1?'s':''} · ${allApplications.filter(a=>a.status==='Pending Decision').length} need action`;
+
+    container.innerHTML = '';
+    if (list.length===0) {
+      container.innerHTML = '<div class="p-10 text-center text-neutral-subtle text-body-sm bg-white border border-border rounded-xl">No applications in this category.</div>';
+      return;
+    }
+
+    list.forEach(app => {
+      const sc = app.score||0;
+      const scoreColor = sc>=90?'text-success':sc>=80?'text-ai-accent':'text-warning';
+      const statusMap = {
+        'Pending':'bg-amber-50 text-amber-700 border-amber-200',
+        'Pending Decision':'bg-blue-50 text-blue-700 border-blue-200',
+        'Interview':'bg-emerald-50 text-emerald-700 border-emerald-200',
+        'Approved':'bg-green-50 text-green-700 border-green-200',
+        'Closed':'bg-red-50 text-red-700 border-red-200',
+        'Rejected':'bg-red-50 text-red-700 border-red-200'
+      };
+      const badge = statusMap[app.status]||'bg-surface-container-high text-neutral-text border-border';
+      const canAct = ['Pending','Pending Decision'].includes(app.status);
+      const isApproved = ['Interview','Approved'].includes(app.status);
+      const isRejected = ['Closed','Rejected'].includes(app.status);
+
+      const card = document.createElement('div');
+      card.className = 'bg-white border border-border rounded-xl p-5 hover:shadow-[0px_4px_12px_rgba(9,30,66,0.08)] transition-all';
+      card.innerHTML = `
+        <div class="flex items-center gap-4">
+          <img class="w-12 h-12 rounded-full object-cover border border-border shrink-0" src="${app.avatar}" alt="${app.candidateName}" />
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-0.5">
+              <h4 class="text-body-md font-semibold text-on-surface">${app.candidateName}</h4>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${badge}">${app.status}</span>
+            </div>
+            <p class="text-body-sm text-neutral-subtle">${app.role} · ${app.company||'StellarHire'}</p>
+            <div class="flex items-center gap-4 text-[11px] text-neutral-subtle mt-1 flex-wrap">
+              <span><span class="material-symbols-outlined text-[12px] align-middle">mail</span> ${app.email||'—'}</span>
+              <span><span class="material-symbols-outlined text-[12px] align-middle">call</span> ${app.phone||'—'}</span>
+              ${app.resumeFile?`<span class="text-primary"><span class="material-symbols-outlined text-[12px] align-middle">description</span> ${app.resumeFile}</span>`:''}
+              <span class="${scoreColor} font-semibold"><span class="material-symbols-outlined text-[12px] align-middle">auto_awesome</span> AI: ${sc}/100</span>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col gap-2 shrink-0 min-w-[180px]">
+            ${isApproved || isRejected ? `
+              <div class="text-center py-3 rounded-lg ${isApproved?'bg-emerald-50 text-emerald-700':'bg-red-50 text-red-700'} border ${isApproved?'border-emerald-200':'border-red-200'} text-xs font-bold">
+                ${isApproved?'✓ Decision Made: '+app.status:'✗ Rejected'}
+              </div>
+            ` : `
+              <button onclick="quickDecision('${app.id}','Approved')" class="w-full py-2 bg-success text-white rounded-lg text-xs font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-1 shadow-sm">
+                <span class="material-symbols-outlined text-[14px]">check_circle</span> Final Approve
+              </button>
+              <button onclick="quickDecision('${app.id}','Interview')" class="w-full py-2 bg-primary text-white rounded-lg text-xs font-bold hover:bg-secondary transition-colors flex items-center justify-center gap-1 shadow-sm">
+                <span class="material-symbols-outlined text-[14px]">calendar_month</span> Schedule Interview
+              </button>
+              <button onclick="quickDecision('${app.id}','Pending Decision')" class="w-full py-2 border border-primary text-primary rounded-lg text-xs font-bold hover:bg-primary/5 transition-colors flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">bookmark</span> Keep Shortlisted
+              </button>
+              <button onclick="quickDecision('${app.id}','Closed')" class="w-full py-2 bg-red-50 border border-error/30 text-error rounded-lg text-xs font-bold hover:bg-red-100 transition-colors flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">cancel</span> Reject
+              </button>
+              <button onclick="openDecisionModal('${app.id}')" class="w-full py-2 bg-ai-accent/10 text-ai-accent rounded-lg text-xs font-bold hover:bg-ai-accent/20 transition-colors flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[14px]">psychology</span> Full AI Review
+              </button>
+            `}
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // ===== JOBS ADMIN TAB =====
+  function renderJobsAdmin() {
+    const q = (document.getElementById('jm-q')?.value||'').toLowerCase();
+    const container = document.getElementById('jm-list');
+    if (!container) return;
+
+    document.getElementById('jm-count').innerText = allJobs.length;
+    document.getElementById('jm-apps').innerText = allApplications.length;
+    document.getElementById('jm-pending').innerText = allApplications.filter(a=>a.status==='Pending').length;
+
+    const filtered = allJobs.filter(j=>!q||j.title.toLowerCase().includes(q)||j.company.toLowerCase().includes(q)||j.location.toLowerCase().includes(q));
+    container.innerHTML = '';
+
+    if (filtered.length===0) {
+      container.innerHTML = '<div class="p-10 text-center text-neutral-subtle text-body-sm">No jobs found.</div>';
+      return;
+    }
+
+    filtered.forEach(job => {
+      const apps = allApplications.filter(a=>a.role.toLowerCase()===job.title.toLowerCase());
+      const avgSc = apps.length ? Math.round(apps.reduce((s,a)=>s+(a.score||0),0)/apps.length) : 0;
+      const row = document.createElement('div');
+      row.className = 'grid grid-cols-12 gap-3 px-5 py-4 items-center border-b border-border last:border-b-0 hover:bg-surface-muted/50 transition-colors group';
+      row.innerHTML = `
+        <div class="col-span-4">
+          <p class="text-body-sm font-semibold text-on-surface group-hover:text-primary transition-colors">${job.title}</p>
+          <p class="text-[11px] text-neutral-subtle mt-0.5 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">apartment</span>${job.company}</p>
+          ${job.industry?`<span class="mt-1 inline-block bg-primary/5 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded border border-primary/10">${job.industry}</span>`:''}
+        </div>
+        <div class="col-span-2 text-body-sm text-neutral-subtle">${job.location}</div>
+        <div class="col-span-2 text-body-sm text-neutral-subtle">${job.salary}</div>
+        <div class="col-span-1 text-center">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-bold">${apps.length}</span>
+        </div>
+        <div class="col-span-1 text-center">
+          <span class="text-xs font-bold ${avgSc>=90?'text-success':avgSc>=80?'text-ai-accent':'text-warning'}">${avgSc||'—'}</span>
+        </div>
+        <div class="col-span-2 flex justify-center gap-1">
+          <button onclick="switchTab('approvals')" class="p-2 rounded border border-border hover:bg-primary/5 hover:border-primary text-neutral-subtle hover:text-primary transition-colors" title="Review Applications">
+            <span class="material-symbols-outlined text-[14px]">gavel</span>
+          </button>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  // ===== DECISION MODAL =====
+  function openDecisionModal(appId) {
+    const app = allApplications.find(a=>a.id===appId);
+    if (!app) return;
+
+    // Candidate info
+    document.getElementById('dm-subtitle').innerText = `${app.candidateName} — ${app.role}`;
+    document.getElementById('dm-candidate-info').innerHTML = `
+      <img class="w-14 h-14 rounded-full object-cover border-2 border-white shadow shrink-0" src="${app.avatar}" alt="${app.candidateName}" />
+      <div>
+        <h4 class="text-body-md font-bold text-on-surface">${app.candidateName}</h4>
+        <p class="text-body-sm text-neutral-subtle">${app.role} · ${app.company||'StellarHire'}</p>
+        <p class="text-xs text-neutral-subtle mt-0.5">Applied: ${app.appliedDate||'Today'}</p>
+      </div>
+    `;
+
+    // AI scores (derived from overall score with variance)
+    const sc = app.score||0;
+    const tech = Math.min(100, sc + Math.floor(Math.random()*8)-3);
+    const culture = Math.min(100, sc - Math.floor(Math.random()*10));
+    const exp = Math.min(100, sc + Math.floor(Math.random()*6)-2);
+    document.getElementById('dm-score-val').innerText = `${sc}/100`;
+    document.getElementById('dm-tech').innerText = `${tech}%`;
+    document.getElementById('dm-tech-bar').style.width = `${tech}%`;
+    document.getElementById('dm-culture').innerText = `${culture}%`;
+    document.getElementById('dm-culture-bar').style.width = `${culture}%`;
+    document.getElementById('dm-exp').innerText = `${exp}%`;
+    document.getElementById('dm-exp-bar').style.width = `${exp}%`;
+
+    // Skills
+    document.getElementById('dm-skills-chips').innerHTML = (app.skills||[]).map(s=>
+      `<span class="px-2 py-1 rounded text-xs font-semibold bg-success/10 text-success border border-success/20 flex items-center gap-1"><span class="material-symbols-outlined text-[10px]">check</span>${s}</span>`
+    ).join('');
+
+    // Contact
+    document.getElementById('dm-contact').innerHTML = `
+      <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-neutral-subtle">mail</span><span>${app.email||'—'}</span></div>
+      <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-neutral-subtle">call</span><span>${app.phone||'—'}</span></div>
+      ${app.resumeFile?`<div class="col-span-2 flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[14px]">description</span><span>${app.resumeFile}</span></div>`:''}
+    `;
+
+    // Action buttons
+    const isFinalized = ['Interview','Approved','Closed','Rejected'].includes(app.status);
+    document.getElementById('dm-actions').innerHTML = isFinalized
+      ? `<div class="text-center py-3 rounded-lg ${['Interview','Approved'].includes(app.status)?'bg-emerald-50 text-emerald-700':'bg-red-50 text-red-700'} text-sm font-bold">Decision already made: ${app.status}</div>`
+      : `
+        <button onclick="makeDecision('${app.id}','Approved')" class="w-full py-2.5 bg-success text-white rounded-lg text-sm font-bold hover:opacity-90 flex items-center justify-center gap-2 shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">check_circle</span> Final Approve
+        </button>
+        <button onclick="makeDecision('${app.id}','Interview')" class="w-full py-2.5 bg-primary text-white rounded-lg text-sm font-bold hover:bg-secondary flex items-center justify-center gap-2 shadow-sm">
+          <span class="material-symbols-outlined text-[16px]">calendar_month</span> Schedule Interview
+        </button>
+        <button onclick="makeDecision('${app.id}','Pending Decision')" class="w-full py-2.5 border border-primary text-primary rounded-lg text-sm font-bold hover:bg-primary/5 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[16px]">bookmark</span> Keep Shortlisted
+        </button>
+        <button onclick="makeDecision('${app.id}','Closed')" class="w-full py-2.5 bg-red-50 border border-error/30 text-error rounded-lg text-sm font-bold hover:bg-red-100 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[16px]">cancel</span> Reject Candidate
+        </button>
+      `;
+
+    document.getElementById('decision-modal').classList.remove('hidden');
+  }
+
+  function closeDecisionModal() {
+    document.getElementById('decision-modal').classList.add('hidden');
+  }
+
+  async function makeDecision(id, status) {
+    await quickDecision(id, status);
+    closeDecisionModal();
+  }
+
+  async function quickDecision(id, status) {
+    try {
+      await apiPost('/applications/status', { id, status });
+      await loadAll();
+      // Refresh current tab
+      if (currentTab==='candidates') renderCandidates();
+      if (currentTab==='ai') renderAITab();
+      if (currentTab==='approvals') renderApprovals();
+    } catch(e) {
+      alert('Error: ' + e.message);
+    }
+  }
+
+  // ===== INIT =====
+  loadAll();
+</script>
+</body></html>
