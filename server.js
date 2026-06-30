@@ -12,12 +12,7 @@ let memDb = null;
 function getSeedData() {
   return {
     "users": [
-      { "username": "seeker", "email": "seeker@stellarhire.com", "password": "password123", "role": "seeker", "name": "Alex Mercer", "phone": "+91 98765 43210", "location": "Remote - India", "skills": ["React", "Python", "Java", "CSS", "JavaScript"] },
-      { "username": "recruiter", "email": "recruiter@stellarhire.com", "password": "password123", "role": "recruiter", "name": "Siddharth Sharma", "company": "TechCorp India" },
-      { "username": "recruiter_hcl", "email": "recruiter@hcl.com", "password": "password123", "role": "recruiter", "name": "Rohan Mehta", "company": "HCL" },
-      { "username": "recruiter_cloudsync", "email": "recruiter@cloudsync.com", "password": "password123", "role": "recruiter", "name": "Priya Patel", "company": "CloudSync Inc." },
-      { "username": "recruiter_apex", "email": "recruiter@apex.com", "password": "password123", "role": "recruiter", "name": "Amit Kapoor", "company": "Apex Financial" },
-      { "username": "admin", "email": "admin@stellarhire.com", "password": "password123", "role": "admin", "name": "System Administrator" }
+      { "username": "admin", "email": "admin@12345", "password": "admin@12345", "role": "admin", "name": "System Administrator" }
     ],
     "jobs": [
       { "id": "job-1", "title": "Senior React Developer", "company": "TechCorp India", "location": "Remote - India", "salary": "₹18L - ₹25L LPA", "posted": "2 days ago", "industry": "Technology", "skills": ["React", "TypeScript", "Node.js"], "description": "Build next-gen web apps." },

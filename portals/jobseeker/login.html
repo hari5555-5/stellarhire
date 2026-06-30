@@ -86,14 +86,6 @@
                 </button>
             </form>
 
-            <!-- Demo Account Box -->
-            <div class="mt-6 pt-5 border-t border-border bg-surface rounded-xl p-4 text-center">
-                <span class="text-xs font-semibold text-neutral-subtle uppercase tracking-wider block mb-2">Demo Credentials</span>
-                <code class="text-xs text-primary block mb-3">seeker@stellarhire.com / password123</code>
-                <button type="button" id="fill-demo" class="px-4 py-1.5 bg-white border border-border hover:bg-surface-muted text-primary rounded-lg text-xs font-semibold shadow-sm transition-colors">
-                    Quick Fill Demo
-                </button>
-            </div>
         </div>
 
         <!-- Sign Up Form -->
@@ -204,12 +196,6 @@
             }
         });
 
-        // Quick Fill Demo
-        document.getElementById('fill-demo').addEventListener('click', () => {
-            document.getElementById('email').value = 'seeker@stellarhire.com';
-            document.getElementById('password').value = 'password123';
-            document.getElementById('error-banner').classList.add('hidden');
-        });
 
         // Sign In Form Submit
         document.getElementById('login-form').addEventListener('submit', async (e) => {
