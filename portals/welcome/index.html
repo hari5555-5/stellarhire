@@ -195,87 +195,79 @@
                         </div>
 
                     </div>
-                    <!-- Hero Visual / Dashboard Preview -->
-                    <div
-                        class="relative hidden lg:block h-[500px] w-full bg-background border border-border rounded-xl shadow-[0px_12px_48px_rgba(9,30,66,0.1)] p-6 overflow-hidden">
-                        <!-- Glassmorphic Overlay -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-background/80 to-surface-muted/90 backdrop-blur-sm z-0">
-                        </div>
-                        <!-- UI Mockup Elements -->
-                        <div class="relative z-10 flex flex-col gap-4 h-full">
-                            <!-- Top Bar Mockup -->
-                            <div class="flex justify-between items-center border-b border-border pb-4">
-                                <div class="h-6 w-32 bg-surface-container-high rounded animate-pulse"></div>
-                                <div class="flex gap-2">
-                                    <div class="h-6 w-6 rounded-full bg-surface-container-high"></div>
-                                    <div class="h-6 w-6 rounded-full bg-surface-container-high"></div>
+                    <!-- Hero Visual — Live Animated Dashboard -->
+                    <div class="relative hidden lg:flex h-[500px] w-full rounded-2xl overflow-hidden shadow-[0px_24px_64px_rgba(9,30,66,0.22)] border border-white/10">
+
+                        <!-- 🎬 Live Video Backdrop -->
+                        <video autoplay muted loop playsinline
+                            class="absolute inset-0 w-full h-full object-cover z-0 scale-105"
+                            poster="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=80">
+                            <source src="https://mixkit.co/free-stock-video/download/mixkit-colleagues-working-in-a-technology-company-office-4741.mp4" type="video/mp4">
+                            <source src="https://videos.pexels.com/video-files/3209828/3209828-hd_1920_1080_25fps.mp4" type="video/mp4">
+                        </video>
+
+                        <!-- Dark gradient overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-[#001233]/80 via-[#003087]/60 to-[#0d0d2b]/75 z-10"></div>
+
+                        <!-- Animated particle canvas -->
+                        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-20 opacity-60"></canvas>
+
+                        <!-- Live Dashboard UI overlay -->
+                        <div class="relative z-30 w-full h-full p-5 flex flex-col gap-3">
+
+                            <!-- Top bar -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_#4ade80]"></div>
+                                    <span class="text-white/90 text-xs font-semibold tracking-wide">LIVE · StellarHire Dashboard</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-white/50 text-[10px]">
+                                    <span id="live-time" class="font-mono"></span>
                                 </div>
                             </div>
-                            <!-- Main Content Mockup -->
-                            <div class="flex gap-4 h-full">
-                                <!-- Sidebar -->
-                                <div class="w-1/4 flex flex-col gap-3">
-                                    <div class="h-8 w-full bg-primary-container/20 rounded"></div>
-                                    <div class="h-8 w-full bg-surface-container-high rounded"></div>
-                                    <div class="h-8 w-full bg-surface-container-high rounded"></div>
-                                    <div class="h-8 w-full bg-surface-container-high rounded"></div>
-                                </div>
-                                <!-- Content Area -->
-                                <div class="flex-1 flex flex-col gap-4">
-                                    <div class="flex justify-between items-center">
-                                        <div class="h-8 w-48 bg-surface-container-high rounded"></div>
-                                        <div class="h-8 w-24 bg-primary/20 rounded"></div>
-                                    </div>
-                                    <!-- Data Cards -->
-                                    <div class="grid grid-cols-3 gap-3">
-                                        <div
-                                            class="h-24 bg-surface-container rounded border border-border flex flex-col justify-center p-3 relative overflow-hidden">
-                                            <div class="h-3 w-16 bg-outline-variant rounded mb-2"></div>
-                                            <div class="h-6 w-12 bg-on-surface rounded"></div>
-                                            <div
-                                                class="absolute -right-4 -bottom-4 w-12 h-12 bg-success/20 rounded-full">
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="h-24 bg-surface-container rounded border border-border flex flex-col justify-center p-3 relative overflow-hidden">
-                                            <div class="h-3 w-20 bg-outline-variant rounded mb-2"></div>
-                                            <div class="h-6 w-16 bg-on-surface rounded"></div>
-                                            <div
-                                                class="absolute -right-4 -bottom-4 w-12 h-12 bg-warning/20 rounded-full">
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="h-24 bg-surface-container rounded border border-border flex flex-col justify-center p-3 relative overflow-hidden">
-                                            <div class="h-3 w-12 bg-outline-variant rounded mb-2"></div>
-                                            <div class="h-6 w-10 bg-on-surface rounded"></div>
-                                            <div
-                                                class="absolute -right-4 -bottom-4 w-12 h-12 bg-primary/20 rounded-full">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- List Mockup -->
-                                    <div class="flex-1 border border-border rounded flex flex-col gap-2 p-3">
-                                        <div
-                                            class="h-12 w-full bg-surface-container-lowest border border-border rounded flex items-center px-3 gap-3">
-                                            <div class="h-8 w-8 rounded-full bg-surface-container-high"></div>
-                                            <div class="flex-1 h-4 bg-surface-container-high rounded"></div>
-                                            <div class="h-6 w-12 bg-ai-accent/20 rounded-full"></div>
-                                        </div>
-                                        <div
-                                            class="h-12 w-full bg-surface-container-lowest border border-border rounded flex items-center px-3 gap-3">
-                                            <div class="h-8 w-8 rounded-full bg-surface-container-high"></div>
-                                            <div class="flex-1 h-4 bg-surface-container-high rounded"></div>
-                                            <div class="h-6 w-12 bg-ai-accent/20 rounded-full"></div>
-                                        </div>
-                                        <div
-                                            class="h-12 w-full bg-surface-container-lowest border border-border rounded flex items-center px-3 gap-3">
-                                            <div class="h-8 w-8 rounded-full bg-surface-container-high"></div>
-                                            <div class="flex-1 h-4 bg-surface-container-high rounded"></div>
-                                            <div class="h-6 w-12 bg-ai-accent/20 rounded-full"></div>
-                                        </div>
+
+                            <!-- Stats row -->
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex flex-col gap-1 hover:bg-white/15 transition-all">
+                                    <span class="text-[10px] text-white/50 uppercase tracking-wider">Applications</span>
+                                    <span id="stat-apps" class="text-2xl font-bold text-white">0</span>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-green-400 text-[10px]">▲ 12%</span>
+                                        <span class="text-white/30 text-[10px]">today</span>
                                     </div>
                                 </div>
+                                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex flex-col gap-1 hover:bg-white/15 transition-all">
+                                    <span class="text-[10px] text-white/50 uppercase tracking-wider">Avg AI Score</span>
+                                    <span id="stat-score" class="text-2xl font-bold text-white">0</span>
+                                    <div class="h-1 bg-white/10 rounded-full overflow-hidden mt-1">
+                                        <div id="score-bar" class="h-full bg-gradient-to-r from-blue-400 to-violet-400 rounded-full transition-all duration-1000" style="width:0%"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex flex-col gap-1 hover:bg-white/15 transition-all">
+                                    <span class="text-[10px] text-white/50 uppercase tracking-wider">Open Jobs</span>
+                                    <span id="stat-jobs" class="text-2xl font-bold text-white">0</span>
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-blue-300 text-[10px]">● Active hiring</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Candidate list — live animated -->
+                            <div class="flex-1 bg-white/5 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden flex flex-col">
+                                <div class="flex items-center justify-between px-4 py-2 border-b border-white/10">
+                                    <span class="text-white/70 text-xs font-semibold">Recent Applications</span>
+                                    <span class="text-[9px] text-green-400 font-semibold animate-pulse">● LIVE</span>
+                                </div>
+                                <div id="candidate-list" class="flex flex-col divide-y divide-white/5 overflow-hidden flex-1"></div>
+                            </div>
+
+                            <!-- Bottom bar -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex gap-2">
+                                    <div class="px-2 py-1 bg-blue-500/20 border border-blue-400/30 rounded-full text-[10px] text-blue-300">AI Matching ✓</div>
+                                    <div class="px-2 py-1 bg-violet-500/20 border border-violet-400/30 rounded-full text-[10px] text-violet-300">Resume Scoring ✓</div>
+                                </div>
+                                <div class="text-white/30 text-[10px]">stellarhire.onrender.com</div>
                             </div>
                         </div>
                     </div>
@@ -480,6 +472,117 @@
             }
             animate();
         })();
+    </script>
+
+    <!-- Hero Dashboard Live Animation -->
+    <script>
+    (function() {
+        // ── Live Clock ──
+        function updateClock() {
+            const el = document.getElementById('live-time');
+            if (!el) return;
+            el.textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // ── Animated stat counters ──
+        function animateCount(id, target, duration) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            let start = 0, step = target / (duration / 16);
+            const tick = () => {
+                start = Math.min(start + step, target);
+                el.textContent = Math.round(start);
+                if (start < target) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+        }
+        setTimeout(() => {
+            animateCount('stat-apps', 248, 1200);
+            animateCount('stat-score', 87, 1000);
+            animateCount('stat-jobs', 34, 800);
+            const bar = document.getElementById('score-bar');
+            if (bar) setTimeout(() => bar.style.width = '87%', 300);
+        }, 400);
+
+        // ── Live candidate list ──
+        const candidates = [
+            { name: 'Priya Sharma', role: 'Senior React Dev', score: 94, color: '#4ade80' },
+            { name: 'Arjun Mehta', role: 'Data Scientist', score: 88, color: '#60a5fa' },
+            { name: 'Sneha Iyer', role: 'DevOps Engineer', score: 82, color: '#a78bfa' },
+            { name: 'Rohan Gupta', role: 'Product Manager', score: 91, color: '#34d399' },
+            { name: 'Kavya Nair', role: 'Full Stack Dev', score: 85, color: '#f472b6' },
+            { name: 'Vikram Das', role: 'ML Engineer', score: 96, color: '#fbbf24' },
+        ];
+        const initials = n => n.split(' ').map(w=>w[0]).join('');
+        const avatarColors = ['#3b82f6','#8b5cf6','#ec4899','#10b981','#f59e0b','#ef4444'];
+        let cidx = 0;
+
+        function addCandidate() {
+            const list = document.getElementById('candidate-list');
+            if (!list) return;
+            const c = candidates[cidx % candidates.length];
+            cidx++;
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-3 px-4 py-2.5 opacity-0 transition-all duration-500';
+            row.style.transform = 'translateY(-8px)';
+            row.innerHTML = `
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
+                     style="background:${avatarColors[cidx%avatarColors.length]}">${initials(c.name)}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-white/90 text-[11px] font-semibold truncate">${c.name}</div>
+                    <div class="text-white/40 text-[9px] truncate">${c.role}</div>
+                </div>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                    <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center text-[9px] font-bold"
+                         style="border-color:${c.color};color:${c.color}">${c.score}</div>
+                </div>`;
+            // Keep only 4 rows
+            while (list.children.length >= 4) list.removeChild(list.lastChild);
+            list.insertBefore(row, list.firstChild);
+            requestAnimationFrame(() => {
+                row.style.opacity = '1';
+                row.style.transform = 'translateY(0)';
+            });
+        }
+
+        // Initial fill
+        for (let i = 0; i < 4; i++) setTimeout(() => addCandidate(), i * 200);
+        // Live updates every 3s
+        setInterval(addCandidate, 3000);
+
+        // ── Hero canvas floating particles ──
+        const canvas = document.getElementById('hero-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+            resize();
+            window.addEventListener('resize', resize);
+            const pts = Array.from({length:25}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                vx: (Math.random()-.5)*.5, vy: (Math.random()-.5)*.5,
+                r: Math.random()*1.5+.5, o: Math.random()*.5+.2
+            }));
+            function frame() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                pts.forEach((p,i) => {
+                    p.x+=p.vx; p.y+=p.vy;
+                    if(p.x<0||p.x>canvas.width) p.vx*=-1;
+                    if(p.y<0||p.y>canvas.height) p.vy*=-1;
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+                    ctx.fillStyle=`rgba(150,180,255,${p.o})`; ctx.fill();
+                    for(let j=i+1;j<pts.length;j++){
+                        const q=pts[j], d=Math.hypot(p.x-q.x,p.y-q.y);
+                        if(d<100){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+                        ctx.strokeStyle=`rgba(100,160,255,${.12*(1-d/100)})`;ctx.lineWidth=.5;ctx.stroke();}
+                    }
+                });
+                requestAnimationFrame(frame);
+            }
+            frame();
+        }
+    })();
     </script>
 </body>
 
