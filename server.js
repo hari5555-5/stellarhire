@@ -84,6 +84,9 @@ apiApp.post('/api/auth/login', (req, res) => {
   );
   
   if (user) {
+    if (user.activityStatus === 'inactive') {
+      return res.status(403).json({ success: false, message: 'Your account has been deactivated.' });
+    }
     appendLog(`User ${user.name} logged in successfully as ${user.role}.`, 'info');
     res.json({ success: true, email: user.email, username: user.username || '', name: user.name, role: user.role, phone: user.phone || '', location: user.location || '', skills: user.skills || [], company: user.company || '' });
   } else {
@@ -149,6 +152,37 @@ apiApp.post('/api/auth/register-recruiter', (req, res) => {
   writeDb(db);
   appendLog(`New recruiter registered: ${name} (${username}) from ${company}.`, 'success');
   res.json({ success: true, email: newRecruiter.email, username: newRecruiter.username, name: newRecruiter.name, role: 'recruiter', company: newRecruiter.company });
+});
+
+// API: Get All Users (Admin)
+apiApp.get('/api/users', (req, res) => {
+  const db = readDb();
+  const users = db.users
+    .filter(u => u.role !== 'admin')
+    .map(({ password, ...u }) => ({ ...u, activityStatus: u.activityStatus || 'active' }));
+  res.json(users);
+});
+
+// API: Update User Details & Status (Admin)
+apiApp.put('/api/users/:username', (req, res) => {
+  const { username } = req.params;
+  const { name, email, phone, company, activityStatus } = req.body;
+  const db = readDb();
+  
+  const user = db.users.find(u => u.username === username);
+  if (user) {
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (user.role === 'seeker' && phone !== undefined) user.phone = phone;
+    if (user.role === 'recruiter' && company !== undefined) user.company = company;
+    if (activityStatus) user.activityStatus = activityStatus;
+    
+    writeDb(db);
+    appendLog(`Admin updated user ${user.username}.`, 'success');
+    res.json({ success: true });
+  } else {
+    res.status(404).json({ success: false, message: 'User not found.' });
+  }
 });
 
 // API: Update Seeker Profile

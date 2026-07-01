@@ -69,6 +69,10 @@
       <span class="material-symbols-outlined">work</span>
       <span class="text-label-md font-label-md font-semibold">Job Management</span>
     </button>
+    <button id="nav-users" onclick="switchTab('users')" class="nav-inactive flex items-center gap-3 px-4 py-3 w-full text-left transition-all duration-150">
+      <span class="material-symbols-outlined">manage_accounts</span>
+      <span class="text-label-md font-label-md font-semibold">User Management</span>
+    </button>
   </div>
 
   <div class="px-4 mt-auto space-y-1 border-t border-border pt-4">
@@ -136,6 +140,61 @@
       <!-- Action Buttons -->
       <div id="dm-actions" class="grid grid-cols-1 gap-2 pt-2 border-t border-border"></div>
     </div>
+  </div>
+</div>
+
+<!-- ======= USER EDIT MODAL ======= -->
+<div id="user-modal" class="fixed inset-0 z-[100] hidden">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeUserModal()"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-2xl w-full max-w-md border border-border overflow-hidden" style="animation:fadeInUp 0.3s ease;">
+    <div class="bg-gradient-to-r from-primary to-ai-accent px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-white text-[24px]">manage_accounts</span>
+        <div>
+          <h3 class="text-headline-sm font-headline-sm text-white font-bold">Edit User Details</h3>
+          <p class="text-white/70 text-xs mt-0.5" id="um-subtitle">Update profile or change status</p>
+        </div>
+      </div>
+      <button onclick="closeUserModal()" class="text-white/80 hover:text-white"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    
+    <form id="user-edit-form" class="p-6 space-y-4">
+      <input type="hidden" id="um-username" />
+      <input type="hidden" id="um-role" />
+      
+      <div>
+        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Full Name</label>
+        <input type="text" id="um-name" required class="w-full px-3 py-2 border border-border rounded-lg text-body-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+      </div>
+      
+      <div>
+        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Email Address</label>
+        <input type="email" id="um-email" required class="w-full px-3 py-2 border border-border rounded-lg text-body-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+      </div>
+      
+      <div id="um-phone-group">
+        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Phone Number (Seeker)</label>
+        <input type="text" id="um-phone" class="w-full px-3 py-2 border border-border rounded-lg text-body-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+      </div>
+
+      <div id="um-company-group">
+        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Company (Recruiter)</label>
+        <input type="text" id="um-company" class="w-full px-3 py-2 border border-border rounded-lg text-body-sm focus:ring-2 focus:ring-primary focus:outline-none" />
+      </div>
+      
+      <div>
+        <label class="block text-xs font-semibold text-neutral-subtle mb-1">Account Status</label>
+        <select id="um-status" class="w-full px-3 py-2 border border-border rounded-lg text-body-sm focus:ring-2 focus:ring-primary focus:outline-none bg-surface-muted">
+          <option value="active">Active</option>
+          <option value="inactive">Deactivated (Banned)</option>
+        </select>
+      </div>
+
+      <div class="pt-4 border-t border-border flex justify-end gap-3 mt-2">
+        <button type="button" onclick="closeUserModal()" class="px-4 py-2 text-sm font-semibold text-neutral-subtle hover:text-on-surface transition-colors">Cancel</button>
+        <button type="submit" id="um-save-btn" class="px-5 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-secondary transition-colors shadow-sm">Save Changes</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -378,17 +437,66 @@
   </div>
 </div>
 
+<!-- ==== TAB: USER MANAGEMENT ==== -->
+<div id="tab-users" class="tab-section hidden px-10 py-10 max-w-container-max mx-auto">
+  <header class="mb-8">
+    <h2 class="text-headline-lg font-headline-lg text-on-surface">User Management</h2>
+    <p class="text-body-md text-neutral-subtle mt-1">Manage jobseekers and recruiters, update profiles, or deactivate accounts.</p>
+  </header>
+
+  <div class="bg-white border border-border rounded-xl p-4 mb-6 flex flex-col md:flex-row gap-3 shadow-sm">
+    <div class="flex-1 relative">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-neutral-subtle">search</span>
+      <input id="um-q" oninput="renderUsers()" type="text" placeholder="Search users by name, email, or username..." class="w-full pl-10 pr-4 py-2.5 border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+    </div>
+    <select id="um-role-filter" onchange="renderUsers()" class="border border-border rounded-lg px-3 py-2.5 text-body-sm bg-surface-muted focus:ring-primary focus:outline-none cursor-pointer">
+      <option value="">All Roles</option>
+      <option value="seeker">Job Seekers</option>
+      <option value="recruiter">Recruiters</option>
+    </select>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="um-total-count" class="text-2xl font-bold text-on-surface">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Total Users</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="um-seeker-count" class="text-2xl font-bold text-primary">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Job Seekers</p>
+    </div>
+    <div class="bg-white border border-border rounded-xl p-4 text-center shadow-sm">
+      <p id="um-recruiter-count" class="text-2xl font-bold text-success">0</p>
+      <p class="text-xs text-neutral-subtle mt-0.5">Recruiters</p>
+    </div>
+  </div>
+
+  <div class="bg-white border border-border rounded-xl shadow-sm overflow-hidden">
+    <div class="grid grid-cols-12 gap-3 px-5 py-3 bg-surface-muted border-b border-border text-[10px] font-bold text-neutral-subtle uppercase tracking-wider">
+      <div class="col-span-3">User Profile</div>
+      <div class="col-span-2">Role</div>
+      <div class="col-span-3">Contact / Org</div>
+      <div class="col-span-2 text-center">Status</div>
+      <div class="col-span-2 text-right">Actions</div>
+    </div>
+    <div id="um-list" class="divide-y divide-border">
+      <div class="p-10 text-center text-neutral-subtle text-body-sm">Loading users...</div>
+    </div>
+  </div>
+</div>
+
 </main>
 
 <script>
   let allApplications = [];
   let allJobs = [];
+  let allUsers = [];
   let currentTab = 'overview';
   let approvalFilter = 'all';
 
   // ===== TAB SWITCHING =====
-  const tabIds = ['overview','candidates','ai','approvals','jobs'];
-  const navIds = ['nav-overview','nav-candidates','nav-ai','nav-approvals','nav-jobs'];
+  const tabIds = ['overview','candidates','ai','approvals','jobs','users'];
+  const navIds = ['nav-overview','nav-candidates','nav-ai','nav-approvals','nav-jobs','nav-users'];
 
   function switchTab(tab) {
     currentTab = tab;
@@ -405,12 +513,13 @@
     if (tab === 'ai') renderAITab();
     if (tab === 'approvals') renderApprovals();
     if (tab === 'jobs') renderJobsAdmin();
+    if (tab === 'users') renderUsers();
   }
 
   // ===== DATA LOAD =====
   async function loadAll() {
     try {
-      [allApplications, allJobs] = await Promise.all([apiGet('/applications'), apiGet('/jobs')]);
+      [allApplications, allJobs, allUsers] = await Promise.all([apiGet('/applications'), apiGet('/jobs'), apiGet('/users')]);
       renderOverview();
       // Update approval badge
       const pending = allApplications.filter(a => a.status === 'Pending Decision').length;
@@ -860,6 +969,134 @@
       alert('Error: ' + e.message);
     }
   }
+
+  // ===== USER MANAGEMENT TAB =====
+  function renderUsers() {
+    const q = (document.getElementById('um-q')?.value || '').toLowerCase();
+    const roleFilter = document.getElementById('um-role-filter')?.value || '';
+    const container = document.getElementById('um-list');
+    if (!container) return;
+
+    document.getElementById('um-total-count').innerText = allUsers.length;
+    document.getElementById('um-seeker-count').innerText = allUsers.filter(u => u.role === 'seeker').length;
+    document.getElementById('um-recruiter-count').innerText = allUsers.filter(u => u.role === 'recruiter').length;
+
+    let filtered = allUsers.filter(u => {
+      const matchQ = !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.username.toLowerCase().includes(q);
+      const matchRole = !roleFilter || u.role === roleFilter;
+      return matchQ && matchRole;
+    });
+
+    container.innerHTML = '';
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="p-10 text-center text-neutral-subtle text-body-sm">No users found.</div>';
+      return;
+    }
+
+    filtered.forEach(u => {
+      const isSeeker = u.role === 'seeker';
+      const roleBadge = isSeeker ? 'bg-primary/10 text-primary border-primary/20' : 'bg-success/10 text-success border-success/20';
+      const statusBadge = (u.activityStatus !== 'inactive') ? 'bg-green-50 text-green-700 border-green-200' : 'bg-red-50 text-red-700 border-red-200';
+      const statusText = (u.activityStatus !== 'inactive') ? 'Active' : 'Deactivated';
+      
+      const row = document.createElement('div');
+      row.className = 'grid grid-cols-12 gap-3 px-5 py-3 items-center hover:bg-surface-muted/50 transition-colors';
+      row.innerHTML = `
+        <div class="col-span-3 min-w-0">
+          <p class="text-[13px] font-bold text-on-surface truncate">${u.name}</p>
+          <p class="text-[11px] text-neutral-subtle truncate">${u.email}</p>
+          <p class="text-[10px] text-neutral-subtle truncate mt-0.5">@${u.username}</p>
+        </div>
+        <div class="col-span-2">
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${roleBadge} capitalize">${u.role}</span>
+        </div>
+        <div class="col-span-3 min-w-0">
+          ${isSeeker ? 
+            `<span class="text-[11px] text-neutral-subtle block truncate"><span class="material-symbols-outlined text-[12px] align-middle">call</span> ${u.phone || '—'}</span>` : 
+            `<span class="text-[11px] text-neutral-subtle block truncate"><span class="material-symbols-outlined text-[12px] align-middle">business</span> ${u.company || '—'}</span>`
+          }
+        </div>
+        <div class="col-span-2 text-center">
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusBadge}">${statusText}</span>
+        </div>
+        <div class="col-span-2 text-right">
+          <button onclick="openUserModal('${u.username}')" class="px-3 py-1.5 rounded border border-primary text-primary hover:bg-primary/5 transition-colors text-[11px] font-bold shadow-sm">
+            Edit
+          </button>
+        </div>
+      `;
+      container.appendChild(row);
+    });
+  }
+
+  function openUserModal(username) {
+    const user = allUsers.find(u => u.username === username);
+    if (!user) return;
+    
+    document.getElementById('um-username').value = user.username;
+    document.getElementById('um-role').value = user.role;
+    document.getElementById('um-name').value = user.name;
+    document.getElementById('um-email').value = user.email;
+    document.getElementById('um-status').value = user.activityStatus || 'active';
+    
+    if (user.role === 'seeker') {
+      document.getElementById('um-phone-group').classList.remove('hidden');
+      document.getElementById('um-company-group').classList.add('hidden');
+      document.getElementById('um-phone').value = user.phone || '';
+      document.getElementById('um-company').removeAttribute('required');
+    } else {
+      document.getElementById('um-phone-group').classList.add('hidden');
+      document.getElementById('um-company-group').classList.remove('hidden');
+      document.getElementById('um-company').value = user.company || '';
+      document.getElementById('um-company').setAttribute('required', 'true');
+    }
+    
+    document.getElementById('user-modal').classList.remove('hidden');
+  }
+
+  function closeUserModal() {
+    document.getElementById('user-modal').classList.add('hidden');
+  }
+
+  document.getElementById('user-edit-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('um-username').value;
+    const role = document.getElementById('um-role').value;
+    const btn = document.getElementById('um-save-btn');
+    
+    const payload = {
+      name: document.getElementById('um-name').value,
+      email: document.getElementById('um-email').value,
+      activityStatus: document.getElementById('um-status').value
+    };
+    
+    if (role === 'seeker') payload.phone = document.getElementById('um-phone').value;
+    if (role === 'recruiter') payload.company = document.getElementById('um-company').value;
+    
+    btn.innerText = 'Saving...';
+    btn.disabled = true;
+    
+    try {
+      const res = await apiPut('/users/' + username, payload);
+      if (res.success) {
+        // Update local list
+        const idx = allUsers.findIndex(u => u.username === username);
+        if (idx !== -1) {
+          allUsers[idx] = { ...allUsers[idx], ...payload };
+        }
+        renderUsers();
+        closeUserModal();
+      } else {
+        alert(res.message || 'Failed to update user');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error updating user');
+    } finally {
+      btn.innerText = 'Save Changes';
+      btn.disabled = false;
+    }
+  });
 
   // ===== INIT =====
   loadAll();
