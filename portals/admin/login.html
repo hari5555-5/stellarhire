@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Admin Login | StellarHire</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;family=Inter:wght@400;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
     <script id="tailwind-config">
         tailwind.config = {
             theme: {
@@ -30,12 +35,15 @@
         }
     </script>
 </head>
-<body class="bg-surface-muted text-on-surface font-body-md antialiased min-h-screen flex flex-col justify-center items-center p-4">
+
+<body
+    class="bg-surface-muted text-on-surface font-body-md antialiased min-h-screen flex flex-col justify-center items-center p-4">
     <!-- Main Card -->
     <div class="w-full max-w-md bg-background border border-border rounded-2xl shadow-lg p-8 relative overflow-hidden">
         <!-- Logo -->
         <div class="flex items-center gap-2 justify-center mb-6">
-            <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">work</span>
+            <span class="material-symbols-outlined text-primary text-4xl"
+                style="font-variation-settings: 'FILL' 1;">work</span>
             <span class="text-headline-md font-bold text-primary text-2xl">StellarHire</span>
         </div>
 
@@ -47,28 +55,35 @@
         <!-- Form -->
         <form id="login-form" class="space-y-5">
             <div>
-                <label for="email" class="block text-sm font-semibold text-neutral-subtle mb-1">Email Address</label>
-                <input type="email" id="email" required class="w-full px-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="name@company.com">
+                <label for="email" class="block text-sm font-semibold text-neutral-subtle mb-1">Email or Username</label>
+                <input type="text" id="email" required
+                    class="w-full px-4 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    placeholder="name@company.com">
             </div>
 
             <div>
                 <label for="password" class="block text-sm font-semibold text-neutral-subtle mb-1">Password</label>
                 <div class="relative">
-                    <input type="password" id="password" required class="w-full pl-4 pr-10 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="••••••••">
-                    <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-subtle hover:text-primary transition-colors">
+                    <input type="password" id="password" required
+                        class="w-full pl-4 pr-10 py-2 bg-background border border-border rounded-lg text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        placeholder="••••••••">
+                    <button type="button" id="toggle-password"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-subtle hover:text-primary transition-colors">
                         <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility</span>
                     </button>
                 </div>
             </div>
 
             <!-- Error Banner -->
-            <div id="error-banner" class="hidden p-3 bg-red-50 border border-error/20 text-error rounded-lg text-xs flex items-center gap-2">
+            <div id="error-banner"
+                class="hidden p-3 bg-red-50 border border-error/20 text-error rounded-lg text-xs flex items-center gap-2">
                 <span class="material-symbols-outlined text-[16px]">error</span>
                 <span id="error-message">Invalid email or password.</span>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" id="submit-btn" class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm flex justify-center items-center gap-2">
+            <button type="submit" id="submit-btn"
+                class="w-full py-2.5 bg-primary text-on-primary font-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm flex justify-center items-center gap-2">
                 Sign In
                 <span class="material-symbols-outlined text-[18px]">login</span>
             </button>
@@ -76,7 +91,8 @@
 
 
         <div class="text-center mt-6">
-            <a href="../welcome/index.html" class="text-xs text-primary hover:underline flex items-center justify-center gap-1">
+            <a href="../welcome/index.html"
+                class="text-xs text-primary hover:underline flex items-center justify-center gap-1">
                 <span class="material-symbols-outlined text-[14px]">arrow_back</span>
                 Back to Home
             </a>
@@ -105,8 +121,8 @@
         // Form Submit
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = passwordInput.value;
+            const email = document.getElementById('email').value.trim();
+            const password = passwordInput.value.trim();
             const submitBtn = document.getElementById('submit-btn');
             const errorBanner = document.getElementById('error-banner');
             const errorMessage = document.getElementById('error-message');
@@ -131,4 +147,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -51,7 +51,7 @@
     {
       "username": "admin",
       "email": "admin@stellarhire.com",
-      "password": "password123",
+      "password": "admin123",
       "role": "admin",
       "name": "System Administrator"
     },
@@ -301,6 +301,16 @@
     }
   ],
   "logs": [
+    {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "11:14:09 am",
+      "type": "info"
+    },
+    {
+      "text": "User System Administrator logged in successfully as admin.",
+      "time": "11:13:07 am",
+      "type": "info"
+    },
     {
       "text": "User System Administrator logged in successfully as admin.",
       "time": "12:51:35 pm",

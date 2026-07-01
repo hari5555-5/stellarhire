@@ -12,7 +12,7 @@ let memDb = null;
 function getSeedData() {
   return {
     "users": [
-      { "username": "admin", "email": "admin@12345", "password": "admin@12345", "role": "admin", "name": "System Administrator" }
+      { "username": "admin", "email": "stellar@gmail.com", "password": "admin123", "role": "admin", "name": "System Administrator" }
     ],
     "jobs": [
       { "id": "job-1", "title": "Senior React Developer", "company": "TechCorp India", "location": "Remote - India", "salary": "₹18L - ₹25L LPA", "posted": "2 days ago", "industry": "Technology", "skills": ["React", "TypeScript", "Node.js"], "description": "Build next-gen web apps." },
