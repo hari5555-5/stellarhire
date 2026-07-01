@@ -318,6 +318,12 @@ apiApp.post('/api/applications/status', (req, res) => {
   }
 });
 
+// API: Get System Logs
+apiApp.get('/api/logs', (req, res) => {
+  const db = readDb();
+  res.json(db.logs || []);
+});
+
 // API: Add System Log
 apiApp.post('/api/logs', (req, res) => {
   const { text, type } = req.body;
